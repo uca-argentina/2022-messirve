@@ -74,3 +74,47 @@ Test >> test007ADiceCupWithADieAlwaysRollsANumberBetweenOneAndTheNumberOfSides [
 	self assert: ((aDiceCup roll) between: 1 and: numberOfSides).
 
 ]
+
+{ #category : #tests }
+Test >> test008ASpaceshipInitializedWithNameMessiHasNameMessi [
+
+	|aSpaceShip|
+	
+	aSpaceShip := SpaceShip withName: 'Messi'.
+	
+	self assert: aSpaceShip name equals: 'Messi'
+]
+
+{ #category : #tests }
+Test >> test009AGameInitializedWithTwoSpaceshipHasTwoSpaceship [
+
+	|aSpaceGame aBoard aDiceCup |
+	
+	aBoard := Board withPositions: 10.
+	aDiceCup := DiceCup initializeWithDice: { } . 
+	
+	aSpaceGame := SpaceGame withBoard: aBoard diceCup: aDiceCup andSpaceShips: { 'Messi' . 'De Paul' }. 
+	
+	
+
+	
+	self assert: aSpaceGame spaceShipStatuses size equals: 2.
+]
+
+{ #category : #tests }
+Test >> test010ASpaceShipIsNotLongerInTheSamePositionAfterRollingADiceCup [
+
+	|aSpaceGame aBoard aDiceCup aDie initialPositionOfSpaceship finalPositionOfSpaceship |
+	
+	aBoard := Board withPositions: 10.
+	aDie := Die withSides: 5.
+	aDiceCup := DiceCup initializeWithDice: { aDie } .
+	
+	aSpaceGame := SpaceGame withBoard: aBoard diceCup: aDiceCup  andSpaceShips: { 'Messi' } .
+	
+	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+	aSpaceGame playTurnOfSpaceship: 'Messi'.
+	finalPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+	
+	self deny: initialPositionOfSpaceship equals: finalPositionOfSpaceship.
+]

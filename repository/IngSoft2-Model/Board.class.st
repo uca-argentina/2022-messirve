@@ -24,6 +24,16 @@ Board >> initializeWith: numberOfPositions [
 	positions := numberOfPositions 
 ]
 
+{ #category : #processing }
+Board >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
+
+	| newPosition |
+	newPosition := spaceshipPosition + diceRoll.
+	newPosition <= positions
+		ifTrue: [ ^ newPosition ]
+		ifFalse: [ ^ positions ]
+]
+
 { #category : #accessing }
 Board >> positions [
 	^ positions
