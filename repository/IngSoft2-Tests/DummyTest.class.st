@@ -9,3 +9,9 @@ DummyTest >> testDummy [
 
 	self assert: Dummy new isDummy
 ]
+
+{ #category : #tests }
+DummyTest >> testDummy2 [
+
+	self assert: Dummy new isDummy
+]
