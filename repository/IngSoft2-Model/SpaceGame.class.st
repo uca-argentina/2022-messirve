@@ -51,6 +51,19 @@ SpaceGame >> isFinished [
 	^ winner isNotNil.
 ]
 
+{ #category : #action }
+SpaceGame >> playGame [
+
+	self playRound.
+
+	self isFinished ifFalse: [ self playGame ]
+]
+
+{ #category : #'as yet unclassified' }
+SpaceGame >> playRound [
+	spaceshipStatuses do: [ : status | self playTurnOfSpaceship: (status spaceShip name)].
+]
+
 { #category : #playing }
 SpaceGame >> playTurnOfSpaceship: aSpaceShip [
 
@@ -75,7 +88,17 @@ SpaceGame >> positionOfSpaceship: aSpaceShip [
 	^currentSpaceShipStatus position.
 ]
 
+{ #category : #setter }
+SpaceGame >> setWinner: aSpaceShipName [ 
+	winner := aSpaceShipName.
+]
+
 { #category : #accessing }
 SpaceGame >> spaceShipStatuses [
 	^spaceshipStatuses
+]
+
+{ #category : #accessing }
+SpaceGame >> winner [
+	^ winner
 ]
