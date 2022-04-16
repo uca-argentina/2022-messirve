@@ -34,16 +34,22 @@ SpaceGame class >> withBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceShips
 ]
 
 { #category : #initialization }
-SpaceGame >> initializeWithBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceShipsNames [
+SpaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
 	| spaceShips |
-	gameIsFinished := false.
-	board := aBoard.
-	diceCup := aDiceCup.
 	spaceShips := spaceShipsNames collect: [ :name | 
 		              SpaceShip withName: name ].
 	spaceshipStatuses := spaceShips collect: [ :aSpaceShip | 
 		                     SpaceShipStatus with: aSpaceShip ]
+]
+
+{ #category : #initialization }
+SpaceGame >> initializeWithBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceShipsNames [
+
+	gameIsFinished := false.
+	board := aBoard.
+	diceCup := aDiceCup.
+	self assignSpaceshipStatusesFrom: spaceShipsNames
 ]
 
 { #category : #testing }
@@ -51,7 +57,7 @@ SpaceGame >> isFinished [
 	^ winner isNotNil.
 ]
 
-{ #category : #action }
+{ #category : #playing }
 SpaceGame >> playGame [
 
 	self playRound.
@@ -59,7 +65,7 @@ SpaceGame >> playGame [
 	self isFinished ifFalse: [ self playGame ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 SpaceGame >> playRound [
 	spaceshipStatuses do: [ : status | self playTurnOfSpaceship: (status spaceShip name)].
 ]
@@ -67,25 +73,16 @@ SpaceGame >> playRound [
 { #category : #playing }
 SpaceGame >> playTurnOfSpaceship: aSpaceShip [
 
-	| currentSpaceShipStatus diceCupRoll newPosition |
+	| diceCupRoll |
 	self isFinished ifTrue: [ ^ self ].
 	diceCupRoll := diceCup roll.
-
-	currentSpaceShipStatus := spaceshipStatuses detect: [ :status | 
-		                          status spaceShip name == aSpaceShip ].
-	newPosition := board obtainPositionStartingIn: (currentSpaceShipStatus position) afterRolling: diceCupRoll.
-	newPosition >= board positions ifTrue: [ self setWinner: aSpaceShip ].
-	currentSpaceShipStatus updateSpaceShipPositionWith: newPosition
+	self updatePositionOf: aSpaceShip afterRolling: diceCupRoll
 ]
 
 { #category : #'accessing - variables' }
 SpaceGame >> positionOfSpaceship: aSpaceShip [ 
 	
-	| currentSpaceShipStatus |
-	
-	currentSpaceShipStatus := spaceshipStatuses detect: [ : status | status spaceShip name == aSpaceShip].
-	
-	^currentSpaceShipStatus position.
+	^ (spaceshipStatuses detect: [ : status | status spaceShip name == aSpaceShip]) position.
 ]
 
 { #category : #setter }
@@ -96,6 +93,20 @@ SpaceGame >> setWinner: aSpaceShipName [
 { #category : #accessing }
 SpaceGame >> spaceShipStatuses [
 	^spaceshipStatuses
+]
+
+{ #category : #playing }
+SpaceGame >> updatePositionOf: aSpaceShip afterRolling: diceCupRoll [
+
+	| currentSpaceShipStatus newPosition |
+	currentSpaceShipStatus := spaceshipStatuses detect: [ :status | 
+		                          status spaceShip name == aSpaceShip ].
+	newPosition := board
+		               obtainPositionStartingIn:
+		               currentSpaceShipStatus position
+		               afterRolling: diceCupRoll.
+	newPosition >= board positions ifTrue: [ self setWinner: aSpaceShip ].
+	currentSpaceShipStatus updateSpaceShipPositionWith: newPosition
 ]
 
 { #category : #accessing }

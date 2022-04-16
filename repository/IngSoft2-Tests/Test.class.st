@@ -25,7 +25,7 @@ Test >> test002ADieCannotHaveLessThanThreeSides [
 Test >> test003ABoardWithThreePositionsHasThreePositions [
 
 	| aBoard |
-	aBoard := Board withPositions: 3.
+	aBoard := StraightBoard withPositions: 3.
 	self assert: aBoard positions equals: 3
 ]
 
@@ -33,7 +33,7 @@ Test >> test003ABoardWithThreePositionsHasThreePositions [
 Test >> test004ABoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
-		should: [ Board withPositions: 0 ]
+		should: [ StraightBoard withPositions: 0 ]
 		raise: Error
 		whoseDescriptionIncludes:
 		'A board cannot have less than two positions'
@@ -88,7 +88,7 @@ Test >> test008ASpaceshipInitializedWithNameMessiHasNameMessi [
 Test >> test009AGameInitializedWithTwoSpaceshipHasTwoSpaceship [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := Board withPositions: 10.
+	aBoard := StraightBoard withPositions: 10.
 	aDiceCup := DiceCup initializeWithDice: {  }.
 
 	aSpaceGame := SpaceGame
@@ -106,7 +106,7 @@ Test >> test009AGameInitializedWithTwoSpaceshipHasTwoSpaceship [
 Test >> test010ASpaceShipIsNotLongerInTheSamePositionAfterRollingADiceCup [
 
 	| aSpaceGame aBoard aDiceCup aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := Board withPositions: 10.
+	aBoard := StraightBoard withPositions: 10.
 	aDie := Die withSides: 5.
 	aDiceCup := DiceCup initializeWithDice: { aDie }.
 
@@ -128,7 +128,7 @@ Test >> test010ASpaceShipIsNotLongerInTheSamePositionAfterRollingADiceCup [
 Test >> test011TwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := Board withPositions: 10.
+	aBoard := StraightBoard withPositions: 10.
 	aDiceCup := DiceCup initializeWithDice: {  }.
 
 	self
@@ -175,7 +175,7 @@ Test >> test014TheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
 		
 		aLoadedDie := LoadedDie rolling: 10.
 		aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-		aBoard := Board withPositions: 10.
+		aBoard := StraightBoard withPositions: 10.
 		aSpaceGame := SpaceGame withBoard: aBoard diceCup: aDiceCup andSpaceShips: { 'Messi' } .
 		aSpaceGame playTurnOfSpaceship: 'Messi'.
 		
@@ -188,7 +188,7 @@ Test >> test015MessiRollsTenOnABoardOfSixPositionsAndEndsInPositionSix [
 	| aSpaceGame aDiceCup aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
 	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := Board withPositions: 6.
+	aBoard := StraightBoard withPositions: 6.
 	aSpaceGame := SpaceGame
 		              withBoard: aBoard
 		              diceCup: aDiceCup
@@ -204,7 +204,7 @@ Test >> test016MessiReachesTheLastPositionAndIsTheWinner [
 	| aSpaceGame aDiceCup aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
 	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := Board withPositions: 6.
+	aBoard := StraightBoard withPositions: 6.
 	aSpaceGame := SpaceGame
 		              withBoard: aBoard
 		              diceCup: aDiceCup
@@ -220,7 +220,7 @@ Test >> test017MessiAndDePaulPlayAGameAndTheGameFinishes [
 	| aSpaceGame aDiceCup aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
 	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := Board withPositions: 6.
+	aBoard := StraightBoard withPositions: 6.
 	aSpaceGame := SpaceGame
 		              withBoard: aBoard
 		              diceCup: aDiceCup
@@ -236,7 +236,7 @@ Test >> test018TwoPlayersPlayTheGameAndMessiWins [
 	| aSpaceGame aDiceCup aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
 	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := Board withPositions: 6.
+	aBoard := StraightBoard withPositions: 6.
 	aSpaceGame := SpaceGame
 		              withBoard: aBoard
 		              diceCup: aDiceCup

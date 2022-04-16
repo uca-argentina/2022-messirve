@@ -1,5 +1,5 @@
 Class {
-	#name : #Board,
+	#name : #StraightBoard,
 	#superclass : #Object,
 	#instVars : [
 		'positions'
@@ -8,24 +8,24 @@ Class {
 }
 
 { #category : #validation }
-Board class >> assertValidPositions: numberOfPositions [
+StraightBoard class >> assertValidPositions: numberOfPositions [
 	numberOfPositions < 2
 		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
 ]
 
 { #category : #initialization }
-Board class >> withPositions: numberOfPositions [
+StraightBoard class >> withPositions: numberOfPositions [
 	self assertValidPositions: numberOfPositions.
 	^self new initializeWith: numberOfPositions
 ]
 
 { #category : #initialization }
-Board >> initializeWith: numberOfPositions [
+StraightBoard >> initializeWith: numberOfPositions [
 	positions := numberOfPositions 
 ]
 
 { #category : #processing }
-Board >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
+StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
 
 	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
@@ -35,6 +35,6 @@ Board >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
 ]
 
 { #category : #accessing }
-Board >> positions [
+StraightBoard >> positions [
 	^ positions
 ]
