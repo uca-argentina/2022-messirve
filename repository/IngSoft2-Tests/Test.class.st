@@ -245,3 +245,21 @@ Test >> test018TwoPlayersPlayTheGameAndMessiWins [
 
 	self assert: aSpaceGame winner equals: 'Messi'
 ]
+
+{ #category : #tests }
+Test >> test019IsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
+
+	| aSpaceGame aDiceCup aLoadedDie aBoard positionResult |
+	aLoadedDie := LoadedDie rolling: 3.
+	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
+	aBoard := StraightBoard withPositions: 6.
+	aSpaceGame := SpaceGame
+		              withBoard: aBoard
+		              diceCup: aDiceCup
+		              andSpaceShips: { 'Messi'. 'De Paul' }.
+	aSpaceGame playGame.
+	
+	positionResult := aSpaceGame spaceShipStatuses collect: [ : status | status position ].
+
+	self assert: positionResult equals: { 6. 4 }
+]
