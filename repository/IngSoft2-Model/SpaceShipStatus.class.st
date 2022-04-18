@@ -19,7 +19,7 @@ SpaceShipStatus >> initializeWith: aSpaceShip [
 	position := 1 .
 ]
 
-{ #category : #'accessing - variables' }
+{ #category : #accessing }
 SpaceShipStatus >> position [
 	^ position
 ]

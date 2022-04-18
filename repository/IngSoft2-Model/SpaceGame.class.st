@@ -54,7 +54,7 @@ SpaceGame >> initializeWithBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceS
 
 { #category : #testing }
 SpaceGame >> isFinished [
-	^ winner isNotNil.
+	^winner isNotNil .
 ]
 
 { #category : #playing }
@@ -79,7 +79,7 @@ SpaceGame >> playTurnOfSpaceship: aSpaceShip [
 	self updatePositionOf: aSpaceShip afterRolling: diceCupRoll
 ]
 
-{ #category : #'accessing - variables' }
+{ #category : #accessing }
 SpaceGame >> positionOfSpaceship: aSpaceShip [ 
 	
 	^ (spaceshipStatuses detect: [ : status | status spaceShip name == aSpaceShip]) position.
@@ -111,5 +111,5 @@ SpaceGame >> updatePositionOf: aSpaceShip afterRolling: diceCupRoll [
 
 { #category : #accessing }
 SpaceGame >> winner [
-	^ winner
+	^winner
 ]
