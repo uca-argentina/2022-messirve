@@ -49,12 +49,13 @@ SpaceGame >> initializeWithBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceS
 	gameIsFinished := false.
 	board := aBoard.
 	diceCup := aDiceCup.
-	self assignSpaceshipStatusesFrom: spaceShipsNames
+	winner := SpaceShipWinner initializeWithoutWinner.
+	self assignSpaceshipStatusesFrom: spaceShipsNames.
 ]
 
 { #category : #testing }
 SpaceGame >> isFinished [
-	^winner isNotNil .
+	^winner winnerExists.
 ]
 
 { #category : #playing }
@@ -85,11 +86,6 @@ SpaceGame >> positionOfSpaceship: aSpaceShip [
 	^ (spaceshipStatuses detect: [ : status | status spaceShip name == aSpaceShip]) position.
 ]
 
-{ #category : #setter }
-SpaceGame >> setWinner: aSpaceShipName [ 
-	winner := aSpaceShipName.
-]
-
 { #category : #accessing }
 SpaceGame >> spaceShipStatuses [
 	^spaceshipStatuses
@@ -105,11 +101,11 @@ SpaceGame >> updatePositionOf: aSpaceShip afterRolling: diceCupRoll [
 		               obtainPositionStartingIn:
 		               currentSpaceShipStatus position
 		               afterRolling: diceCupRoll.
-	newPosition >= board positions ifTrue: [ self setWinner: aSpaceShip ].
+	newPosition = board positions ifTrue: [ winner newWinnerBecomes: aSpaceShip ].
 	currentSpaceShipStatus updateSpaceShipPositionWith: newPosition
 ]
 
 { #category : #accessing }
 SpaceGame >> winner [
-	^winner
+	^winner spaceShipWinner.
 ]
