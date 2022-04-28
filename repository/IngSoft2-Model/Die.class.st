@@ -28,8 +28,3 @@ Die >> initializeWithSides: numberOfSides [
 Die >> roll [
 	^sides atRandom .
 ]
-
-{ #category : #accessing }
-Die >> sides [
-	^ sides
-]

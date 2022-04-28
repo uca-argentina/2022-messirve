@@ -2,7 +2,8 @@ Class {
 	#name : #StraightBoard,
 	#superclass : #Object,
 	#instVars : [
-		'positions'
+		'positions',
+		'startingPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -21,6 +22,7 @@ StraightBoard class >> withPositions: numberOfPositions [
 
 { #category : #initialization }
 StraightBoard >> initializeWith: numberOfPositions [
+	startingPosition := 1.
 	positions := numberOfPositions 
 ]
 
@@ -37,4 +39,9 @@ StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceR
 { #category : #accessing }
 StraightBoard >> positions [
 	^ positions
+]
+
+{ #category : #'as yet unclassified' }
+StraightBoard >> startingPosition [
+	^startingPosition
 ]

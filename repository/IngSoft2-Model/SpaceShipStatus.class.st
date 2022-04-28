@@ -8,15 +8,15 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-SpaceShipStatus class >> with: aSpaceShip [ 
-	^self new initializeWith: aSpaceShip .
+{ #category : #accessing }
+SpaceShipStatus class >> with: aSpaceShip placedAt: aPosition [ 
+	^self new initializeWith: aSpaceShip placedAt: aPosition.
 ]
 
-{ #category : #initialization }
-SpaceShipStatus >> initializeWith: aSpaceShip [ 
+{ #category : #accessing }
+SpaceShipStatus >> initializeWith: aSpaceShip placedAt: aPosition [ 
 	spaceShip := aSpaceShip .
-	position := 1 .
+	position := aPosition.
 ]
 
 { #category : #accessing }

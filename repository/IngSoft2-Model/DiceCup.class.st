@@ -8,13 +8,8 @@ Class {
 }
 
 { #category : #initialization }
-DiceCup class >> initializeWithDice: aCollectionOfDice [
-	^self new initializeWithDice: aCollectionOfDice.
-]
-
-{ #category : #accessing }
-DiceCup >> dice [
-	^ dice
+DiceCup class >> initializeWithDice: dice [
+	^self new initializeWithDice: dice.
 ]
 
 { #category : #initialization }

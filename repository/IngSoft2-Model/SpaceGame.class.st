@@ -2,7 +2,6 @@ Class {
 	#name : #SpaceGame,
 	#superclass : #Object,
 	#instVars : [
-		'gameIsFinished',
 		'board',
 		'diceCup',
 		'spaceshipStatuses',
@@ -33,20 +32,36 @@ SpaceGame class >> withBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceShips
 	
 ]
 
+{ #category : #playing }
+SpaceGame >> assertValidRoundBeingPlayed [
+
+	self isFinished ifTrue: [ 
+		Error signal: 'A round cannot be played after the game has finished' ]
+]
+
+{ #category : #asserting }
+SpaceGame >> assertWinnerExists [
+	winner winnerExists
+	ifTrue: [ ^winner spaceShipWinner ]
+	ifFalse: [ Error signal: 'There is no winner since the game has not finished' ]
+]
+
 { #category : #initialization }
 SpaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
-	| spaceShips |
+	| spaceShips initialPosition |
 	spaceShips := spaceShipsNames collect: [ :name | 
 		              SpaceShip withName: name ].
+	
+	initialPosition := board startingPosition.
+	
 	spaceshipStatuses := spaceShips collect: [ :aSpaceShip | 
-		                     SpaceShipStatus with: aSpaceShip ]
+		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition ]
 ]
 
 { #category : #initialization }
 SpaceGame >> initializeWithBoard: aBoard diceCup: aDiceCup andSpaceShips: spaceShipsNames [
 
-	gameIsFinished := false.
 	board := aBoard.
 	diceCup := aDiceCup.
 	winner := SpaceShipWinner initializeWithoutWinner.
@@ -59,16 +74,30 @@ SpaceGame >> isFinished [
 ]
 
 { #category : #playing }
+SpaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
+
+	^ spaceshipStatuses detect: [ :status | 
+		  status spaceShip name == aSpaceShip ]
+]
+
+{ #category : #playing }
 SpaceGame >> playGame [
 
-	self playRound.
-
-	self isFinished ifFalse: [ self playGame ]
+	self isFinished
+		ifFalse: [ self playRound ]
+		ifTrue: [ 
+		Error signal: 'Game cannot be played since it is finished' ].
 ]
 
 { #category : #playing }
 SpaceGame >> playRound [
-	spaceshipStatuses do: [ : status | self playTurnOfSpaceship: (status spaceShip name)].
+
+	self assertValidRoundBeingPlayed.
+
+	spaceshipStatuses do: [ :status | 
+		self playTurnOfSpaceship: status spaceShip name ].
+
+	self isFinished ifFalse: [ self playRound ]
 ]
 
 { #category : #playing }
@@ -81,31 +110,27 @@ SpaceGame >> playTurnOfSpaceship: aSpaceShip [
 ]
 
 { #category : #accessing }
-SpaceGame >> positionOfSpaceship: aSpaceShip [ 
-	
-	^ (spaceshipStatuses detect: [ : status | status spaceShip name == aSpaceShip]) position.
-]
+SpaceGame >> positionOfSpaceship: aSpaceShip [
 
-{ #category : #accessing }
-SpaceGame >> spaceShipStatuses [
-	^spaceshipStatuses
+	^ (self obtainSpaceShipStatusFrom: aSpaceShip) position
 ]
 
 { #category : #playing }
 SpaceGame >> updatePositionOf: aSpaceShip afterRolling: diceCupRoll [
 
 	| currentSpaceShipStatus newPosition |
-	currentSpaceShipStatus := spaceshipStatuses detect: [ :status | 
-		                          status spaceShip name == aSpaceShip ].
+	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
 	newPosition := board
 		               obtainPositionStartingIn:
 		               currentSpaceShipStatus position
 		               afterRolling: diceCupRoll.
-	newPosition = board positions ifTrue: [ winner newWinnerBecomes: aSpaceShip ].
+	newPosition = board positions ifTrue: [ 
+		winner newWinnerBecomes: aSpaceShip ].
 	currentSpaceShipStatus updateSpaceShipPositionWith: newPosition
 ]
 
 { #category : #accessing }
 SpaceGame >> winner [
-	^winner spaceShipWinner.
+	^self assertWinnerExists
+	
 ]
