@@ -43,32 +43,9 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 		should: [ aSpaceGame playGame ]
 		raise: Error
 		whoseDescriptionIncludes:
-		'Game cannot be played since it is finished'
+		'A game cannot be played after it has finished'
 		description:
 		'The Space Game has finished and cannot be played again'
-]
-
-{ #category : #tests }
-GameplayTests >> testASpaceGameCannotPlayAnotherRoundAfterTheGameHasFinished [
-
-	| aSpaceGame aBoard aDie |
-	aBoard := StraightBoard withPositions: 50.
-	aDie := RandomDie withSides: 5.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDie.
-
-	aSpaceGame playGame.
-
-	self
-		should: [ aSpaceGame playRound ]
-		raise: Error
-		whoseDescriptionIncludes:
-		'A round cannot be played after the game has finished'
-		description:
-		'The Space Game has finished and a round cannot be played again'
 ]
 
 { #category : #tests }

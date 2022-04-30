@@ -14,8 +14,8 @@ SpaceShipStatus class >> with: aSpaceShip placedAt: aPosition [
 ]
 
 { #category : #accessing }
-SpaceShipStatus >> initializeWith: aSpaceShip placedAt: aPosition [ 
-	spaceShip := aSpaceShip .
+SpaceShipStatus >> initializeWith: aSpaceShipName placedAt: aPosition [ 
+	spaceShip := aSpaceShipName .
 	position := aPosition.
 ]
 

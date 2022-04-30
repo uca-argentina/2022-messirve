@@ -20,14 +20,8 @@ StraightBoard class >> withPositions: numberOfPositions [
 	^self new initializeWith: numberOfPositions
 ]
 
-{ #category : #initialization }
-StraightBoard >> initializeWith: numberOfPositions [
-	startingPosition := 1.
-	positions := numberOfPositions 
-]
-
 { #category : #processing }
-StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
+StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
 
 	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
@@ -35,6 +29,12 @@ StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceR
 	newPosition <= positions
 		ifTrue: [ ^ newPosition ]
 		ifFalse: [ ^ positions ]
+]
+
+{ #category : #initialization }
+StraightBoard >> initializeWith: numberOfPositions [
+	startingPosition := 1.
+	positions := numberOfPositions 
 ]
 
 { #category : #accessing }
