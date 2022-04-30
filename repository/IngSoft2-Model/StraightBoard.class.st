@@ -31,6 +31,7 @@ StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceR
 
 	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
+
 	newPosition <= positions
 		ifTrue: [ ^ newPosition ]
 		ifFalse: [ ^ positions ]
@@ -41,7 +42,7 @@ StraightBoard >> positions [
 	^ positions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 StraightBoard >> startingPosition [
 	^startingPosition
 ]

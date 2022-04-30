@@ -8,7 +8,7 @@ Class {
 ObjectCreationTests >> test002ADieCannotHaveLessThanThreeSides [
 
 	self
-		should: [ Die withSides: -1 ]
+		should: [ RandomDie withSides: -1 ]
 		raise: Error
 		whoseDescriptionIncludes: 'A die cannot have less than three sides'
 		description: 'Die sides must be >= 3'
@@ -30,14 +30,14 @@ ObjectCreationTests >> test011TwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := StraightBoard withPositions: 10.
-	aDiceCup := DiceCup initializeWithDice: {  }.
+	aDiceCup := DiceCup withAll: {  }.
 
 	self
 		should: [ 
-			aSpaceGame := SpaceGame
-				              withBoard: aBoard
-				              diceCup: aDiceCup
-				              andSpaceShips: { 'Messi'. 'Messi' } ]
+			aSpaceGame := MessirveSpaceRaceGame
+				              playedBy: { 'Messi'. 'Messi' }
+				              on: aBoard
+				              rolling: aDiceCup ]
 		raise: Error
 		whoseDescriptionIncludes: 'Player name duplicated'
 		description:
@@ -49,10 +49,10 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 
 	| aSpaceGame aBoard |
 	aBoard := StraightBoard withPositions: 10.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: ''
-		              andSpaceShips: { 'Messi' }.
-	
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: ''.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
 ]

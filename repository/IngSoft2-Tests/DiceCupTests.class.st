@@ -9,8 +9,8 @@ DiceCupTests >> test007ADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides
 
 	| aDiceCup aDie numberOfSides |
 	numberOfSides := 6.
-	aDie := Die withSides: numberOfSides.
-	aDiceCup := DiceCup initializeWithDice: { aDie }.
+	aDie := RandomDie withSides: numberOfSides.
+	aDiceCup := DiceCup withAll: { aDie }.
 
 	self assert: (aDiceCup roll between: 1 and: numberOfSides)
 ]
@@ -22,7 +22,7 @@ DiceCupTests >> testDiceCupRollsTheSumOfTheRollsOfEachDieInside [
 	aLoadedDie := LoadedDie rolling: 4.
 	aLoadedDie2 := LoadedDie rolling: 3.
 	aLoadedDie3 := LoadedDie rolling: 8.
-	aDiceCup := DiceCup initializeWithDice: { 
+	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie.
 			            aLoadedDie2.
 			            aLoadedDie3 }.

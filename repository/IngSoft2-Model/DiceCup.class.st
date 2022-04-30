@@ -8,16 +8,16 @@ Class {
 }
 
 { #category : #initialization }
-DiceCup class >> initializeWithDice: dice [
-	^self new initializeWithDice: dice.
-]
-
-{ #category : #initialization }
-DiceCup >> initializeWithDice: aCollectionOfDice [
-	dice := aCollectionOfDice .
+DiceCup class >> withAll: dice [
+	^self new withAll: dice.
 ]
 
 { #category : #action }
 DiceCup >> roll [
 	^dice sum: [ : die | die roll].
+]
+
+{ #category : #initialization }
+DiceCup >> withAll: aCollectionOfDice [
+	dice := aCollectionOfDice .
 ]
