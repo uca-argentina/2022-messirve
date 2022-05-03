@@ -26,9 +26,7 @@ StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: di
 	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
 
-	newPosition <= positions
-		ifTrue: [ ^ newPosition ]
-		ifFalse: [ ^ positions ]
+	^ newPosition min: positions
 ]
 
 { #category : #initialization }

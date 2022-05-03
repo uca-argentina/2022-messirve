@@ -20,7 +20,7 @@ LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 		should: [ aSpaceGame winner ]
 		raise: Error
 		whoseDescriptionIncludes:
-		'There is no winner since the game has not finished'
+		'There is no winner'
 		description: 'Nonexistent winner, game in progress'
 ]
 

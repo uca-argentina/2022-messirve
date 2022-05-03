@@ -5,8 +5,8 @@ Class {
 		'board',
 		'diceCup',
 		'spaceshipStatuses',
-		'winner',
-		'currentTurn'
+		'currentTurn',
+		'gameStatus'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -30,7 +30,7 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
-	^ self new playedBy: spaceShips on: aBoard rolling: aDiceCup
+	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup
 ]
 
 { #category : #accessing }
@@ -44,21 +44,17 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 { #category : #playing }
 MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
 
-	| currentSpaceShipStatus newPosition newStatus|
+	| currentSpaceShipStatus newPosition newStatus |
 	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
-
 	newPosition := board
 		               finalPositionWhenStartingAt:
 		               currentSpaceShipStatus position
 		               afterRolling: diceCupRoll.
-	
-	newStatus := SpaceShipStatus with: aSpaceShip placedAt: newPosition. 
-	spaceshipStatuses at: currentTurn put: newStatus. 
-		
-	newPosition = board positions ifTrue: [ 
-		winner newWinnerBecomes: aSpaceShip ].
+	newStatus := SpaceShipStatus with: aSpaceShip placedAt: newPosition.
+	spaceshipStatuses replaceAll: currentSpaceShipStatus with: newStatus.
 
-	
+	newPosition = board positions ifFalse: [ ^ self ].
+	gameStatus := MessirveSpaceGameFinishedStatus withWinner: aSpaceShip.
 ]
 
 { #category : #playing }
@@ -68,13 +64,6 @@ MessirveSpaceRaceGame >> assertGameIsNotFinished [
 		Error signal: 'A game cannot be played after it has finished' ]
 ]
 
-{ #category : #asserting }
-MessirveSpaceRaceGame >> assertWinnerExists [
-	winner winnerExists
-	ifTrue: [ ^winner spaceShipWinner ]
-	ifFalse: [ Error signal: 'There is no winner since the game has not finished' ]
-]
-
 { #category : #initialization }
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
@@ -82,13 +71,23 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
 	initialPosition := board startingPosition.
 	
-	spaceshipStatuses := spaceShipsNames collect: [ :aSpaceShip | 
-		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition ]
+	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ :aSpaceShip | 
+		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition ] 
+]
+
+{ #category : #initialization }
+MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup [
+
+	board := aBoard.
+	diceCup := aDiceCup.
+	currentTurn := 1.
+	self assignSpaceshipStatusesFrom: spaceShipsNames.
+	gameStatus := MessirveSpaceGameInProgressStatus new . 
 ]
 
 { #category : #testing }
 MessirveSpaceRaceGame >> isFinished [
-	^winner winnerExists.
+	^gameStatus isFinished .
 ]
 
 { #category : #playing }
@@ -107,7 +106,6 @@ MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 { #category : #playing }
 MessirveSpaceRaceGame >> playGame [
 
-	self assertGameIsNotFinished.
 	self playNextTurn.
 	self isFinished ifFalse: [ self playGame ]
 ]
@@ -125,16 +123,6 @@ MessirveSpaceRaceGame >> playNextTurn [
 	self advanceToNextTurn
 ]
 
-{ #category : #initialization }
-MessirveSpaceRaceGame >> playedBy: spaceShipsNames on: aBoard rolling: aDiceCup [
-
-	board := aBoard.
-	diceCup := aDiceCup.
-	winner := SpaceShipWinner initializeWithoutWinner.
-	currentTurn := 1.
-	self assignSpaceshipStatusesFrom: spaceShipsNames
-]
-
 { #category : #accessing }
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
@@ -143,6 +131,6 @@ MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> winner [
-	^self assertWinnerExists
+	^gameStatus winner.
 	
 ]
