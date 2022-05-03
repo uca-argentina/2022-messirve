@@ -5,27 +5,6 @@ Class {
 }
 
 { #category : #tests }
-GameplayTests >> test010ASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
-
-	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := StraightBoard withPositions: 10.
-	aDie := RandomDie withSides: 5.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDie.
-
-	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
-	aSpaceGame playNextTurn.
-	finalPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
-
-	self
-		deny: initialPositionOfSpaceship
-		equals: finalPositionOfSpaceship
-]
-
-{ #category : #tests }
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
@@ -46,6 +25,27 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 		'A game cannot be played after it has finished'
 		description:
 		'The Space Game has finished and cannot be played again'
+]
+
+{ #category : #tests }
+GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
+
+	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
+	aBoard := StraightBoard withPositions: 10.
+	aDie := RandomDie withSides: 5.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie.
+
+	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+	aSpaceGame playNextTurn.
+	finalPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+
+	self
+		deny: initialPositionOfSpaceship
+		equals: finalPositionOfSpaceship
 ]
 
 { #category : #tests }
@@ -78,6 +78,6 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 		              rolling: aDiceCup.
 
 	aSpaceGame playGame.
-
+ 
 	self assert: aSpaceGame isFinished
 ]

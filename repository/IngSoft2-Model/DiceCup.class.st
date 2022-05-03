@@ -7,8 +7,18 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
+{ #category : #asserting }
+DiceCup class >> assertValidQuantityOf: dice [
+
+	(dice isEmpty)
+	ifTrue: [ Error signal: 'A dice cup cannot be empty' ].
+
+
+]
+
 { #category : #initialization }
 DiceCup class >> withAll: dice [
+	self assertValidQuantityOf: dice. 
 	^self new withAll: dice.
 ]
 
@@ -18,6 +28,6 @@ DiceCup >> roll [
 ]
 
 { #category : #initialization }
-DiceCup >> withAll: aCollectionOfDice [
-	dice := aCollectionOfDice .
+DiceCup >> withAll: someDice [
+	dice := someDice .
 ]

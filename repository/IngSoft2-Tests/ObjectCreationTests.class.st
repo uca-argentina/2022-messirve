@@ -5,17 +5,7 @@ Class {
 }
 
 { #category : #tests }
-ObjectCreationTests >> test002ADieCannotHaveLessThanThreeSides [
-
-	self
-		should: [ RandomDie withSides: -1 ]
-		raise: Error
-		whoseDescriptionIncludes: 'A die cannot have less than three sides'
-		description: 'Die sides must be >= 3'
-]
-
-{ #category : #tests }
-ObjectCreationTests >> test004ABoardCannotBeCreatedWithLessThanTwoPositions [
+ObjectCreationTests >> testABoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
 		should: [ StraightBoard withPositions: 0 ]
@@ -26,22 +16,13 @@ ObjectCreationTests >> test004ABoardCannotBeCreatedWithLessThanTwoPositions [
 ]
 
 { #category : #tests }
-ObjectCreationTests >> test011TwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
-
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := StraightBoard withPositions: 10.
-	aDiceCup := DiceCup withAll: {  }.
+ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 
 	self
-		should: [ 
-			aSpaceGame := MessirveSpaceRaceGame
-				              playedBy: { 'Messi'. 'Messi' }
-				              on: aBoard
-				              rolling: aDiceCup ]
+		should: [ RandomDie withSides: -1 ]
 		raise: Error
-		whoseDescriptionIncludes: 'Player name duplicated'
-		description:
-		'Two players with the same name cannot be added to game'
+		whoseDescriptionIncludes: 'A die cannot have less than three sides'
+		description: 'Die sides must be >= 3'
 ]
 
 { #category : #tests }
@@ -55,4 +36,23 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 		              rolling: ''.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
+]
+
+{ #category : #tests }
+ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := StraightBoard withPositions: 10.
+	aDiceCup := DiceCup withAll: { '' }.
+
+	self
+		should: [ 
+			aSpaceGame := MessirveSpaceRaceGame
+				              playedBy: { 'Messi'. 'Messi' }
+				              on: aBoard
+				              rolling: aDiceCup ]
+		raise: Error
+		whoseDescriptionIncludes: 'Player name duplicated'
+		description:
+		'Two players with the same name cannot be added to game'
 ]

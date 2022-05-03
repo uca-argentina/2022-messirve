@@ -28,8 +28,3 @@ SpaceShipStatus >> position [
 SpaceShipStatus >> spaceShip [
 	^ spaceShip
 ]
-
-{ #category : #playing }
-SpaceShipStatus >> updateSpaceShipPositionWith: newPosition [ 
-	position := newPosition  .
-]

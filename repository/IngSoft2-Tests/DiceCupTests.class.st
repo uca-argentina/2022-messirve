@@ -5,7 +5,20 @@ Class {
 }
 
 { #category : #tests }
-DiceCupTests >> test007ADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides [
+DiceCupTests >> testADiceCupCannotBeEmpty [
+	| aDiceCup |
+	
+	self
+		should: [ aDiceCup := DiceCup withAll: { }. ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'A dice cup cannot be empty'
+		description:
+		'A dice cup must contain at least one die'
+]
+
+{ #category : #tests }
+DiceCupTests >> testADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides [
 
 	| aDiceCup aDie numberOfSides |
 	numberOfSides := 6.

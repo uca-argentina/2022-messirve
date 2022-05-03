@@ -42,6 +42,26 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 ]
 
 { #category : #playing }
+MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
+
+	| currentSpaceShipStatus newPosition newStatus|
+	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
+
+	newPosition := board
+		               finalPositionWhenStartingAt:
+		               currentSpaceShipStatus position
+		               afterRolling: diceCupRoll.
+	
+	newStatus := SpaceShipStatus with: aSpaceShip placedAt: newPosition. 
+	spaceshipStatuses at: currentTurn put: newStatus. 
+		
+	newPosition = board positions ifTrue: [ 
+		winner newWinnerBecomes: aSpaceShip ].
+
+	
+]
+
+{ #category : #playing }
 MessirveSpaceRaceGame >> assertGameIsNotFinished [
 
 	self isFinished ifTrue: [ 
@@ -88,7 +108,7 @@ MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 MessirveSpaceRaceGame >> playGame [
 
 	self assertGameIsNotFinished.
-	spaceshipStatuses do: [ :status | self playNextTurn ].
+	self playNextTurn.
 	self isFinished ifFalse: [ self playGame ]
 ]
 
@@ -100,7 +120,7 @@ MessirveSpaceRaceGame >> playNextTurn [
 
 	diceCupRoll := diceCup roll.
 	self
-		updatePositionOf: self nameOfSpaceShipPlaying
+		applyMovementTo: self nameOfSpaceShipPlaying
 		afterRolling: diceCupRoll.
 	self advanceToNextTurn
 ]
@@ -119,22 +139,6 @@ MessirveSpaceRaceGame >> playedBy: spaceShipsNames on: aBoard rolling: aDiceCup 
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) position
-]
-
-{ #category : #playing }
-MessirveSpaceRaceGame >> updatePositionOf: aSpaceShip afterRolling: diceCupRoll [
-
-	| currentSpaceShipStatus newPosition |
-	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
-
-	newPosition := board
-		               finalPositionWhenStartingAt:
-		               currentSpaceShipStatus position
-		               afterRolling: diceCupRoll.
-	newPosition = board positions ifTrue: [ 
-		winner newWinnerBecomes: aSpaceShip ].
-
-	currentSpaceShipStatus updateSpaceShipPositionWith: newPosition
 ]
 
 { #category : #accessing }
