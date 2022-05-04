@@ -9,11 +9,11 @@ Class {
 
 { #category : #'as yet unclassified' }
 MessirveSpaceGameFinishedStatus class >> withWinner: aWinner [ 
-	^self new initializeWith: aWinner.
+	^self new initializeWithWinner: aWinner.
 ]
 
 { #category : #initialization }
-MessirveSpaceGameFinishedStatus >> initializeWith: aWinner [ 
+MessirveSpaceGameFinishedStatus >> initializeWithWinner: aWinner [ 
 	winner := aWinner.
 ]
 

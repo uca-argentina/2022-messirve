@@ -6,7 +6,8 @@ Class {
 		'diceCup',
 		'spaceshipStatuses',
 		'currentTurn',
-		'gameStatus'
+		'gameStatus',
+		'spaceShipSequence'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -33,15 +34,14 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup
 ]
 
-{ #category : #accessing }
+{ #category : #private }
 MessirveSpaceRaceGame >> advanceToNextTurn [
 
-	currentTurn := currentTurn == spaceshipStatuses size
-		               ifTrue: [ 1 ]
-		               ifFalse: [ currentTurn + 1 ]
+	currentTurn := spaceShipSequence nextSequenceTurnNumber.
+
 ]
 
-{ #category : #playing }
+{ #category : #private }
 MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
 
 	| currentSpaceShipStatus newPosition newStatus |
@@ -57,7 +57,7 @@ MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
 	gameStatus := MessirveSpaceGameFinishedStatus withWinner: aSpaceShip.
 ]
 
-{ #category : #playing }
+{ #category : #private }
 MessirveSpaceRaceGame >> assertGameIsNotFinished [
 
 	self isFinished ifTrue: [ 
@@ -82,7 +82,8 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	diceCup := aDiceCup.
 	currentTurn := 1.
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
-	gameStatus := MessirveSpaceGameInProgressStatus new . 
+	gameStatus := MessirveSpaceGameInProgressStatus new. 
+	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips: spaceShipsNames.
 ]
 
 { #category : #testing }
@@ -90,13 +91,13 @@ MessirveSpaceRaceGame >> isFinished [
 	^gameStatus isFinished .
 ]
 
-{ #category : #playing }
+{ #category : #private }
 MessirveSpaceRaceGame >> nameOfSpaceShipPlaying [
 
 	^ (spaceshipStatuses at: currentTurn) spaceShip
 ]
 
-{ #category : #playing }
+{ #category : #private }
 MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 
 	^ spaceshipStatuses detect: [ :status | 

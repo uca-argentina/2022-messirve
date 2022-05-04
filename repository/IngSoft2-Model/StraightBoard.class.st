@@ -17,10 +17,10 @@ StraightBoard class >> assertValidPositions: numberOfPositions [
 { #category : #initialization }
 StraightBoard class >> withPositions: numberOfPositions [
 	self assertValidPositions: numberOfPositions.
-	^self new initializeWith: numberOfPositions
+	^self new initializeWithPositions: numberOfPositions
 ]
 
-{ #category : #processing }
+{ #category : #private }
 StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
 
 	| newPosition |
@@ -30,7 +30,7 @@ StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: di
 ]
 
 { #category : #initialization }
-StraightBoard >> initializeWith: numberOfPositions [
+StraightBoard >> initializeWithPositions: numberOfPositions [
 	startingPosition := 1.
 	positions := numberOfPositions 
 ]
@@ -40,7 +40,7 @@ StraightBoard >> positions [
 	^ positions
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 StraightBoard >> startingPosition [
 	^startingPosition
 ]

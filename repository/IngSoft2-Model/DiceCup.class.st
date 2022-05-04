@@ -19,15 +19,15 @@ DiceCup class >> assertValidQuantityOf: dice [
 { #category : #initialization }
 DiceCup class >> withAll: dice [
 	self assertValidQuantityOf: dice. 
-	^self new withAll: dice.
+	^self new initializeWithAll: dice.
+]
+
+{ #category : #initialization }
+DiceCup >> initializeWithAll: someDice [
+	dice := someDice .
 ]
 
 { #category : #action }
 DiceCup >> roll [
 	^dice sum: [ : die | die roll].
-]
-
-{ #category : #initialization }
-DiceCup >> withAll: someDice [
-	dice := someDice .
 ]
