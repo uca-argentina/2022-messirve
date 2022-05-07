@@ -5,116 +5,79 @@ Class {
 }
 
 { #category : #tests }
-GameplayTests >> test014TheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
+GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
-	| aSpaceGame aDiceCup aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 10.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
+	| aSpaceGame aBoard aDie |
+	aBoard := StraightBoard withPositions: 50.
+	aDie := RandomDie withSides: 5.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie.
+
+	aSpaceGame playGame.
+
+	self
+		should: [ aSpaceGame playGame ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'A game cannot be played after it has finished'
+		description:
+		'The Space Game has finished and cannot be played again'
+]
+
+{ #category : #tests }
+GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
+
+	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
 	aBoard := StraightBoard withPositions: 10.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi' }.
-	aSpaceGame playTurnOfSpaceship: 'Messi'.
+	aDie := RandomDie withSides: 5.
 
-	self assert: aSpaceGame isFinished
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie.
+
+	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+	aSpaceGame playNextTurn.
+	finalPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
+
+	self
+		deny: initialPositionOfSpaceship
+		equals: finalPositionOfSpaceship
 ]
 
 { #category : #tests }
-GameplayTests >> test015MessiRollsTenOnABoardOfSixPositionsAndEndsInPositionSix [
+GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
-	| aSpaceGame aDiceCup aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 10.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi' }.
-	aSpaceGame playTurnOfSpaceship: 'Messi'.
+	| aSpaceGame aBoard aDie |
+	aBoard := StraightBoard withPositions: 50.
+	aDie := RandomDie withSides: 5.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
-]
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie.
 
-{ #category : #tests }
-GameplayTests >> test016MessiReachesTheLastPositionAndIsTheWinner [
-
-	| aSpaceGame aDiceCup aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 10.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi' }.
-	aSpaceGame playTurnOfSpaceship: 'Messi'.
-
-	self assert: aSpaceGame winner equals: 'Messi'
-]
-
-{ #category : #tests }
-GameplayTests >> test017MessiAndDePaulPlayAGameAndTheGameFinishes [
-
-	| aSpaceGame aDiceCup aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 10.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi'. 'De Paul' }.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished
 ]
 
 { #category : #tests }
-GameplayTests >> test018TwoPlayersPlayTheGameAndMessiWins [
+GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
-	| aSpaceGame aDiceCup aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 3.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi'. 'De Paul' }.
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := StraightBoard withPositions: 150.
+	aDiceCup := DiceCup withAll: { RandomDie withSides: 5 . RandomDie withSides: 7 . RandomDie withSides: 9 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' . 'De Paul' . 'Montiel' . 'Julian' . 'Milton' . 'Armani' }
+		              on: aBoard
+		              rolling: aDiceCup.
+
 	aSpaceGame playGame.
-
-	self assert: aSpaceGame winner equals: 'Messi'
-]
-
-{ #category : #tests }
-GameplayTests >> test019IsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
-
-	| aSpaceGame aDiceCup aLoadedDie aBoard positionResult |
-	aLoadedDie := LoadedDie rolling: 3.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi'. 'De Paul' }.
-	aSpaceGame playGame.
-
-	positionResult := aSpaceGame spaceShipStatuses collect: [ :status | 
-		                  status position ].
-
-	self assert: positionResult equals: { 6. 4 }
-]
-
-{ #category : #tests }
-GameplayTests >> test020ThereIsNoWinnerWhenTheGameIsNotFinished [
-
-	| aSpaceGame aDiceCup aLoadedDie aBoard  |
-	aLoadedDie := LoadedDie rolling: 3.
-	aDiceCup := DiceCup initializeWithDice: { aLoadedDie }.
-	aBoard := StraightBoard withPositions: 6.
-	aSpaceGame := SpaceGame
-		              withBoard: aBoard
-		              diceCup: aDiceCup
-		              andSpaceShips: { 'Messi' }.
-	aSpaceGame playRound.
-
-	self assert: (aSpaceGame isFinished) equals: false.
+ 
+	self assert: aSpaceGame isFinished
 ]

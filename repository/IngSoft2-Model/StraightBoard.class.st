@@ -2,7 +2,8 @@ Class {
 	#name : #StraightBoard,
 	#superclass : #Object,
 	#instVars : [
-		'positions'
+		'positions',
+		'startingPosition'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,25 +17,30 @@ StraightBoard class >> assertValidPositions: numberOfPositions [
 { #category : #initialization }
 StraightBoard class >> withPositions: numberOfPositions [
 	self assertValidPositions: numberOfPositions.
-	^self new initializeWith: numberOfPositions
+	^self new initializeWithPositions: numberOfPositions
 ]
 
-{ #category : #initialization }
-StraightBoard >> initializeWith: numberOfPositions [
-	positions := numberOfPositions 
-]
-
-{ #category : #processing }
-StraightBoard >> obtainPositionStartingIn: spaceshipPosition afterRolling: diceRoll [
+{ #category : #private }
+StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
 
 	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
-	newPosition <= positions
-		ifTrue: [ ^ newPosition ]
-		ifFalse: [ ^ positions ]
+
+	^ newPosition min: positions
+]
+
+{ #category : #initialization }
+StraightBoard >> initializeWithPositions: numberOfPositions [
+	startingPosition := 1.
+	positions := numberOfPositions 
 ]
 
 { #category : #accessing }
 StraightBoard >> positions [
 	^ positions
+]
+
+{ #category : #accessing }
+StraightBoard >> startingPosition [
+	^startingPosition
 ]

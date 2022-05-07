@@ -7,19 +7,24 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
-DiceCup class >> initializeWithDice: aCollectionOfDice [
-	^self new initializeWithDice: aCollectionOfDice.
+{ #category : #asserting }
+DiceCup class >> assertValidQuantityOf: dice [
+
+	(dice isEmpty)
+	ifTrue: [ Error signal: 'A dice cup cannot be empty' ].
+
+
 ]
 
-{ #category : #accessing }
-DiceCup >> dice [
-	^ dice
+{ #category : #initialization }
+DiceCup class >> withAll: dice [
+	self assertValidQuantityOf: dice. 
+	^self new initializeWithAll: dice.
 ]
 
 { #category : #initialization }
-DiceCup >> initializeWithDice: aCollectionOfDice [
-	dice := aCollectionOfDice .
+DiceCup >> initializeWithAll: someDice [
+	dice := someDice .
 ]
 
 { #category : #action }
