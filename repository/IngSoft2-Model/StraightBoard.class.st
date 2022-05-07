@@ -11,7 +11,7 @@ Class {
 { #category : #validation }
 StraightBoard class >> assertValidPositions: numberOfPositions [
 	numberOfPositions < 2
-		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+		ifTrue: [ Error signal: 'A straight board cannot have less than two positions' ]
 ]
 
 { #category : #initialization }

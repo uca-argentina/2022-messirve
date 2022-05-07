@@ -5,17 +5,6 @@ Class {
 }
 
 { #category : #tests }
-ObjectCreationTests >> testABoardCannotBeCreatedWithLessThanTwoPositions [
-
-	self
-		should: [ StraightBoard withPositions: 0 ]
-		raise: Error
-		whoseDescriptionIncludes:
-		'A board cannot have less than two positions'
-		description: 'Board positions must be >1'
-]
-
-{ #category : #tests }
 ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 
 	self
@@ -23,6 +12,17 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 		raise: Error
 		whoseDescriptionIncludes: 'A die cannot have less than three sides'
 		description: 'Die sides must be >= 3'
+]
+
+{ #category : #tests }
+ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
+
+	self
+		should: [ RoundBoard withPositions: 0 ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'A round board cannot have less than two positions'
+		description: 'Board positions must be >1'
 ]
 
 { #category : #tests }
@@ -36,6 +36,17 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 		              rolling: ''.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
+]
+
+{ #category : #tests }
+ObjectCreationTests >> testAStraightBoardCannotBeCreatedWithLessThanTwoPositions [
+
+	self
+		should: [ StraightBoard withPositions: 0 ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'A straight board cannot have less than two positions'
+		description: 'Board positions must be >1'
 ]
 
 { #category : #tests }

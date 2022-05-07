@@ -7,7 +7,8 @@ Class {
 		'spaceshipStatuses',
 		'currentTurn',
 		'gameStatus',
-		'spaceShipSequence'
+		'spaceShipSequence',
+		'lapsToWin'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -27,11 +28,11 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 	
 ]
 
-{ #category : #initialization }
-MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup [
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup with: anAmountOfLaps [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
-	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup
+	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup with: anAmountOfLaps 
 ]
 
 { #category : #private }
@@ -44,17 +45,20 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 { #category : #private }
 MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
 
-	| currentSpaceShipStatus newPosition newStatus |
+	| currentSpaceShipStatus newPosition newStatus newLap |
 	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
 	newPosition := board
 		               finalPositionWhenStartingAt:
 		               currentSpaceShipStatus position
 		               afterRolling: diceCupRoll.
-	newStatus := SpaceShipStatus with: aSpaceShip placedAt: newPosition.
+	newLap := self newLapsOfCurrentSpaceshipAfterRolling: diceCupRoll.
+	newStatus := SpaceShipStatus
+		             with: aSpaceShip
+		             placedAt: newPosition
+		             on: newLap.
 	spaceshipStatuses replaceAll: currentSpaceShipStatus with: newStatus.
-
-	newPosition = board positions ifFalse: [ ^ self ].
-	gameStatus := MessirveSpaceGameFinishedStatus withWinner: aSpaceShip.
+	self winnerExists ifFalse: [ ^ self ].
+	gameStatus := MessirveSpaceGameFinishedStatus withWinner: aSpaceShip
 ]
 
 { #category : #private }
@@ -72,7 +76,7 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 	initialPosition := board startingPosition.
 	
 	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ :aSpaceShip | 
-		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition ] 
+		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition on: 0] 
 ]
 
 { #category : #initialization }
@@ -86,15 +90,49 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips: spaceShipsNames.
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup with: anAmountOfLaps [
+
+	board := aBoard.
+	diceCup := aDiceCup.
+	lapsToWin := anAmountOfLaps.
+	currentTurn := 1.
+	self assignSpaceshipStatusesFrom: spaceShipsNames.
+	gameStatus := MessirveSpaceGameInProgressStatus new. 
+	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips: spaceShipsNames.
+]
+
 { #category : #testing }
 MessirveSpaceRaceGame >> isFinished [
 	^gameStatus isFinished .
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
+
+	^ (self obtainSpaceShipStatusFrom: aSpaceShip) lap
 ]
 
 { #category : #private }
 MessirveSpaceRaceGame >> nameOfSpaceShipPlaying [
 
 	^ (spaceshipStatuses at: currentTurn) spaceShip
+]
+
+{ #category : #'instance creation' }
+MessirveSpaceRaceGame >> newLapsOfCurrentSpaceshipAfterRolling: diceCupRoll [
+
+	| newLaps currentLaps lapsToAdd positionOfSpaceship |
+	
+	currentLaps := self lapsOfSpaceship:  (self nameOfSpaceShipPlaying ).
+		
+	positionOfSpaceship:= self positionOfSpaceship:
+			             ((spaceshipStatuses at: currentTurn) spaceShip).
+			
+	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board positions.
+
+	newLaps := currentLaps + lapsToAdd.
+	^newLaps := newLaps min: lapsToWin
 ]
 
 { #category : #private }
@@ -134,4 +172,10 @@ MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 MessirveSpaceRaceGame >> winner [
 	^gameStatus winner.
 	
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> winnerExists [
+
+	^ spaceshipStatuses anySatisfy: [ :status | status lap = lapsToWin ]
 ]
