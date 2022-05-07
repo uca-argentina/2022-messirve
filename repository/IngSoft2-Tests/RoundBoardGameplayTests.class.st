@@ -14,7 +14,8 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionA
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
+		              rolling: aDie
+		              withLapsToWin: 3.
 
 	aSpaceGame playNextTurn.
 
@@ -24,16 +25,16 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionA
 { #category : #tests }
 RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAndReturnsToPositionOne [
 
-	| aSpaceGame aBoard aDie lapsToWin |
-	lapsToWin := 3.
+	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard withPositions: 10.
 	aDie := LoadedDie rolling: 10.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
-		              
+		              rolling: aDie
+		              withLapsToWin: 3.
+
 
 	aSpaceGame playNextTurn.
 
@@ -50,7 +51,8 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionT
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
+		              rolling: aDie
+		              withLapsToWin: 20.
 
 	aSpaceGame playNextTurn.
 
@@ -60,16 +62,15 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionT
 { #category : #tests }
 RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionThreeTimesAndWins [
 
-	| aSpaceGame aBoard aDie lapsToWin |
+	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard withPositions: 10.
 	aDie := LoadedDie rolling: 30.
-	lapsToWin := 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              with: lapsToWin.
+		              withLapsToWin: 3. 
 
 	aSpaceGame playGame.
 

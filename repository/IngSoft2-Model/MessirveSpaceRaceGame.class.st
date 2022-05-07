@@ -29,10 +29,10 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 ]
 
 { #category : #'as yet unclassified' }
-MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup with: anAmountOfLaps [
+MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
-	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup with: anAmountOfLaps 
+	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps 
 ]
 
 { #category : #private }
@@ -43,22 +43,20 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> applyMovementTo: aSpaceShip afterRolling: diceCupRoll [
+MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
-	| currentSpaceShipStatus newPosition newStatus newLap |
-	currentSpaceShipStatus := self obtainSpaceShipStatusFrom: aSpaceShip.
-	newPosition := board
-		               finalPositionWhenStartingAt:
-		               currentSpaceShipStatus position
-		               afterRolling: diceCupRoll.
-	newLap := self newLapsOfCurrentSpaceshipAfterRolling: diceCupRoll.
+	| newPosition newStatus newLap |
+	newPosition := self calculateNewPositionAfter: diceCupRoll.
+	newLap := self calculateNewLapOfCurrentSpaceshipAfterRolling:
+		          diceCupRoll.
 	newStatus := SpaceShipStatus
-		             with: aSpaceShip
+		             with: self nameOfSpaceShipPlaying
 		             placedAt: newPosition
 		             on: newLap.
-	spaceshipStatuses replaceAll: currentSpaceShipStatus with: newStatus.
-	self winnerExists ifFalse: [ ^ self ].
-	gameStatus := MessirveSpaceGameFinishedStatus withWinner: aSpaceShip
+	spaceshipStatuses
+		replaceAll: self currentSpaceShipStatus
+		with: newStatus.
+	self verifyWinner
 ]
 
 { #category : #private }
@@ -79,19 +77,44 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition on: 0] 
 ]
 
-{ #category : #initialization }
-MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup [
+{ #category : #'instance creation' }
+MessirveSpaceRaceGame >> calculateNewLapOfCurrentSpaceshipAfterRolling: diceCupRoll [
 
-	board := aBoard.
-	diceCup := aDiceCup.
-	currentTurn := 1.
-	self assignSpaceshipStatusesFrom: spaceShipsNames.
-	gameStatus := MessirveSpaceGameInProgressStatus new. 
-	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips: spaceShipsNames.
+	| newLaps currentLaps lapsToAdd positionOfSpaceship |
+	
+	currentLaps := self lapsOfSpaceship:  (self nameOfSpaceShipPlaying ).
+		
+	positionOfSpaceship:= self positionOfSpaceship:
+			             ((spaceshipStatuses at: currentTurn) spaceShip).
+			
+	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board positions.
+
+	newLaps := currentLaps + lapsToAdd.
+	^newLaps := newLaps min: lapsToWin
 ]
 
-{ #category : #'as yet unclassified' }
-MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup with: anAmountOfLaps [
+{ #category : #private }
+MessirveSpaceRaceGame >> calculateNewPositionAfter: diceCupRoll [
+
+	| newPosition |
+	newPosition := board
+		               finalPositionWhenStartingAt:
+		               self currentSpaceShipStatus position
+		               afterRolling: diceCupRoll.
+	^ newPosition
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> currentSpaceShipStatus [
+
+	| currentSpaceShipStatus |
+	currentSpaceShipStatus := self obtainSpaceShipStatusFrom:
+		                          self nameOfSpaceShipPlaying.
+	^ currentSpaceShipStatus
+]
+
+{ #category : #initialization }
+MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	board := aBoard.
 	diceCup := aDiceCup.
@@ -107,7 +130,7 @@ MessirveSpaceRaceGame >> isFinished [
 	^gameStatus isFinished .
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) lap
@@ -117,22 +140,6 @@ MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
 MessirveSpaceRaceGame >> nameOfSpaceShipPlaying [
 
 	^ (spaceshipStatuses at: currentTurn) spaceShip
-]
-
-{ #category : #'instance creation' }
-MessirveSpaceRaceGame >> newLapsOfCurrentSpaceshipAfterRolling: diceCupRoll [
-
-	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-	
-	currentLaps := self lapsOfSpaceship:  (self nameOfSpaceShipPlaying ).
-		
-	positionOfSpaceship:= self positionOfSpaceship:
-			             ((spaceshipStatuses at: currentTurn) spaceShip).
-			
-	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board positions.
-
-	newLaps := currentLaps + lapsToAdd.
-	^newLaps := newLaps min: lapsToWin
 ]
 
 { #category : #private }
@@ -157,8 +164,7 @@ MessirveSpaceRaceGame >> playNextTurn [
 
 	diceCupRoll := diceCup roll.
 	self
-		applyMovementTo: self nameOfSpaceShipPlaying
-		afterRolling: diceCupRoll.
+		applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
 	self advanceToNextTurn
 ]
 
@@ -166,6 +172,14 @@ MessirveSpaceRaceGame >> playNextTurn [
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) position
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> verifyWinner [
+
+	self winnerExists ifFalse: [ ^ self ].
+	gameStatus := MessirveSpaceGameFinishedStatus withWinner:
+		              self nameOfSpaceShipPlaying
 ]
 
 { #category : #accessing }

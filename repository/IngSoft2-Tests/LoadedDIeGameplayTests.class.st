@@ -13,14 +13,14 @@ LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self
 		should: [ aSpaceGame winner ]
 		raise: Error
-		whoseDescriptionIncludes:
-		'There is no winner'
+		whoseDescriptionIncludes: 'There is no winner'
 		description: 'Nonexistent winner, game in progress'
 ]
 
@@ -33,7 +33,8 @@ LoadedDIeGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame winner equals: 'Messi'
@@ -48,7 +49,8 @@ LoadedDIeGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playGame.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6.
@@ -64,7 +66,8 @@ LoadedDIeGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame isFinished
@@ -79,7 +82,8 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished.
@@ -99,7 +103,8 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinis
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aDiceCup.
+		              rolling: aDiceCup
+		              withLapsToWin: 1.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished
@@ -114,7 +119,8 @@ LoadedDIeGameplayTests >> testWhenASpaceShipRollsOverTheBoardPositionsItLandsOnT
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 10

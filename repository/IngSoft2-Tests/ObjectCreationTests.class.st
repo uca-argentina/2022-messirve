@@ -33,7 +33,8 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: ''.
+		              rolling: ''
+		              withLapsToWin: 1.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
 ]
@@ -61,7 +62,8 @@ ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 			aSpaceGame := MessirveSpaceRaceGame
 				              playedBy: { 'Messi'. 'Messi' }
 				              on: aBoard
-				              rolling: aDiceCup ]
+				              rolling: aDiceCup
+				              withLapsToWin: 1 ]
 		raise: Error
 		whoseDescriptionIncludes: 'Player name duplicated'
 		description:

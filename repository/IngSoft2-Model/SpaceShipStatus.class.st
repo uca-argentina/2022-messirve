@@ -21,7 +21,7 @@ SpaceShipStatus >> initializeWith: aSpaceShipName placedAt: aPosition on: aLap [
 	lap := aLap.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 SpaceShipStatus >> lap [
 	^lap
 ]
