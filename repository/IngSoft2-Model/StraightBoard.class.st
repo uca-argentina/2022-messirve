@@ -32,11 +32,11 @@ StraightBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: di
 { #category : #initialization }
 StraightBoard >> initializeWithPositions: numberOfPositions [
 	startingPosition := 1.
-	positions := numberOfPositions 
+	positions := numberOfPositions
 ]
 
 { #category : #accessing }
-StraightBoard >> positions [
+StraightBoard >> lastPosition [
 	^ positions
 ]
 

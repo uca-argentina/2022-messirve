@@ -14,7 +14,7 @@ LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 1.
+		              withLapsToWin: 2.
 	aSpaceGame playNextTurn.
 
 	self
@@ -50,7 +50,7 @@ LoadedDIeGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 1.
+		              withLapsToWin: 2.
 	aSpaceGame playGame.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6.

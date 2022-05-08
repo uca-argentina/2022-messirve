@@ -74,7 +74,7 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 	initialPosition := board startingPosition.
 	
 	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ :aSpaceShip | 
-		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition on: 0] 
+		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition on: 1] 
 ]
 
 { #category : #'instance creation' }
@@ -87,7 +87,7 @@ MessirveSpaceRaceGame >> calculateNewLapOfCurrentSpaceshipAfterRolling: diceCupR
 	positionOfSpaceship:= self positionOfSpaceship:
 			             ((spaceshipStatuses at: currentTurn) spaceShip).
 			
-	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board positions.
+	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board lastPosition.
 
 	newLaps := currentLaps + lapsToAdd.
 	^newLaps := newLaps min: lapsToWin
