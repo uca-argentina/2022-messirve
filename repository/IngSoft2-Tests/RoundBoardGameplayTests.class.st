@@ -5,6 +5,79 @@ Class {
 }
 
 { #category : #tests }
+RoundBoardGameplayTests >> testASpaceShipCannotAdvancePositionWithoutRollingDice [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := LoadedDie rolling: 1.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	self
+		should: [ aSpaceGame advanceCurrentSpaceShipTo: 5 and: 10 ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'Movement cannot be applied before the roll'
+		description:
+		'A SpaceShip needs to roll the die before moving position'
+]
+
+{ #category : #tests }
+RoundBoardGameplayTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvances4Spaces [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          SpeedUpEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := LoadedDie rolling: 1.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+	self deny: aSpaceGame isFinished.
+]
+
+{ #category : #tests }
+RoundBoardGameplayTests >> testASpaceShipLandsOnAWormHolePositionAndAdvances4Spaces [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          WormHoleEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := LoadedDie rolling: 1.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 3.
+	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1.
+	self deny: aSpaceGame isFinished.
+]
+
+{ #category : #tests }
 RoundBoardGameplayTests >> testASpaceShipRolls14AndEndsUpOnPosition5OfLap2AndGameIsNotFinished [
 
 	| aSpaceGame aBoard aDie |
@@ -36,34 +109,6 @@ RoundBoardGameplayTests >> testASpaceShipRolls14AndEndsUpOnPosition5OfLap2AndGam
 ]
 
 { #category : #tests }
-RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAndIsInLapTwo [
-
-	| aSpaceGame aBoard aDie |
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
-	aDie := LoadedDie rolling: 10.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDie
-		              withLapsToWin: 3.
-
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2
-]
-
-{ #category : #tests }
 RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAndReturnsToPositionOne [
 
 	| aSpaceGame aBoard aDie |
@@ -89,7 +134,8 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionA
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2
 ]
 
 { #category : #tests }
@@ -149,19 +195,31 @@ RoundBoardGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionT
 ]
 
 { #category : #tests }
-RoundBoardGameplayTests >> testASpaceShipRollsADieAndLandsOnANonEffectPositionAndItsPositionDoesntChange [
+RoundBoardGameplayTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBackNPositions [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := LoadedRoundBoard withPositions: {NonEffectPosition new . NonEffectPosition new . NonEffectPosition new . NonEffectPosition new . NonEffectPosition new}.
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          (MoonWalkEffectPosition withN: 3).
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
 	aDie := LoadedDie rolling: 1.
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
+		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 2. 
+		              withLapsToWin: 5.
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2
+	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
+	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 4.
+	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
+	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
 ]

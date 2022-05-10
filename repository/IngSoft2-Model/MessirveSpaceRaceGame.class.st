@@ -36,26 +36,75 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> advanceToNextTurn [
+MessirveSpaceRaceGame >> advanceCurrentSpaceShipTo: newPosition and: newLap [
 
-	currentTurn := spaceShipSequence nextSequenceTurnNumber.
-
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
-
-	| newPosition newStatus newLap |
-	newPosition := self calculateNewPositionAfter: diceCupRoll.
-	newLap := self calculateNewLapOfCurrentSpaceshipAfterRolling:
-		          diceCupRoll.
+	| newStatus |
+	self assertMovementCanBeApplied.
 	newStatus := SpaceShipStatus
 		             with: self nameOfSpaceShipPlaying
 		             placedAt: newPosition
 		             on: newLap.
 	spaceshipStatuses
 		replaceAll: self currentSpaceShipStatus
-		with: newStatus.
+		with: newStatus
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> advanceToNextTurn [
+
+	currentTurn := spaceShipSequence nextSequenceTurnNumber.
+	self isFinished ifFalse: [ 
+		gameStatus := MessirveSpaceGameStartOfTurnStatus new ]
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> applyBoostOf: aBoost [
+
+	self assertMovementCanBeApplied.
+	self
+		advanceCurrentSpaceShipTo: (self calculateNewPositionOfCurrentSpaceShipAfter: aBoost)
+		and: (self calculateNewLapOfCurrentSpaceShipAfter: aBoost)
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> applyMoonWalkEffectWith: anN [
+
+	| currentSpaceShipPosition currentSpaceShipLap |
+	currentSpaceShipPosition := self positionOfSpaceship:
+		                            self nameOfSpaceShipPlaying.
+	currentSpaceShipLap := self lapsOfSpaceship:
+		                       self nameOfSpaceShipPlaying.
+
+
+	spaceshipStatuses := spaceshipStatuses collect: [ :status | 
+		                     SpaceShipStatus
+			                     with: status spaceShip
+			                     placedAt:
+			                     (board
+				                      finalPositionWhenStartingAt: status position
+				                      afterRolling: anN)
+			                     on: status lap ].
+
+	self
+		advanceCurrentSpaceShipTo: currentSpaceShipPosition
+		and: currentSpaceShipLap
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
+
+	| newPositionBeforeEffect newLapBeforeEffect effecLanded |
+	self assertMovementCanBeApplied.
+	newPositionBeforeEffect := self 
+		                           calculateNewPositionOfCurrentSpaceShipAfter:
+		                           diceCupRoll.
+	newLapBeforeEffect := self calculateNewLapOfCurrentSpaceShipAfter:
+		                      diceCupRoll.
+	self
+		advanceCurrentSpaceShipTo: newPositionBeforeEffect
+		and: newLapBeforeEffect.
+	effecLanded := board effectAppliedOnPosition: newPositionBeforeEffect.
+	effecLanded applyEffectOn: self.
 	self verifyWinner
 ]
 
@@ -64,6 +113,13 @@ MessirveSpaceRaceGame >> assertGameIsNotFinished [
 
 	self isFinished ifTrue: [ 
 		Error signal: 'A game cannot be played after it has finished' ]
+]
+
+{ #category : #asserting }
+MessirveSpaceRaceGame >> assertMovementCanBeApplied [
+
+	gameStatus canApplyMovement ifFalse: [ 
+		Error signal: 'Movement cannot be applied before the roll' ]
 ]
 
 { #category : #initialization }
@@ -77,26 +133,33 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 		                     SpaceShipStatus with: aSpaceShip placedAt: initialPosition on: 1] 
 ]
 
-{ #category : #'instance creation' }
-MessirveSpaceRaceGame >> calculateNewLapOfCurrentSpaceshipAfterRolling: diceCupRoll [
+{ #category : #private }
+MessirveSpaceRaceGame >> calculateNewLapOfCurrentSpaceShipAfter: diceCupRoll [
 
 	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-	
-	currentLaps := self lapsOfSpaceship:  (self nameOfSpaceShipPlaying ).
-		
-	positionOfSpaceship:= self positionOfSpaceship:
-			             ((spaceshipStatuses at: currentTurn) spaceShip).
-			
-	lapsToAdd := (positionOfSpaceship + diceCupRoll) // board lastPosition.
+	self assertMovementCanBeApplied.
+	currentLaps := self lapsOfSpaceship: self nameOfSpaceShipPlaying.
+
+	positionOfSpaceship := self positionOfSpaceship:
+		                       (spaceshipStatuses at: currentTurn) spaceShip.
+
+	lapsToAdd := positionOfSpaceship + diceCupRoll // board lastPosition.
 
 	newLaps := currentLaps + lapsToAdd.
-	^newLaps := newLaps min: lapsToWin
+
+	newLaps > lapsToWin
+		ifTrue: [ ^ lapsToWin ]
+		ifFalse: [ 
+			newLaps < 1
+				ifTrue: [ ^ 1 ]
+				ifFalse: [ ^ newLaps ] ]
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> calculateNewPositionAfter: diceCupRoll [
+MessirveSpaceRaceGame >> calculateNewPositionOfCurrentSpaceShipAfter: diceCupRoll [
 
 	| newPosition |
+	self assertMovementCanBeApplied.
 	newPosition := board
 		               finalPositionWhenStartingAt:
 		               self currentSpaceShipStatus position
@@ -121,8 +184,9 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	lapsToWin := anAmountOfLaps.
 	currentTurn := 1.
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
-	gameStatus := MessirveSpaceGameInProgressStatus new. 
-	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips: spaceShipsNames.
+	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
+	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips:
+		                     spaceShipsNames
 ]
 
 { #category : #testing }
@@ -163,8 +227,8 @@ MessirveSpaceRaceGame >> playNextTurn [
 	self assertGameIsNotFinished.
 
 	diceCupRoll := diceCup roll.
-	self
-		applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
+	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
+	self applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
 	self advanceToNextTurn
 ]
 

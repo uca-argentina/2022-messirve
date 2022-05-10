@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-NonEffectPosition >> applyEffect [
-	^0
+{ #category : #applying }
+NonEffectPosition >> applyEffectOn: aGame [ 
+	aGame applyBoostOf: 0.
 ]

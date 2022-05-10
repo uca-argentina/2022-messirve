@@ -22,14 +22,20 @@ LoadedRoundBoard class >> withPositions: boardPositions [
 ]
 
 { #category : #accessing }
+LoadedRoundBoard >> effectAppliedOnPosition: aPosition [
+	^boardEffects at: aPosition.
+]
+
+{ #category : #accessing }
 LoadedRoundBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
 
-	| newPosition  |
+	| newPosition |
 	newPosition := spaceshipPosition + diceRoll.
-	newPosition > lastPosition
-		ifTrue: [ ^newPosition % lastPosition  ]
-		ifFalse: [ ^newPosition ]
+	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
+	newPosition < 0 ifTrue: [ ^ newPosition % lastPosition ].
+
+	^ newPosition
 ]
 
 { #category : #initialization }
