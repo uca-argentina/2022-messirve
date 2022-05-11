@@ -8,8 +8,12 @@ Class {
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := StraightBoard withPositions: 50.
-	aDie := RandomDie withSides: 5.
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -32,8 +36,12 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 
 	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := StraightBoard withPositions: 10.
-	aDie := RandomDie withSides: 5.
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -54,8 +62,12 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := StraightBoard withPositions: 50.
-	aDie := RandomDie withSides: 5.
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -72,11 +84,23 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := StraightBoard withPositions: 150.
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NonEffectPosition new }.
 	aDiceCup := DiceCup withAll: { 
+			            (RandomDie withSides: 3).
 			            (RandomDie withSides: 5).
-			            (RandomDie withSides: 7).
-			            (RandomDie withSides: 9) }.
+			            (RandomDie withSides: 7) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy:

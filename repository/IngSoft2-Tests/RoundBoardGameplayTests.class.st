@@ -223,3 +223,55 @@ RoundBoardGameplayTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShip
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
 	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
 ]
+
+{ #category : #tests }
+RoundBoardGameplayTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBackToPositionOne [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := LoadedRoundBoard withPositions: { 
+			          NonEffectPosition new.
+			          NonEffectPosition new.
+			          NukeEffectPosition new.
+			          NonEffectPosition new }.
+	aDie := LoadedDie rolling: 1.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	
+	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 2.
+	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 2.
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
+	
+	aSpaceGame playNextTurn.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 1.
+	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 1.
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+
+]
+
+{ #category : #tests }
+RoundBoardGameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFinishes [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RandomRoundBoard with: 100.
+	aDie := RandomDie withSides: 6.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playGame .
+	
+	self assert: aSpaceGame isFinished.
+
+]
