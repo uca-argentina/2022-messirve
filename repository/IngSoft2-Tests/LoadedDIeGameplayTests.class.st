@@ -1,85 +1,127 @@
 Class {
-	#name : #LoadedDIeGameplayTests,
+	#name : #LoadedDieGameplayTests,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
+LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := StraightBoard withPositions: 6.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
 	aSpaceGame playNextTurn.
 
 	self
 		should: [ aSpaceGame winner ]
 		raise: Error
-		whoseDescriptionIncludes:
-		'There is no winner'
+		whoseDescriptionIncludes: 'There is no winner'
 		description: 'Nonexistent winner, game in progress'
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
+LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
-	aBoard := StraightBoard withPositions: 6.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame winner equals: 'Messi'
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
+LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := StraightBoard withPositions: 6.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
 	aSpaceGame playGame.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6.
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
 	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
+LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
-	aBoard := StraightBoard withPositions: 10.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame isFinished
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
+LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := StraightBoard withPositions: 6.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aLoadedDie.
+		              rolling: aLoadedDie
+		              withLapsToWin: 1.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished.
@@ -87,7 +129,7 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinishes [
+LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aLoadedDie1 aLoadedDie2 aDiceCup |
 	aLoadedDie1 := LoadedDie rolling: 3.
@@ -95,27 +137,21 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinis
 	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie1.
 			            aLoadedDie2 }.
-	aBoard := StraightBoard withPositions: 35.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
-		              rolling: aDiceCup.
+		              rolling: aDiceCup
+		              withLapsToWin: 1.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished
-]
-
-{ #category : #tests }
-LoadedDIeGameplayTests >> testWhenASpaceShipRollsOverTheBoardPositionsItLandsOnTheLastBoardPosition [
-
-	| aSpaceGame aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: 25.
-	aBoard := StraightBoard withPositions: 10.
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aLoadedDie.
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 10
 ]

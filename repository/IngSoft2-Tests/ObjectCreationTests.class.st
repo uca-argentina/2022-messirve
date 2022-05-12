@@ -5,17 +5,6 @@ Class {
 }
 
 { #category : #tests }
-ObjectCreationTests >> testABoardCannotBeCreatedWithLessThanTwoPositions [
-
-	self
-		should: [ StraightBoard withPositions: 0 ]
-		raise: Error
-		whoseDescriptionIncludes:
-		'A board cannot have less than two positions'
-		description: 'Board positions must be >1'
-]
-
-{ #category : #tests }
 ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 
 	self
@@ -26,14 +15,26 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 ]
 
 { #category : #tests }
+ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
+
+	self
+		should: [ RoundBoard withPositions: {  } and: 100 ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'A board cannot have less than two positions'
+		description: 'Board positions must be >1'
+]
+
+{ #category : #tests }
 ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 
 	| aSpaceGame aBoard |
-	aBoard := StraightBoard withPositions: 10.
+	aBoard := RoundBoard with: 100 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: ''.
+		              rolling: ''
+		              withLapsToWin: 1.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
 ]
@@ -42,7 +43,7 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := StraightBoard withPositions: 10.
+	aBoard := RoundBoard with: 100 and: 100.
 	aDiceCup := DiceCup withAll: { '' }.
 
 	self
@@ -50,7 +51,8 @@ ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 			aSpaceGame := MessirveSpaceRaceGame
 				              playedBy: { 'Messi'. 'Messi' }
 				              on: aBoard
-				              rolling: aDiceCup ]
+				              rolling: aDiceCup
+				              withLapsToWin: 1 ]
 		raise: Error
 		whoseDescriptionIncludes: 'Player name duplicated'
 		description:

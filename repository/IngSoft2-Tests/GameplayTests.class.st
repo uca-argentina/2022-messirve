@@ -8,13 +8,20 @@ Class {
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := StraightBoard withPositions: 50.
-	aDie := RandomDie withSides: 5.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
+		              rolling: aDie
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
 
@@ -31,13 +38,20 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 
 	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := StraightBoard withPositions: 10.
-	aDie := RandomDie withSides: 5.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
+		              rolling: aDie
+		              withLapsToWin: 1.
 
 	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
 	aSpaceGame playNextTurn.
@@ -52,13 +66,20 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := StraightBoard withPositions: 50.
-	aDie := RandomDie withSides: 5.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
-		              rolling: aDie.
+		              rolling: aDie
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
 
@@ -69,15 +90,35 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := StraightBoard withPositions: 150.
-	aDiceCup := DiceCup withAll: { RandomDie withSides: 5 . RandomDie withSides: 7 . RandomDie withSides: 9 }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDiceCup := DiceCup withAll: { 
+			            (RandomDie withSides: 3).
+			            (RandomDie withSides: 5).
+			            (RandomDie withSides: 7) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' . 'De Paul' . 'Montiel' . 'Julian' . 'Milton' . 'Armani' }
+		              playedBy:
+		              { 'Messi'. 'De Paul'. 'Montiel'. 'Julian'. 'Milton'.
+		              'Armani' }
 		              on: aBoard
-		              rolling: aDiceCup.
+		              rolling: aDiceCup
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
- 
+
 	self assert: aSpaceGame isFinished
 ]
