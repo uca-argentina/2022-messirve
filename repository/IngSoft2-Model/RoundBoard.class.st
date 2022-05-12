@@ -13,7 +13,7 @@ Class {
 { #category : #asserting }
 RoundBoard class >> assertValidPositions: boardPositions [ 
 		boardPositions size < 2
-		ifTrue: [ Error signal: 'A round board cannot have less than two positions' ]
+		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
 ]
 
 { #category : #'instance creation' }

@@ -21,7 +21,7 @@ ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 		should: [ RoundBoard withPositions: {  } and: 100 ]
 		raise: Error
 		whoseDescriptionIncludes:
-		'A round board cannot have less than two positions'
+		'A board cannot have less than two positions'
 		description: 'Board positions must be >1'
 ]
 
@@ -29,7 +29,7 @@ ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 
 	| aSpaceGame aBoard |
-	aBoard := StraightBoard withPositions: 10.
+	aBoard := RoundBoard with: 100 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -40,21 +40,10 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 ]
 
 { #category : #tests }
-ObjectCreationTests >> testAStraightBoardCannotBeCreatedWithLessThanTwoPositions [
-
-	self
-		should: [ StraightBoard withPositions: 0 ]
-		raise: Error
-		whoseDescriptionIncludes:
-		'A straight board cannot have less than two positions'
-		description: 'Board positions must be >1'
-]
-
-{ #category : #tests }
 ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := StraightBoard withPositions: 10.
+	aBoard := RoundBoard with: 100 and: 100.
 	aDiceCup := DiceCup withAll: { '' }.
 
 	self
