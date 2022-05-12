@@ -18,7 +18,7 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
-		should: [ LoadedRoundBoard withPositions: {  } ]
+		should: [ RoundBoard withPositions: {  } and: 100 ]
 		raise: Error
 		whoseDescriptionIncludes:
 		'A round board cannot have less than two positions'

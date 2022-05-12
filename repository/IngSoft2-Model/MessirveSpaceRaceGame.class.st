@@ -223,6 +223,11 @@ MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 		  status spaceShip == aSpaceShip ]
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> parsecsPerPosition [
+	^board parsecsPerPosition.
+]
+
 { #category : #playing }
 MessirveSpaceRaceGame >> playGame [
 

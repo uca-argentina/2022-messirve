@@ -1,20 +1,22 @@
 Class {
-	#name : #LoadedDIeGameplayTests,
+	#name : #LoadedDieGameplayTests,
 	#superclass : #TestCase,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
+LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -30,16 +32,18 @@ LoadedDIeGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
+LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -51,17 +55,19 @@ LoadedDIeGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
+LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
@@ -74,17 +80,19 @@ LoadedDIeGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
+LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 10.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -96,17 +104,19 @@ LoadedDIeGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
+LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: 3.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
@@ -119,7 +129,7 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneWins [
 ]
 
 { #category : #tests }
-LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinishes [
+LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aLoadedDie1 aLoadedDie2 aDiceCup |
 	aLoadedDie1 := LoadedDie rolling: 3.
@@ -127,13 +137,15 @@ LoadedDIeGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinis
 	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie1.
 			            aLoadedDie2 }.
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard

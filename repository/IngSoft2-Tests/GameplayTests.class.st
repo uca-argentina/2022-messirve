@@ -8,11 +8,13 @@ Class {
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -36,11 +38,13 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 
 	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -62,11 +66,13 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -84,19 +90,21 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := LoadedRoundBoard withPositions: { 
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new.
-			          NonEffectPosition new }.
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
 	aDiceCup := DiceCup withAll: { 
 			            (RandomDie withSides: 3).
 			            (RandomDie withSides: 5).
