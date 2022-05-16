@@ -22,7 +22,7 @@ RoundBoardGameplayTests >> testASpaceShipCannotAdvancePositionWithoutRollingDice
 		              withLapsToWin: 5.
 
 	self
-		should: [ aSpaceGame advanceCurrentSpaceShipTo: 5 and: 10 ]
+		should: [ aSpaceGame advanceCurrentSpaceShipTo: (SpaceShipDistance with: 10 and: 2 on: aBoard)]
 		raise: Error
 		whoseDescriptionIncludes:
 		'Movement cannot be applied before the roll'
@@ -59,7 +59,7 @@ RoundBoardGameplayTests >> testASpaceShipRolls14AndEndsUpOnPosition5OfLap2AndGam
 	aSpaceGame playNextTurn.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2.
+	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2. 
 	self deny: aSpaceGame isFinished
 ]
 

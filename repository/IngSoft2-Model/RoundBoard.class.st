@@ -67,10 +67,10 @@ RoundBoard >> effectAppliedOnPosition: aPosition [
 ]
 
 { #category : #accessing }
-RoundBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
+RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceRoll [
 
 	| newPosition |
-	newPosition := spaceshipPosition + diceRoll.
+	newPosition := spaceShipPosition + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
 	newPosition < 0 ifTrue: [ ^ newPosition % lastPosition ].
@@ -81,7 +81,7 @@ RoundBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceR
 { #category : #initialization }
 RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 	
-	startingPosition := 1.
+	startingPosition := 1 .
 	boardEffects := boardPositions asOrderedCollection .
 	lastPosition := boardPositions size.
 	parsecs := anAmountOfParsecs. 
@@ -93,7 +93,7 @@ RoundBoard >> lastPosition [
 	^ lastPosition
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 RoundBoard >> parsecsPerPosition [
 	^parsecs / lastPosition.
 ]

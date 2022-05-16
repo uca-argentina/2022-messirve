@@ -69,14 +69,14 @@ LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 				          NonEffectPosition new }
 		          and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'De Paul' }
+		              playedBy: { 'Messi'. 'De Paul'}
 		              on: aBoard
 		              rolling: aLoadedDie
 		              withLapsToWin: 2.
 	aSpaceGame playGame.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4
+	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
 ]
 
 { #category : #tests }
