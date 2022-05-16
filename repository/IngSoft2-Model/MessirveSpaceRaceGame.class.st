@@ -8,7 +8,8 @@ Class {
 		'currentTurn',
 		'gameStatus',
 		'spaceShipSequence',
-		'lapsToWin'
+		'lapsToWin',
+		'ranking'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -177,6 +178,11 @@ MessirveSpaceRaceGame >> calculateNewPositionOfCurrentSpaceShipAfter: aMovement 
 	^ newPosition
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> calculateNewRanking [
+	ranking := spaceshipStatuses sort: [:a :b | (a distanceTraveledOnABoardWith: (board lastPosition)) > (b distanceTraveledOnABoardWith: (board lastPosition)) ] .
+]
+
 { #category : #private }
 MessirveSpaceRaceGame >> currentSpaceShipStatus [
 
@@ -196,7 +202,8 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
 	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips:
-		                     spaceShipsNames
+		                     spaceShipsNames.
+	ranking := spaceshipStatuses.
 ]
 
 { #category : #testing }
@@ -244,6 +251,7 @@ MessirveSpaceRaceGame >> playNextTurn [
 	diceCupRoll := diceCup roll.
 	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
 	self applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
+	self calculateNewRanking.
 	self advanceToNextTurn
 ]
 
@@ -251,6 +259,11 @@ MessirveSpaceRaceGame >> playNextTurn [
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) position
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> ranking [
+	^ranking.
 ]
 
 { #category : #private }

@@ -14,6 +14,11 @@ SpaceShipStatus class >> with: aSpaceShip placedAt: aPosition on: aLap [
 	^self new initializeWith: aSpaceShip placedAt: aPosition on: aLap.
 ]
 
+{ #category : #'as yet unclassified' }
+SpaceShipStatus >> distanceTraveledOnABoardWith: boardPositions [ 
+	^lap * boardPositions + position
+]
+
 { #category : #accessing }
 SpaceShipStatus >> initializeWith: aSpaceShipName placedAt: aPosition on: aLap [
 	spaceShip := aSpaceShipName .
