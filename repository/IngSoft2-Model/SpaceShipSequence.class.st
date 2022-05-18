@@ -8,7 +8,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialize }
+{ #category : #initialization }
 SpaceShipSequence class >> formedByAmountOfSpaceShips: spaceShips [
 
 	^ self new initializeFormedByAmountOfSpaceShips: spaceShips

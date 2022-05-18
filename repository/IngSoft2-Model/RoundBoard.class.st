@@ -10,17 +10,17 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
+{ #category : #verification }
 RoundBoard class >> assertValidPositions: boardPositions [ 
 		boardPositions size < 2
 		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
 ]
 
 { #category : #'instance creation' }
-RoundBoard class >> assignDistributedBoardPositionsFrom: numberOfPositions [
+RoundBoard class >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 
 	| numberOfExtraPositions defaultBoardPositions |
-	defaultBoardPositions := self shuffleProbabilisticBoard.
+	defaultBoardPositions := self createRandomBoardOf100Positions.
 
 	numberOfExtraPositions := numberOfPositions - 100.
 	1 to: numberOfExtraPositions do: [ :position | 
@@ -30,7 +30,7 @@ RoundBoard class >> assignDistributedBoardPositionsFrom: numberOfPositions [
 ]
 
 { #category : #'instance creation' }
-RoundBoard class >> shuffleProbabilisticBoard [
+RoundBoard class >> createRandomBoardOf100Positions [
 
 	| defaultBoardPositions |
 	defaultBoardPositions := OrderedCollection new.
@@ -45,17 +45,17 @@ RoundBoard class >> shuffleProbabilisticBoard [
 	^ defaultBoardPositions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
 	| defaultBoardPositions |
-	defaultBoardPositions := self assignDistributedBoardPositionsFrom:
+	defaultBoardPositions := self assignDistributedBoardPositionsAdaptedTo:
 		                         numberOfPositions.
 	self assertValidPositions: defaultBoardPositions.
 	^ self new initializeWithPositions: defaultBoardPositions and: aNumberOfParsecs
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 RoundBoard class >> withPositions: boardPositions and: anAmountOfParsecs [ 
 	self assertValidPositions: boardPositions.
 	^self new initializeWithPositions: boardPositions and: anAmountOfParsecs .
@@ -67,10 +67,10 @@ RoundBoard >> effectAppliedOnPosition: aPosition [
 ]
 
 { #category : #accessing }
-RoundBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceRoll [
+RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceRoll [
 
 	| newPosition |
-	newPosition := spaceshipPosition + diceRoll.
+	newPosition := spaceShipPosition + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
 	newPosition < 0 ifTrue: [ ^ newPosition % lastPosition ].
@@ -81,7 +81,7 @@ RoundBoard >> finalPositionWhenStartingAt: spaceshipPosition afterRolling: diceR
 { #category : #initialization }
 RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 	
-	startingPosition := 1.
+	startingPosition := 1 .
 	boardEffects := boardPositions asOrderedCollection .
 	lastPosition := boardPositions size.
 	parsecs := anAmountOfParsecs. 
@@ -93,7 +93,7 @@ RoundBoard >> lastPosition [
 	^ lastPosition
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 RoundBoard >> parsecsPerPosition [
 	^parsecs / lastPosition.
 ]

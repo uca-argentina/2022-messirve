@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MessirveSpaceGameFinishedStatus class >> withWinner: aWinner [ 
 	^self new initializeWithWinner: aWinner.
 ]

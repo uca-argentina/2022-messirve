@@ -122,3 +122,22 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	self assert: aSpaceGame isFinished
 ]
+
+{ #category : #tests }
+GameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFinishes [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard with: 200 and: 100.
+	aDie := RandomDie withSides: 6. 
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' . 'De Paul' } 
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playGame .
+	
+	self assert: aSpaceGame isFinished.
+
+]

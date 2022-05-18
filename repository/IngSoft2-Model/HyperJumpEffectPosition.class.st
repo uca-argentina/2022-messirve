@@ -13,7 +13,7 @@ HyperJumpEffectPosition class >> with: parsecs [
 	^self new initializeWith: parsecs.
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 HyperJumpEffectPosition >> advanceIndex [
 	parsecIndex := parsecIndex == parsecs size
 		                         ifTrue: [ 1 ]
