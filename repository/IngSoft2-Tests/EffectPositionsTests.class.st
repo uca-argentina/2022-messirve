@@ -31,7 +31,7 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvances4Spaces 
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndAdvances4Spaces [
+EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBack4Spaces [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -58,7 +58,7 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndAdvances4Spaces
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBackNPositions [
+EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipButTheSpaceShipInCurrentTurnBackNPositions [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -90,7 +90,7 @@ EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBac
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBackToPositionOne [
+EffectPositionsTests >> testASpaceShipThatLandsOnANukeTakesEverySpaceShipBackToPositionOne [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -170,7 +170,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpace
 	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' . 'De Paul' . 'aaa' . 'bbb' . 'ccc'}
+		              playedBy: { 'Messi' . 'De Paul' }
 		              on: aBoard
 		              rolling: aDiceCup
 		              withLapsToWin: 2.
@@ -207,4 +207,97 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvances30Pars
 	aSpaceGame playNextTurn.
 
 	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwardedAreNotEnoughToMove [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          (HyperJumpEffectPosition with: { 3. 20. 10 }).
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUpDoesNotGoBackFourAfterLandingOnAWormHoleOnTheSameTurn [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          SpeedUpEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          WormHoleEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testSpaceShipsLandOnHyperJumpPositionFourTimesAndTheLastOneIsAtTheSamePositionAsTheFirstOne [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          withPositions: { 
+				          NonEffectPosition new.
+				          (HyperJumpEffectPosition with: { 30. 20. 10 }).
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new.
+				          NonEffectPosition new }
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' . 'De Paul' . 'Paredes' . 'El Dibu' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	
+	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
+	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
+	self assert: (aSpaceGame positionOfSpaceship: 'Paredes') equals: 3.
+	self assert: (aSpaceGame positionOfSpaceship: 'El Dibu') equals: 5.
 ]

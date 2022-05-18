@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #asserting }
+{ #category : #verification }
 DiceCup class >> assertValidQuantityOf: dice [
 
 	(dice isEmpty)

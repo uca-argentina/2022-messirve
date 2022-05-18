@@ -14,7 +14,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : #verification }
 MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [ 
 
 	| spaceShipsSetSize spaceShipsSize |
@@ -29,7 +29,7 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 	
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
@@ -60,8 +60,8 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 { #category : #private }
 MessirveSpaceRaceGame >> applyBoostOf: aBoost [
 
-	self
-		advanceCurrentSpaceShipTo: (self calculateNewDistanceAfter: aBoost)
+	self advanceCurrentSpaceShipTo:
+		(self calculateNewDistanceAfter: aBoost)
 ]
 
 { #category : #private }
@@ -119,7 +119,7 @@ MessirveSpaceRaceGame >> assertGameIsNotFinished [
 		Error signal: 'A game cannot be played after it has finished' ]
 ]
 
-{ #category : #asserting }
+{ #category : #verification }
 MessirveSpaceRaceGame >> assertMovementCanBeApplied [
 
 	gameStatus canApplyMovement ifFalse: [ 
@@ -130,23 +130,28 @@ MessirveSpaceRaceGame >> assertMovementCanBeApplied [
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
 	| initialPosition |
-
 	initialPosition := board startingPosition.
-	
-	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ :aSpaceShip | 
-		                     SpaceShipStatus with: aSpaceShip and: (SpaceShipDistance with: initialPosition and: 1 on: board )] 
+
+	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ 
+		                     :aSpaceShip | 
+		                     SpaceShipStatus
+			                     with: aSpaceShip
+			                     and:
+			                     (SpaceShipDistance
+				                      with: initialPosition
+				                      and: 1
+				                      on: board) ]
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> calculateNewDistanceAfter: aMovement [ 
-	
-	|aPosition aLap|
-	
-	aPosition := self calculateNewPositionOfCurrentSpaceShipAfter: aMovement.
+MessirveSpaceRaceGame >> calculateNewDistanceAfter: aMovement [
+
+	| aPosition aLap |
+	aPosition := self calculateNewPositionOfCurrentSpaceShipAfter:
+		             aMovement.
 	aLap := self calculateNewLapOfCurrentSpaceShipAfter: aMovement.
-	
-	^SpaceShipDistance with: aPosition and: aLap on: board.
-	
+
+	^ SpaceShipDistance with: aPosition and: aLap on: board
 ]
 
 { #category : #private }
@@ -185,10 +190,10 @@ MessirveSpaceRaceGame >> calculateNewPositionOfCurrentSpaceShipAfter: aMovement 
 { #category : #private }
 MessirveSpaceRaceGame >> calculateNewRanking [
 
-	ranking := spaceshipStatuses collect: [: a | a ].
-	
+	ranking := spaceshipStatuses collect: [ :a | a ].
+
 	ranking sort: [ :a :b | 
-		           a distance distanceTraveled > b distance distanceTraveled ].
+		a distance distanceTraveled >= b distance distanceTraveled ]
 ]
 
 { #category : #private }
@@ -211,13 +216,13 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
 	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips:
-		                     spaceShipsNames.
-	
+		                     spaceShipsNames
 ]
 
 { #category : #testing }
 MessirveSpaceRaceGame >> isFinished [
-	^gameStatus isFinished .
+
+	^ gameStatus isFinished
 ]
 
 { #category : #accessing }
@@ -241,7 +246,8 @@ MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> parsecsPerPosition [
-	^board parsecsPerPosition.
+
+	^ board parsecsPerPosition
 ]
 
 { #category : #playing }

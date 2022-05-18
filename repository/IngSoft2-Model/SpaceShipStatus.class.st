@@ -8,7 +8,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 SpaceShipStatus class >> with: aSpaceShip and: aSpaceShipDistance [
 
 	^ self new initializeWith: aSpaceShip and: aSpaceShipDistance

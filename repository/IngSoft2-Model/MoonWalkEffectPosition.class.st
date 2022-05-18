@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MoonWalkEffectPosition class >> withN: anN [
 	^self new initializeWithN: anN.
 ]

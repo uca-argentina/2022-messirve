@@ -7,7 +7,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #validation }
+{ #category : #verification }
 RandomDie class >> assertValidSides: sides [
 	sides < 3
 		ifTrue: [ Error signal: 'A die cannot have less than three sides' ]

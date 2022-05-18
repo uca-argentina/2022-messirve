@@ -87,32 +87,6 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 ]
 
 { #category : #tests }
-GameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstPosition [
-
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          HyperJumpEffectPosition with: { 1 . 30 }.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new. }
-		          and: 50.
-	aDiceCup := DiceCup withAll: {LoadedDie rolling: 1}.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy:
-		              { 'Messi'. 'De Paul' }
-		              on: aBoard
-		              rolling: aDiceCup
-		              withLapsToWin: 2.
-
-	aSpaceGame playGame.
-
-	self assert: (aSpaceGame ranking first spaceShip) equals: 'De Paul'.
-]
-
-{ #category : #tests }
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -150,27 +124,20 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 ]
 
 { #category : #tests }
-GameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgress [
+GameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFinishes [
 
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new. }
-		          and: 50.
-	aDiceCup := DiceCup withAll: {LoadedDie rolling: 1}.
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard with: 200 and: 100.
+	aDie := RandomDie withSides: 6. 
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy:
-		              { 'Messi'. 'De Paul' }
+		              playedBy: { 'Messi' . 'De Paul' } 
 		              on: aBoard
-		              rolling: aDiceCup
-		              withLapsToWin: 2.
+		              rolling: aDie
+		              withLapsToWin: 3.
 
-	aSpaceGame playNextTurn.
+	aSpaceGame playGame .
+	
+	self assert: aSpaceGame isFinished.
 
-	self assert: (aSpaceGame ranking first spaceShip) equals: 'Messi'.
 ]

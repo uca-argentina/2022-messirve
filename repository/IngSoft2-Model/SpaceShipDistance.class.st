@@ -9,7 +9,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 SpaceShipDistance class >> with: aPosition and: aLap on: aBoard [ 
 	^self new initializeWith: aPosition and: aLap on: aBoard. 
 ]
