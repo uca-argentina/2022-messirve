@@ -1,6 +1,6 @@
 Class {
 	#name : #LoadedDieGameplayTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -78,8 +78,12 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAn
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -97,7 +101,11 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTe
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 11
+		self
+		assert: 'Messi'
+		isAt: 5
+		with: 11
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -134,8 +142,11 @@ LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLa
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 2. 
+		self
+		assert: 'Messi'
+		isAt: 5
+		with: 2
+		in: aSpaceGame.
 	self deny: aSpaceGame isFinished
 ]
 
@@ -143,13 +154,8 @@ LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLa
 LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstPosition [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          boardWithOnly:
-		          { (HyperJumpEffectPosition with: { 1. 30 }) }
-		          at: { 2 }
-		          Of: 5
-		          and: 50.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1. 2. 1. 2. 1. 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
@@ -175,8 +181,16 @@ LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 		              withLapsToWin: 2.
 	aSpaceGame playGame.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
+		self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+		self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -215,15 +229,11 @@ LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgres
 ]
 
 { #category : #tests }
-LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndTheFirstSpaceShipComesFirstTheSecondSecondAndTheThirdThird [
+LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndMessiComesFirstDePaulSecondAndElDibuThird [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          boardWithOnly: { SpeedUpEffectPosition new }
-		          at: { 2 }
-		          Of: 8
-		          and: 50.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 3. 2. 1}) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul'. 'El Dibu' }
@@ -239,7 +249,7 @@ LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndTheFirstSpaceShipComes
 ]
 
 { #category : #tests }
-LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndTheFirstOneComesFirstAndTheSecondSecond [
+LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndMessiComesFirst [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.

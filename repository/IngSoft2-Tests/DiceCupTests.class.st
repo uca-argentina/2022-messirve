@@ -1,6 +1,6 @@
 Class {
 	#name : #DiceCupTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 

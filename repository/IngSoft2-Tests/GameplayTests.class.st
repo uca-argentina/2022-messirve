@@ -1,6 +1,6 @@
 Class {
 	#name : #GameplayTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 

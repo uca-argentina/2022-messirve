@@ -1,6 +1,6 @@
 Class {
 	#name : #EffectPositionsTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -13,7 +13,7 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpac
 		          at: { 2 }
 		          Of: 5
 		          and: 100.
-	aDie := LoadedDie rolling: { 1 }.
+	aDie := LoadedDie rolling: { 1. 4 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -23,7 +23,12 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpac
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+
 	self deny: aSpaceGame isFinished
 ]
 
@@ -46,8 +51,11 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpa
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 3.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
 	self deny: aSpaceGame isFinished
 ]
 
@@ -72,21 +80,39 @@ EffectPositionsTests >> testASpaceShipThatLandsOnANukeAfterFinishingTheFirstLapT
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'De Paul'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 2.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -110,44 +136,43 @@ EffectPositionsTests >> testASpaceShipThatLandsOnANukeTakesEverySpaceShipBackToP
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'De Paul'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Armani'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
-]
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
 
-{ #category : #tests }
-EffectPositionsTests >> testASpaceshipCannotBeAffectedByAChainedEffect [
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
 
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          boardWithOnly: { SpeedUpEffectPosition new . SpeedUpEffectPosition new}
-		          at: { 2 . 6 }
-		          Of: 7
-		          and: 100.
-
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDiceCup
-		              withLapsToWin: 2.
-
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -155,7 +180,8 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpace
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          boardWithOnly: { HyperJumpEffectPosition with: { 30. 20. 10 } }
+		          boardWithOnly:
+		          { (HyperJumpEffectPosition with: { 30. 20. 10 }) }
 		          at: { 2 }
 		          Of: 10
 		          and: 100.
@@ -168,10 +194,20 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpace
 		              withLapsToWin: 2.
 
 	aSpaceGame playNextTurn.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame.
 
 	aSpaceGame playNextTurn.
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4
+
+	self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -194,7 +230,12 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvancesThirty
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -202,8 +243,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          boardWithOnly:
-		          { (HyperJumpEffectPosition with: { 3. 20. 10 }) }
+		          boardWithOnly: { (HyperJumpEffectPosition with: { 3 }) }
 		          at: { 2 }
 		          Of: 10
 		          and: 100.
@@ -217,7 +257,12 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -241,7 +286,12 @@ EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUp
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -263,14 +313,22 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsE
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 4.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
+	self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 4
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -296,8 +354,28 @@ EffectPositionsTests >> testSpaceShipsLandOnHyperJumpPositionFourTimesAndTheLast
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
-	self assert: (aSpaceGame positionOfSpaceship: 'Paredes') equals: 3.
-	self assert: (aSpaceGame positionOfSpaceship: 'El Dibu') equals: 5
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Paredes'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame
 ]

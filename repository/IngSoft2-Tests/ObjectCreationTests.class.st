@@ -1,6 +1,6 @@
 Class {
 	#name : #ObjectCreationTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -36,7 +36,11 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 		              rolling: ''
 		              withLapsToWin: 1.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
+		self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
