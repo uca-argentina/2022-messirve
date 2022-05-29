@@ -54,7 +54,7 @@ ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 				              rolling: aDiceCup
 				              withLapsToWin: 1 ]
 		raise: Error
-		whoseDescriptionIncludes: 'Player name duplicated'
+		whoseDescriptionIncludes: 'SpaceShip name duplicated'
 		description:
-		'Two players with the same name cannot be added to game'
+		'Two SpaceShip with the same name cannot be added to game'
 ]

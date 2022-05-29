@@ -29,6 +29,18 @@ RoundBoard class >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions 
 	^ defaultBoardPositions
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfTiles and: distance [
+
+	| boardPositions |
+	boardPositions := self noEffectPositionBoardWith: numberOfTiles.
+	1 to: effectTileNumbers size do: [ :i | 
+		boardPositions
+			at: (effectTileNumbers at: 1)
+			put: (effectPositions at: 1) ].
+	^ self new initializeWithPositions: boardPositions and: distance
+]
+
 { #category : #'instance creation' }
 RoundBoard class >> createRandomBoardOf100Positions [
 
@@ -45,6 +57,16 @@ RoundBoard class >> createRandomBoardOf100Positions [
 	^ defaultBoardPositions
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
+
+	| boardPositions |
+	boardPositions := OrderedCollection new.
+	1 to: numberOfTiles do: [ :i | 
+	boardPositions add: NonEffectPosition new ].
+	^ boardPositions
+]
+
 { #category : #initialization }
 RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
@@ -53,6 +75,14 @@ RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 		                         numberOfPositions.
 	self assertValidPositions: defaultBoardPositions.
 	^ self new initializeWithPositions: defaultBoardPositions and: aNumberOfParsecs
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard class >> withNoEffectsOf: numberOfTiles and: distance [
+
+	| boardPositions |
+	boardPositions := self noEffectPositionBoardWith: numberOfTiles.
+	^ self new initializeWithPositions: boardPositions and: distance
 ]
 
 { #category : #initialization }

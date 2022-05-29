@@ -23,7 +23,7 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 	spaceShipsSetSize := (spaceShips asSet) size. 
 	
 	(spaceShipsSetSize == spaceShipsSize)
-	ifFalse: [ Error signal: 'Player name duplicated' ].
+	ifFalse: [ Error signal: 'SpaceShip name duplicated' ].
 	
 	
 	
