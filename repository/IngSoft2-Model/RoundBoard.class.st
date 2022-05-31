@@ -61,12 +61,12 @@ RoundBoard class >> createRandomBoardOf100Positions [
 
 	| defaultBoardPositions |
 	defaultBoardPositions := OrderedCollection new.
-	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffectPosition new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffectPosition new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffectPosition new ].
-	1 to: 10 do: [ :i | defaultBoardPositions add: (MoonWalkEffectPosition withN: (1 to: 10) atRandom) ].
-	1 to:  8 do: [ :i | defaultBoardPositions add: (HyperJumpEffectPosition with: { 50 . 40 . 30 . 20 . 10 }) ].
-	1 to:  2 do: [ :i | defaultBoardPositions add: NukeEffectPosition new ].
+	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffect new ].
+	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffect new ].
+	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffect new ].
+	1 to: 10 do: [ :i | defaultBoardPositions add: (MoonWalkEffect takingBack: (1 to: 10) atRandom) ].
+	1 to:  8 do: [ :i | defaultBoardPositions add: (HyperJumpEffect with: { 50 . 40 . 30 . 20 . 10 }) ].
+	1 to:  2 do: [ :i | defaultBoardPositions add: AtomicBombEffect new ].
 	
 	defaultBoardPositions shuffle.
 	^ defaultBoardPositions
@@ -78,7 +78,7 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 	| boardPositions |
 	boardPositions := OrderedCollection new.
 	1 to: numberOfTiles do: [ :i | 
-	boardPositions add: NonEffectPosition new ].
+	boardPositions add: NonEffect new ].
 	^ boardPositions
 ]
 

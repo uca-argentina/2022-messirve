@@ -142,7 +142,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLa
 
 	aSpaceGame playNextTurn.
 
-		self
+	self
 		assert: 'Messi'
 		isAt: 5
 		with: 2

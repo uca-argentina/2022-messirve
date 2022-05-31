@@ -15,6 +15,18 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 ]
 
 { #category : #tests }
+ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
+
+	self
+		should: [ 
+			MoonWalkEffect takingBack: 0 ]
+		raise: Error
+		whoseDescriptionIncludes: 'Amount of back positions must be higher than 0'
+		description:
+		'The N belonging to a MoonWalk position cannot be smaller than 1'
+]
+
+{ #category : #tests }
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self

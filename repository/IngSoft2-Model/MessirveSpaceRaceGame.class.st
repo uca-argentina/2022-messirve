@@ -58,6 +58,20 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 ]
 
 { #category : #private }
+MessirveSpaceRaceGame >> applyAtomicBombEffect [
+
+	self assertMovementCanBeApplied.
+	spaceshipStatuses := spaceshipStatuses collect: [ :status | 
+		                     SpaceShipStatus
+			                     with: status spaceShip
+			                     and:
+			                     (SpaceShipDistance
+				                      with: 1
+				                      and: status lap
+				                      on: board) ]
+]
+
+{ #category : #private }
 MessirveSpaceRaceGame >> applyBoostOf: aBoost [
 
 	self advanceCurrentSpaceShipTo:
@@ -96,20 +110,6 @@ MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRol
 	effecLanded := board effectAppliedOnPosition: newDistance position.
 	effecLanded applyEffectOn: self.
 	self verifyWinner
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> applyNukeEffect [
-
-	self assertMovementCanBeApplied.
-	spaceshipStatuses := spaceshipStatuses collect: [ :status | 
-		                     SpaceShipStatus
-			                     with: status spaceShip
-			                     and:
-			                     (SpaceShipDistance
-				                      with: 1
-				                      and: status lap
-				                      on: board) ]
 ]
 
 { #category : #private }
