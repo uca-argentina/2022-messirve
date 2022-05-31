@@ -14,11 +14,6 @@ SpaceShipDistance class >> with: aPosition and: aLap on: aBoard [
 	^self new initializeWith: aPosition and: aLap on: aBoard. 
 ]
 
-{ #category : #accessing }
-SpaceShipDistance >> distanceTraveled [
-	^ distanceTraveled
-]
-
 { #category : #initialization }
 SpaceShipDistance >> initializeWith: aPosition and: aLap on: aBoard [ 
 	position := aPosition .
@@ -34,4 +29,9 @@ SpaceShipDistance >> lap [
 { #category : #accessing }
 SpaceShipDistance >> position [
 	^ position
+]
+
+{ #category : #accessing }
+SpaceShipDistance >> totalTraveled [
+	^ distanceTraveled
 ]

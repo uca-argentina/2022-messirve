@@ -28,19 +28,6 @@ RoundBoard class >> assertValidParsecs: someParsecs [
 		ifTrue: [ Error signal: 'A board cannot be initialized with 0 or less parsecs' ]
 ]
 
-{ #category : #'instance creation' }
-RoundBoard class >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
-
-	| numberOfExtraPositions defaultBoardPositions |
-	defaultBoardPositions := self createRandomBoardOf100Positions.
-
-	numberOfExtraPositions := numberOfPositions - 100.
-	1 to: numberOfExtraPositions do: [ :position | 
-		defaultBoardPositions add:
-			(defaultBoardPositions at: position % 100 + 1) ].
-	^ defaultBoardPositions
-]
-
 { #category : #initialization }
 RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs [
 
@@ -57,22 +44,6 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 ]
 
 { #category : #'instance creation' }
-RoundBoard class >> createRandomBoardOf100Positions [
-
-	| defaultBoardPositions |
-	defaultBoardPositions := OrderedCollection new.
-	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffect new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffect new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffect new ].
-	1 to: 10 do: [ :i | defaultBoardPositions add: (MoonWalkEffect takingBack: (1 to: 10) atRandom) ].
-	1 to:  8 do: [ :i | defaultBoardPositions add: (HyperJumpEffect with: { 50 . 40 . 30 . 20 . 10 }) ].
-	1 to:  2 do: [ :i | defaultBoardPositions add: AtomicBombEffect new ].
-	
-	defaultBoardPositions shuffle.
-	^ defaultBoardPositions
-]
-
-{ #category : #'instance creation' }
 RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 
 	| boardPositions |
@@ -85,14 +56,19 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 { #category : #initialization }
 RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
-	| defaultBoardPositions |
+	| defaultBoardPositions boardRandomizer |
 	self assertValidParsecs: aNumberOfParsecs.
 	self assertValidNumberOfPositions: numberOfPositions.
-	
-	defaultBoardPositions := self assignDistributedBoardPositionsAdaptedTo:
+
+	boardRandomizer := BoardRandomizer new.
+
+	defaultBoardPositions := boardRandomizer 
+		                         assignDistributedBoardPositionsAdaptedTo:
 		                         numberOfPositions.
 	self assertValidBoardPositions: defaultBoardPositions.
-	^ self new initializeWithPositions: defaultBoardPositions and: aNumberOfParsecs
+	^ self new
+		  initializeWithPositions: defaultBoardPositions
+		  and: aNumberOfParsecs
 ]
 
 { #category : #initialization }
@@ -106,16 +82,6 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
-]
-
-{ #category : #initialization }
-RoundBoard class >> withPositions: boardPositions and: anAmountOfParsecs [
-
-	self assertValidBoardPositions: boardPositions.
-	self assertValidParsecs: anAmountOfParsecs.
-	^ self new
-		  initializeWithPositions: boardPositions
-		  and: anAmountOfParsecs
 ]
 
 { #category : #accessing }

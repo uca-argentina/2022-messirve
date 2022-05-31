@@ -30,7 +30,7 @@ ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
-		should: [ RoundBoard withPositions: {  } and: 100 ]
+		should: [ RoundBoard with: 1 and: 100 ]
 		raise: Error
 		whoseDescriptionIncludes:
 		'A board cannot have less than two positions'

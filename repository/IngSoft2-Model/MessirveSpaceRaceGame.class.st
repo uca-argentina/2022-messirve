@@ -52,7 +52,7 @@ MessirveSpaceRaceGame >> advanceCurrentSpaceShipTo: aSpaceShipDistance [
 { #category : #private }
 MessirveSpaceRaceGame >> advanceToNextTurn [
 
-	currentTurn := spaceShipSequence nextSequenceTurnNumber.
+	currentTurn := spaceShipSequence advanceSequenceNumber.
 	self isFinished ifFalse: [ 
 		gameStatus := MessirveSpaceGameStartOfTurnStatus new ]
 ]
@@ -193,7 +193,7 @@ MessirveSpaceRaceGame >> calculateNewRanking [
 	ranking := spaceshipStatuses collect: [ :a | a ].
 
 	ranking sort: [ :a :b | 
-		a distance distanceTraveled >= b distance distanceTraveled ]
+		a distance totalTraveled >= b distance totalTraveled ]
 ]
 
 { #category : #private }
@@ -215,7 +215,7 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
-	spaceShipSequence := SpaceShipSequence formedByAmountOfSpaceShips:
+	spaceShipSequence := SequenceValidator formedBy:
 		                     spaceShipsNames
 ]
 

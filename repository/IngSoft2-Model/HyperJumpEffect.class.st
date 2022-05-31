@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'parsecs',
-		'parsecIndex'
+		'parsecIndex',
+		'parsecSequence'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -15,9 +16,8 @@ HyperJumpEffect class >> with: parsecs [
 
 { #category : #private }
 HyperJumpEffect >> advanceIndex [
-	parsecIndex := parsecIndex == parsecs size
-		                         ifTrue: [ 1 ]
-		                         ifFalse: [ parsecIndex + 1 ]
+
+	parsecIndex := parsecSequence advanceSequenceNumber
 ]
 
 { #category : #applying }
@@ -31,7 +31,9 @@ HyperJumpEffect >> applyEffectOn: aGame [
 ]
 
 { #category : #initialization }
-HyperJumpEffect >> initializeWith: someParsecs [ 
+HyperJumpEffect >> initializeWith: someParsecs [
+
+	parsecSequence := SequenceValidator formedBy: someParsecs.
 	parsecs := someParsecs.
-	parsecIndex := 1.
+	parsecIndex := 1
 ]
