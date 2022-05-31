@@ -53,7 +53,7 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpa
 
 	self
 		assert: 'Messi'
-		isAt: 3
+		isAt: 1
 		with: 1
 		in: aSpaceGame.
 	self deny: aSpaceGame isFinished

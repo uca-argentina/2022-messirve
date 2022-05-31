@@ -44,6 +44,30 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 ]
 
 { #category : #tests }
+ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
+
+	| aSpaceGame aBoard |
+	aBoard := RoundBoard with: 100 and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul' }
+		              on: aBoard
+		              rolling: ''
+		              withLapsToWin: 1.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
 ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |

@@ -50,13 +50,13 @@ LoadedDieGameplayTests >> testASpaceShipCannotAdvancePositionWithoutRollingDice 
 LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
-	aLoadedDie := LoadedDie rolling: { 10 }.
+	aLoadedDie := LoadedDie rolling: { 5 }.
 	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 1.
+		              withLapsToWin: 2.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame winner equals: 'Messi'
@@ -148,6 +148,26 @@ LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLa
 		with: 2
 		in: aSpaceGame.
 	self deny: aSpaceGame isFinished
+]
+
+{ #category : #tests }
+LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheBoardThanTheFirstPositionOfTheWinningLap [
+
+	| aSpaceGame aLoadedDie aBoard |
+	aLoadedDie := LoadedDie rolling: { 100 }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 5
+		in: aSpaceGame
 ]
 
 { #category : #tests }

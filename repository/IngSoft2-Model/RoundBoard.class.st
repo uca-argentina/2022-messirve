@@ -11,9 +11,21 @@ Class {
 }
 
 { #category : #verification }
-RoundBoard class >> assertValidPositions: boardPositions [ 
+RoundBoard class >> assertValidBoardPositions: boardPositions [ 
 		boardPositions size < 2
 		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+]
+
+{ #category : #verification }
+RoundBoard class >> assertValidNumberOfPositions: numberOfPositions [
+		numberOfPositions < 2
+		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+]
+
+{ #category : #verification }
+RoundBoard class >> assertValidParsecs: someParsecs [ 
+		someParsecs < 1
+		ifTrue: [ Error signal: 'A board cannot be initialized with 0 or less parsecs' ]
 ]
 
 { #category : #'instance creation' }
@@ -29,16 +41,19 @@ RoundBoard class >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions 
 	^ defaultBoardPositions
 ]
 
-{ #category : #'as yet unclassified' }
-RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfTiles and: distance [
+{ #category : #initialization }
+RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs [
 
 	| boardPositions |
-	boardPositions := self noEffectPositionBoardWith: numberOfTiles.
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+
+	boardPositions := self noEffectPositionBoardWith: numberOfPositions.
 	1 to: effectTileNumbers size do: [ :i | 
 		boardPositions
 			at: (effectTileNumbers at: 1)
 			put: (effectPositions at: 1) ].
-	^ self new initializeWithPositions: boardPositions and: distance
+	^ self new initializeWithPositions: boardPositions and: aNumberOfParsecs
 ]
 
 { #category : #'instance creation' }
@@ -57,7 +72,7 @@ RoundBoard class >> createRandomBoardOf100Positions [
 	^ defaultBoardPositions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 
 	| boardPositions |
@@ -71,24 +86,36 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
 	| defaultBoardPositions |
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+	
 	defaultBoardPositions := self assignDistributedBoardPositionsAdaptedTo:
 		                         numberOfPositions.
-	self assertValidPositions: defaultBoardPositions.
+	self assertValidBoardPositions: defaultBoardPositions.
 	^ self new initializeWithPositions: defaultBoardPositions and: aNumberOfParsecs
 ]
 
-{ #category : #'as yet unclassified' }
-RoundBoard class >> withNoEffectsOf: numberOfTiles and: distance [
+{ #category : #initialization }
+RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 
 	| boardPositions |
-	boardPositions := self noEffectPositionBoardWith: numberOfTiles.
-	^ self new initializeWithPositions: boardPositions and: distance
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+
+	boardPositions := self noEffectPositionBoardWith: numberOfPositions.
+	^ self new
+		  initializeWithPositions: boardPositions
+		  and: aNumberOfParsecs
 ]
 
 { #category : #initialization }
-RoundBoard class >> withPositions: boardPositions and: anAmountOfParsecs [ 
-	self assertValidPositions: boardPositions.
-	^self new initializeWithPositions: boardPositions and: anAmountOfParsecs .
+RoundBoard class >> withPositions: boardPositions and: anAmountOfParsecs [
+
+	self assertValidBoardPositions: boardPositions.
+	self assertValidParsecs: anAmountOfParsecs.
+	^ self new
+		  initializeWithPositions: boardPositions
+		  and: anAmountOfParsecs
 ]
 
 { #category : #accessing }
@@ -103,7 +130,7 @@ RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceR
 	newPosition := spaceShipPosition + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
-	newPosition < 0 ifTrue: [ ^ newPosition % lastPosition ].
+	newPosition < 0 ifTrue: [ ^ 1 ].
 
 	^ newPosition
 ]
