@@ -7,10 +7,10 @@ Class {
 { #category : #'as yet unclassified' }
 WormHoleEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	effectApplicator
-		applyBoostOf: -4
-		on: statuses
-		activatedBy: aStatus
-		playedOn: aBoard
-		and: aGame
+	^ effectApplicator
+		  applyBoostOf: -4
+		  on: statuses
+		  activatedBy: aStatus
+		  playedOn: aBoard
+		  and: aGame
 ]

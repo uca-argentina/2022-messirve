@@ -30,6 +30,22 @@ HyperJumpEffect >> applyEffectOn: aGame [
 	
 ]
 
+{ #category : #'as yet unclassified' }
+HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
+
+	| positionLength boost |
+	positionLength := aGame parsecsPerPosition.
+	boost := (parsecs at: parsecIndex) // positionLength.
+	self advanceIndex.
+
+	^ effectApplicator
+		  applyBoostOf: boost
+		  on: statuses
+		  activatedBy: aStatus
+		  playedOn: aBoard
+		  and: aGame
+]
+
 { #category : #initialization }
 HyperJumpEffect >> initializeWith: someParsecs [
 

@@ -16,13 +16,47 @@ EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus played
 ]
 
 { #category : #'as yet unclassified' }
+EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
+
+	| newStatuses |
+	^newStatuses := statuses collect: [ :status | 
+		               SpaceShipStatus
+			               with: status spaceShip
+			               and:
+			               (SpaceShipDistance
+				                with: 1
+				                and: status lap
+				                on: aBoard) ]
+]
+
+{ #category : #'as yet unclassified' }
 EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
-	| aDistance |
+	| aDistance  |
+
 	aDistance := aBoard
 		             calculateNewDistanceAfter: aStatus
 		             rolled: aBoost
 		             on: aGame.
 
 	^aBoard advance: aStatus from: statuses to: aDistance
+]
+
+{ #category : #'as yet unclassified' }
+EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
+
+	| currentDistance newStatuses |
+	currentDistance := aStatus distance.
+
+	newStatuses := statuses collect: [ :status | 
+		               SpaceShipStatus
+			               with: status spaceShip
+			               and: (SpaceShipDistance
+					                with: (aBoard
+							                 finalPositionWhenStartingAt: status position
+							                 afterRolling: somePositions)
+					                and: status lap
+					                on: aBoard) ].
+
+	^ aBoard advance: aStatus from: statuses to: currentDistance
 ]

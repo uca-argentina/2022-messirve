@@ -21,17 +21,11 @@ MoonWalkEffect class >> takingBack: anAmountOfPositions [
 	^ self new initializeWithBackPositionsOf: anAmountOfPositions
 ]
 
-{ #category : #applying }
-MoonWalkEffect >> applyEffectOn: aGame [
-
-	aGame applyMoonWalkEffectWith: backwardPositions
-]
-
 { #category : #'as yet unclassified' }
 MoonWalkEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
 	^effectApplicator
-		applyBoostOf: -4
+		applyMoonWalkOf: -1 * backwardPositions
 		on: statuses
 		activatedBy: aStatus
 		playedOn: aBoard

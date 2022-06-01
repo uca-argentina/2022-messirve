@@ -299,8 +299,8 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsE
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
-		          boardWithOnly: { (MoonWalkEffect takingBack: 3) }
-		          at: { 2 }
+		          boardWithOnly: { (MoonWalkEffect takingBack: 1) }
+		          at: { 3 }
 		          Of: 5
 		          and: 100.
 	aDie := LoadedDie rolling: { 1 }.
@@ -312,21 +312,24 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsE
 		              withLapsToWin: 5.
 
 	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
 
 
 	self
 		assert: 'De Paul'
-		isAt: 4
+		isAt: 1
 		with: 1
 		in: aSpaceGame.
 	self
 		assert: 'Armani'
-		isAt: 4
+		isAt: 1
 		with: 1
 		in: aSpaceGame.
 	self
 		assert: 'Messi'
-		isAt: 2
+		isAt: 3
 		with: 1
 		in: aSpaceGame
 ]

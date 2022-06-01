@@ -4,7 +4,9 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #applying }
-AtomicBombEffect >> applyEffectOn: aGame [ 
-	aGame applyAtomicBombEffect.
+{ #category : #'as yet unclassified' }
+AtomicBombEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
+
+	^ effectApplicator applyAtomicBombOn: statuses playedOn: aBoard.
+
 ]

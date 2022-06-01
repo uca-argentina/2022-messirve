@@ -89,9 +89,10 @@ RoundBoard >> advance: aStatus from: statuses to: aDistance [
 
 	| newStatus newStatuses |
 	newStatus := SpaceShipStatus with: aStatus spaceShip and: aDistance.
+
 	newStatuses := statuses copy.
 	newStatuses replaceAll: aStatus with: newStatus.
-	^newStatuses
+	^ newStatuses
 ]
 
 { #category : #'as yet unclassified' }
@@ -115,23 +116,25 @@ RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [
 { #category : #'as yet unclassified' }
 RoundBoard >> calculateNew: statuses afterA: diceRoll from: rollingStatus on: aGame [
 
-	| newDistance effectLanded effectApplicator newStatus |
+	| newDistance effectLanded effectApplicator newStatus newStatuses |
 	newDistance := self
 		               calculateNewDistanceAfter: rollingStatus
 		               rolled: diceRoll
 		               on: aGame.
-	newStatus := self
-		             advance: rollingStatus
-		             from: statuses
-		             to: newDistance.
+		
+	newStatus := SpaceShipStatus with: rollingStatus spaceShip and: newDistance.
+
+	newStatuses := statuses copy.
+	newStatuses replaceAll: rollingStatus with: newStatus.
+
 	effectLanded := self effectAppliedOnPosition: newDistance position.
 	effectApplicator := EffectApplicator new.
-	^effectApplicator
-		apply: effectLanded
-		on: statuses
-		activatedBy: newStatus
-		playedOn: self
-		and: aGame
+	^ effectApplicator
+		  apply: effectLanded
+		  on: newStatuses
+		  activatedBy: newStatus
+		  playedOn: self
+		  and: aGame
 ]
 
 { #category : #'as yet unclassified' }
