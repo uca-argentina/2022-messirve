@@ -84,6 +84,78 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 		  and: aNumberOfParsecs
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard >> advance: aStatus from: statuses to: aDistance [
+
+	| newStatus newStatuses |
+	newStatus := SpaceShipStatus with: aStatus spaceShip and: aDistance.
+	newStatuses := statuses copy.
+	newStatuses replaceAll: aStatus with: newStatus.
+	^newStatuses
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [ 
+
+	| newLaps currentLaps lapsToAdd positionOfSpaceship |
+
+	currentLaps := aStatus distance lap.
+	positionOfSpaceship := aStatus distance position.
+	lapsToAdd := positionOfSpaceship + diceResult // self lastPosition.
+	newLaps := currentLaps + lapsToAdd.
+
+	newLaps > (aGame lapsToWin)
+		ifTrue: [ ^ aGame lapsToWin ]
+		ifFalse: [ 
+			newLaps < 1
+				ifTrue: [ ^ 1 ]
+				ifFalse: [ ^ newLaps ] ]
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> calculateNew: statuses afterA: diceRoll from: rollingStatus on: aGame [
+
+	| newDistance effectLanded effectApplicator newStatus |
+	newDistance := self
+		               calculateNewDistanceAfter: rollingStatus
+		               rolled: diceRoll
+		               on: aGame.
+	newStatus := self
+		             advance: rollingStatus
+		             from: statuses
+		             to: newDistance.
+	effectLanded := self effectAppliedOnPosition: newDistance position.
+	effectApplicator := EffectApplicator new.
+	^effectApplicator
+		apply: effectLanded
+		on: statuses
+		activatedBy: newStatus
+		playedOn: self
+		and: aGame
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> calculateNewDistanceAfter: aStatus rolled: aDiceResult on: aGame [
+
+	| aPosition aLap |
+	aPosition := self calculatePositionAfter: aStatus rolled: aDiceResult.
+	aLap := self calculateLapAfter: aStatus rolled: aDiceResult on: aGame.
+
+	^ SpaceShipDistance with: aPosition and: aLap on: self
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> calculatePositionAfter: aSpaceShipStatus rolled: diceRoll [
+
+	| newPosition |
+	newPosition := (aSpaceShipStatus distance position) + diceRoll.
+	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
+
+	newPosition < 0 ifTrue: [ ^ 1 ].
+
+	^ newPosition
+]
+
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
 	^boardEffects at: aPosition.

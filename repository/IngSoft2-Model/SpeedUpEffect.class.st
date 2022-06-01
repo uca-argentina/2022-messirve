@@ -4,7 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #applying }
-SpeedUpEffect >> applyEffectOn: aGame [ 
-	aGame applyBoostOf: 4.
+{ #category : #'as yet unclassified' }
+SpeedUpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
+
+	^effectApplicator
+		applyBoostOf: 4
+		on: statuses
+		activatedBy: aStatus
+		playedOn: aBoard
+		and: aGame
 ]

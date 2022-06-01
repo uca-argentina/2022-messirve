@@ -4,7 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #applying }
-WormHoleEffect >> applyEffectOn: aGame [ 
-	aGame applyBoostOf: -4.
+{ #category : #'as yet unclassified' }
+WormHoleEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
+
+	effectApplicator
+		applyBoostOf: -4
+		on: statuses
+		activatedBy: aStatus
+		playedOn: aBoard
+		and: aGame
 ]

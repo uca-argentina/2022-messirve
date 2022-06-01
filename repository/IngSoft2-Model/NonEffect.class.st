@@ -4,8 +4,13 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #applying }
-NonEffect >> applyEffectOn: aGame [
+{ #category : #'as yet unclassified' }
+NonEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	aGame applyBoostOf: 0
+	effectApplicator
+		applyBoostOf: 0
+		on: statuses
+		activatedBy: aStatus
+		playedOn: aBoard
+		and: aGame
 ]

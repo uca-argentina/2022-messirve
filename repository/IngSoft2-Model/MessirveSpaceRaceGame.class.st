@@ -103,12 +103,12 @@ MessirveSpaceRaceGame >> applyMoonWalkEffectWith: anN [
 { #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
-	| effecLanded newDistance |
 	self assertMovementCanBeApplied.
-	newDistance := self calculateNewDistanceAfter: diceCupRoll.
-	self advanceCurrentSpaceShipTo: newDistance.
-	effecLanded := board effectAppliedOnPosition: newDistance position.
-	effecLanded applyEffectOn: self.
+	spaceshipStatuses := board
+		calculateNew: spaceshipStatuses
+		afterA: diceCupRoll
+		from: self currentSpaceShipStatus
+		on: self.
 	self verifyWinner
 ]
 
@@ -229,6 +229,11 @@ MessirveSpaceRaceGame >> isFinished [
 MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) lap
+]
+
+{ #category : #accessing }
+MessirveSpaceRaceGame >> lapsToWin [
+	^ lapsToWin
 ]
 
 { #category : #private }
