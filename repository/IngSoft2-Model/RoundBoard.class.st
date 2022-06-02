@@ -84,7 +84,7 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 		  and: aNumberOfParsecs
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> advance: aStatus from: statuses to: aDistance [
 
 	| newStatus newStatuses |
@@ -95,7 +95,7 @@ RoundBoard >> advance: aStatus from: statuses to: aDistance [
 	^ newStatuses
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [ 
 
 	| newLaps currentLaps lapsToAdd positionOfSpaceship |
@@ -113,7 +113,7 @@ RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [
 				ifFalse: [ ^ newLaps ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> calculateNew: statuses afterA: diceRoll from: rollingStatus on: aGame [
 
 	| newDistance effectLanded effectApplicator newStatus newStatuses |
@@ -137,7 +137,7 @@ RoundBoard >> calculateNew: statuses afterA: diceRoll from: rollingStatus on: aG
 		  and: aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> calculateNewDistanceAfter: aStatus rolled: aDiceResult on: aGame [
 
 	| aPosition aLap |
@@ -147,7 +147,7 @@ RoundBoard >> calculateNewDistanceAfter: aStatus rolled: aDiceResult on: aGame [
 	^ SpaceShipDistance with: aPosition and: aLap on: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> calculatePositionAfter: aSpaceShipStatus rolled: diceRoll [
 
 	| newPosition |

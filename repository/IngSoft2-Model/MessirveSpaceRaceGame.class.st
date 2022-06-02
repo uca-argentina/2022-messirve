@@ -58,49 +58,6 @@ MessirveSpaceRaceGame >> advanceToNextTurn [
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> applyAtomicBombEffect [
-
-	self assertMovementCanBeApplied.
-	spaceshipStatuses := spaceshipStatuses collect: [ :status | 
-		                     SpaceShipStatus
-			                     with: status spaceShip
-			                     and:
-			                     (SpaceShipDistance
-				                      with: 1
-				                      and: status lap
-				                      on: board) ]
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> applyBoostOf: aBoost [
-
-	self advanceCurrentSpaceShipTo:
-		(self calculateNewDistanceAfter: aBoost)
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> applyMoonWalkEffectWith: anN [
-
-	| currentDistance |
-	self assertMovementCanBeApplied.
-	currentDistance := self currentSpaceShipStatus distance.
-
-	spaceshipStatuses := spaceshipStatuses collect: [ :status | 
-		                     SpaceShipStatus
-			                     with: status spaceShip
-			                     and: (SpaceShipDistance
-					                      with:
-					                      (board
-						                       finalPositionWhenStartingAt:
-						                       status position
-						                       afterRolling: anN)
-					                      and: status lap
-					                      on: board) ].
-
-	self advanceCurrentSpaceShipTo: currentDistance
-]
-
-{ #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
 	self assertMovementCanBeApplied.
@@ -141,50 +98,6 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 				                      with: initialPosition
 				                      and: 1
 				                      on: board) ]
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> calculateNewDistanceAfter: aMovement [
-
-	| aPosition aLap |
-	aPosition := self calculateNewPositionOfCurrentSpaceShipAfter:
-		             aMovement.
-	aLap := self calculateNewLapOfCurrentSpaceShipAfter: aMovement.
-
-	^ SpaceShipDistance with: aPosition and: aLap on: board
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> calculateNewLapOfCurrentSpaceShipAfter: aMovement [
-
-	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-	self assertMovementCanBeApplied.
-	currentLaps := self lapsOfSpaceship: self nameOfSpaceShipPlaying.
-
-	positionOfSpaceship := self positionOfSpaceship:
-		                       (spaceshipStatuses at: currentTurn) spaceShip.
-
-	lapsToAdd := positionOfSpaceship + aMovement // board lastPosition.
-
-	newLaps := currentLaps + lapsToAdd.
-
-	newLaps > lapsToWin
-		ifTrue: [ ^ lapsToWin ]
-		ifFalse: [ 
-			newLaps < 1
-				ifTrue: [ ^ 1 ]
-				ifFalse: [ ^ newLaps ] ]
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> calculateNewPositionOfCurrentSpaceShipAfter: aMovement [
-
-	| newPosition |
-	newPosition := board
-		               finalPositionWhenStartingAt:
-		               self currentSpaceShipStatus position
-		               afterRolling: aMovement.
-	^ newPosition
 ]
 
 { #category : #private }

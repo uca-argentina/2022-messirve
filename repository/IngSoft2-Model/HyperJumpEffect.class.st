@@ -20,17 +20,7 @@ HyperJumpEffect >> advanceIndex [
 	parsecIndex := parsecSequence advanceSequenceNumber
 ]
 
-{ #category : #applying }
-HyperJumpEffect >> applyEffectOn: aGame [ 
-	| positionLength boost|
-	positionLength := aGame parsecsPerPosition.
-	boost := (parsecs at: parsecIndex) // positionLength.
-	self advanceIndex.
-	aGame applyBoostOf: boost .
-	
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
 	| positionLength boost |

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #applying }
 EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	^aBoardEffect
@@ -15,7 +15,7 @@ EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus played
 		appliedBy: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #applying }
 EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
 
 	| newStatuses |
@@ -29,7 +29,7 @@ EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
 				                on: aBoard) ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #applying }
 EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| aDistance  |
@@ -42,7 +42,7 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	^aBoard advance: aStatus from: statuses to: aDistance
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #applying }
 EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| statusWithMoonWalkApplied newStatuses |

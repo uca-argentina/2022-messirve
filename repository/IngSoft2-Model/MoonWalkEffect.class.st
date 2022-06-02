@@ -21,7 +21,7 @@ MoonWalkEffect class >> takingBack: anAmountOfPositions [
 	^ self new initializeWithBackPositionsOf: anAmountOfPositions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MoonWalkEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
 	^effectApplicator
