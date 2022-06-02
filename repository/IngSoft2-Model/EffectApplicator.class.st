@@ -45,9 +45,7 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 { #category : #'as yet unclassified' }
 EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
-	| currentDistance newStatuses |
-	currentDistance := aStatus distance.
-
+	| statusWithMoonWalkApplied newStatuses |
 	newStatuses := statuses collect: [ :status | 
 		               SpaceShipStatus
 			               with: status spaceShip
@@ -58,5 +56,10 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 					                and: status lap
 					                on: aBoard) ].
 
-	^ aBoard advance: aStatus from: statuses to: currentDistance
+	statusWithMoonWalkApplied := newStatuses detect: [ :status | 
+		                             status spaceShip = aStatus spaceShip ].
+	^ aBoard
+		  advance: statusWithMoonWalkApplied
+		  from: newStatuses
+		  to: aStatus distance
 ]
