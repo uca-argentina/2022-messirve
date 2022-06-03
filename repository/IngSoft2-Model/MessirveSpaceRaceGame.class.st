@@ -37,19 +37,6 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> advanceCurrentSpaceShipTo: aSpaceShipDistance [
-
-	| newStatus |
-	self assertMovementCanBeApplied.
-	newStatus := SpaceShipStatus
-		             with: self nameOfSpaceShipPlaying
-		             and: aSpaceShipDistance.
-	spaceshipStatuses
-		replaceAll: self currentSpaceShipStatus
-		with: newStatus
-]
-
-{ #category : #private }
 MessirveSpaceRaceGame >> advanceToNextTurn [
 
 	currentTurn := spaceShipSequence advanceSequenceNumber.

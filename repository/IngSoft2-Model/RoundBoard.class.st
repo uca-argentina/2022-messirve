@@ -96,16 +96,19 @@ RoundBoard >> advance: aStatus from: statuses to: aDistance [
 ]
 
 { #category : #private }
-RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [ 
+RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [
 
 	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-
 	currentLaps := aStatus distance lap.
 	positionOfSpaceship := aStatus distance position.
-	lapsToAdd := positionOfSpaceship + diceResult // self lastPosition.
+	lapsToAdd := positionOfSpaceship = self lastPosition
+		             ifFalse: [ 
+		             positionOfSpaceship + diceResult // self lastPosition ]
+		             ifTrue: [ 0 ].
+
 	newLaps := currentLaps + lapsToAdd.
 
-	newLaps > (aGame lapsToWin)
+	newLaps > aGame lapsToWin
 		ifTrue: [ ^ aGame lapsToWin ]
 		ifFalse: [ 
 			newLaps < 1
@@ -151,10 +154,13 @@ RoundBoard >> calculateNewDistanceAfter: aStatus rolled: aDiceResult on: aGame [
 RoundBoard >> calculatePositionAfter: aSpaceShipStatus rolled: diceRoll [
 
 	| newPosition |
-	newPosition := (aSpaceShipStatus distance position) + diceRoll.
+	newPosition := aSpaceShipStatus distance position + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
-	newPosition < 0 ifTrue: [ ^ 1 ].
+	newPosition < 0 ifTrue: [ 
+		aSpaceShipStatus lap = 1
+			ifFalse: [ ^ newPosition * -1 + 1 % lastPosition ]
+			ifTrue: [ ^ 1 ] ].
 
 	^ newPosition
 ]

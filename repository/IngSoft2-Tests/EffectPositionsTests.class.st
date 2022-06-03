@@ -5,7 +5,28 @@ Class {
 }
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpaces [
+EffectPositionsTests >> testASpaceShipLandsOnAPositionWithoutEffectAndTheLapAndPositionAreNotModified [
+
+	| aSpaceGame aLoadedDie aBoard |
+	aLoadedDie := LoadedDie rolling: { 5 }.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame.
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipLandsOnASpeedUpAndThusFinishesLapOneAndIsNowOnLapTwo [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -33,7 +54,35 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpac
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpaces [
+EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpaces [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 10
+		          and: 100.
+	aDie := LoadedDie rolling: { 1. 4 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame.
+
+	self deny: aSpaceGame isFinished
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndCannotGoBackBehindTheStartingPoint [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -60,7 +109,34 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpa
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnANukeAfterFinishingTheFirstLapTakesEverySpaceShipBackToPositionOneButMaintainsItsAchievedLaps [
+EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpaces [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { WormHoleEffect new }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aDie := LoadedDie rolling: { 6 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+	self deny: aSpaceGame isFinished
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombAfterFinishingTheFirstLapTakesEverySpaceShipBackToPositionOneButMaintainsItsAchievedLaps [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -116,7 +192,7 @@ EffectPositionsTests >> testASpaceShipThatLandsOnANukeAfterFinishingTheFirstLapT
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnANukeTakesEverySpaceShipBackToPositionOne [
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombTakesEverySpaceShipBackToPositionOne [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -266,6 +342,32 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 ]
 
 { #category : #tests }
+EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionThatMovesItForwardFivePositionsAndAdvancesOneLap [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          boardWithOnly: { (HyperJumpEffect with: { 10 }) }
+		          at: { 10 }
+		          Of: 10
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 9 }) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame
+]
+
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUpDoesNotGoBackFourAfterLandingOnAWormHoleOnTheSameTurn [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -330,6 +432,62 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsE
 	self
 		assert: 'Messi'
 		isAt: 3
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesEveryOtherSpaceShipOneLapBehind [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { (MoonWalkEffect takingBack: 3) }
+		          at: { 2 }
+		          Of: 10
+		          and: 100.
+	aDie := LoadedDie rolling: { 10. 10. 10. 1 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'De Paul'
+		isAt: 8
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 8
 		with: 1
 		in: aSpaceGame
 ]

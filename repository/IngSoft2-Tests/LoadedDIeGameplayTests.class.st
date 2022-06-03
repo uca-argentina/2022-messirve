@@ -25,28 +25,6 @@ LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 ]
 
 { #category : #tests }
-LoadedDieGameplayTests >> testASpaceShipCannotAdvancePositionWithoutRollingDice [
-
-	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 2 and: 100.
-	aDie := LoadedDie rolling: { 1 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDie
-		              withLapsToWin: 5.
-
-	self
-		should: [ aSpaceGame advanceCurrentSpaceShipTo: (SpaceShipDistance with: 10 and: 2 on: aBoard)]
-		raise: Error
-		whoseDescriptionIncludes:
-		'Movement cannot be applied before the roll'
-		description:
-		'A SpaceShip needs to roll the die before moving position'
-]
-
-{ #category : #tests }
 LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
