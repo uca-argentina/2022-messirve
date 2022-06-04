@@ -95,76 +95,6 @@ RoundBoard >> advance: aStatus from: statuses to: aDistance [
 	^ newStatuses
 ]
 
-{ #category : #private }
-RoundBoard >> calculateLapAfter: aStatus rolled: diceResult on: aGame [
-
-	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-	currentLaps := aStatus distance lap.
-	positionOfSpaceship := aStatus distance position.
-	lapsToAdd := positionOfSpaceship = self lastPosition
-		             ifFalse: [ 
-		             positionOfSpaceship + diceResult // self lastPosition ]
-		             ifTrue: [ 0 ].
-
-	newLaps := currentLaps + lapsToAdd.
-
-	newLaps > aGame lapsToWin
-		ifTrue: [ ^ aGame lapsToWin ]
-		ifFalse: [ 
-			newLaps < 1
-				ifTrue: [ ^ 1 ]
-				ifFalse: [ ^ newLaps ] ]
-]
-
-{ #category : #private }
-RoundBoard >> calculateNew: statuses afterA: diceRoll from: rollingStatus on: aGame [
-
-	| newDistance effectLanded effectApplicator newStatus newStatuses |
-	newDistance := self
-		               calculateNewDistanceAfter: rollingStatus
-		               rolled: diceRoll
-		               on: aGame.
-		
-	newStatus := SpaceShipStatus with: rollingStatus spaceShip and: newDistance.
-
-	newStatuses := statuses copy.
-	newStatuses replaceAll: rollingStatus with: newStatus.
-
-	effectLanded := self effectAppliedOnPosition: newDistance position.
-	effectApplicator := EffectApplicator new.
-	^ effectApplicator
-		  apply: effectLanded
-		  on: newStatuses
-		  activatedBy: newStatus
-		  playedOn: self
-		  and: aGame
-]
-
-{ #category : #private }
-RoundBoard >> calculateNewDistanceAfter: aStatus rolled: aDiceResult on: aGame [
-
-	| aPosition aLap |
-	aPosition := self calculatePositionAfter: aStatus rolled: aDiceResult.
-	aLap := self calculateLapAfter: aStatus rolled: aDiceResult on: aGame.
-
-	^ SpaceShipDistance with: aPosition and: aLap on: self
-]
-
-{ #category : #private }
-RoundBoard >> calculatePositionAfter: aSpaceShipStatus rolled: diceRoll [
-
-	| newPosition |
-	newPosition := aSpaceShipStatus distance position + diceRoll.
-	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
-
-	newPosition < 0 ifTrue: [ 
-		aSpaceShipStatus lap = 1
-			ifFalse: [ ^ newPosition % lastPosition ]
-			ifTrue: [ ^ 1 ] ].
-
-	^ newPosition
-]
-
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
 	^boardEffects at: aPosition.
@@ -192,14 +122,84 @@ RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 	
 ]
 
+{ #category : #private }
+RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
+
+	| newLaps currentLaps lapsToAdd positionOfSpaceship |
+	currentLaps := aStatus distance lap.
+	positionOfSpaceship := aStatus distance position.
+	lapsToAdd := positionOfSpaceship = self lastPosition
+		             ifFalse: [ 
+		             positionOfSpaceship + diceResult // self lastPosition ]
+		             ifTrue: [ 0 ].
+
+	newLaps := currentLaps + lapsToAdd.
+
+	newLaps > aGame lapsToWin
+		ifTrue: [ ^ aGame lapsToWin ]
+		ifFalse: [ 
+			newLaps < 1
+				ifTrue: [ ^ 1 ]
+				ifFalse: [ ^ newLaps ] ]
+]
+
 { #category : #accessing }
 RoundBoard >> lastPosition [
 	^ lastPosition
 ]
 
+{ #category : #private }
+RoundBoard >> newDistanceAfter: aStatus rolled: aDiceResult on: aGame [
+
+	| aPosition aLap |
+	aPosition := self positionAfter: aStatus rolled: aDiceResult.
+	aLap := self lapAfter: aStatus rolled: aDiceResult on: aGame.
+
+	^ SpaceShipDistance with: aPosition and: aLap on: self
+]
+
+{ #category : #private }
+RoundBoard >> newFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
+
+	| newDistance effectLanded effectApplicator newStatus newStatuses |
+	newDistance := self
+		               newDistanceAfter: rollingStatus
+		               rolled: diceRoll
+		               on: aGame.
+		
+	newStatus := SpaceShipStatus with: rollingStatus spaceShip and: newDistance.
+
+	newStatuses := statuses copy.
+	newStatuses replaceAll: rollingStatus with: newStatus.
+
+	effectLanded := self effectAppliedOnPosition: newDistance position.
+	effectApplicator := EffectApplicator new.
+	^ effectApplicator
+		  apply: effectLanded
+		  on: newStatuses
+		  activatedBy: newStatus
+		  playedOn: self
+		  and: aGame
+]
+
 { #category : #accessing }
 RoundBoard >> parsecsPerPosition [
 	^parsecs / lastPosition.
+]
+
+{ #category : #private }
+RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
+
+	| newPosition |
+	newPosition := aSpaceShipStatus distance position + diceRoll.
+	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
+
+	newPosition < 0 ifTrue: [ 
+		aSpaceShipStatus lap = 1
+			ifFalse: [ ^ newPosition % lastPosition ]
+			ifTrue: [ ^ 1 ] ].
+
+	^ newPosition
 ]
 
 { #category : #accessing }

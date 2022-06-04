@@ -49,7 +49,7 @@ MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRol
 
 	self assertMovementCanBeApplied.
 	spaceshipStatuses := board
-		calculateNew: spaceshipStatuses
+		newFrom: spaceshipStatuses
 		afterA: diceCupRoll
 		from: self currentSpaceShipStatus
 		on: self.

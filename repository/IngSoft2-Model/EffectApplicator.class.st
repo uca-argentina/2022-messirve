@@ -35,7 +35,7 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	| aDistance  |
 
 	aDistance := aBoard
-		             calculateNewDistanceAfter: aStatus
+		             newDistanceAfter: aStatus
 		             rolled: aBoost
 		             on: aGame.
 
@@ -54,11 +54,11 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 			               and: (SpaceShipDistance
 					                with:
 					                (aBoard
-						                 calculatePositionAfter: status
+						                 positionAfter: status
 						                 rolled: somePositions)
 					                and:
 					                (aBoard
-						                 calculateLapAfter: status
+						                 lapAfter: status
 						                 rolled: somePositions
 						                 on: aGame)
 					                on: aBoard) ].
