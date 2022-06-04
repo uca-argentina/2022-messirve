@@ -159,7 +159,7 @@ RoundBoard >> calculatePositionAfter: aSpaceShipStatus rolled: diceRoll [
 
 	newPosition < 0 ifTrue: [ 
 		aSpaceShipStatus lap = 1
-			ifFalse: [ ^ newPosition * -1 + 1 % lastPosition ]
+			ifFalse: [ ^ newPosition % lastPosition ]
 			ifTrue: [ ^ 1 ] ].
 
 	^ newPosition
