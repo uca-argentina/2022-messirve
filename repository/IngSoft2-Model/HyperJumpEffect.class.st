@@ -10,8 +10,9 @@ Class {
 }
 
 { #category : #'instance creation' }
-HyperJumpEffect class >> with: parsecs [ 
-	^self new initializeWith: parsecs.
+HyperJumpEffect class >> with: parsecs [
+
+	^ self new initializeWith: parsecs
 ]
 
 { #category : #private }
@@ -21,7 +22,7 @@ HyperJumpEffect >> advanceIndex [
 ]
 
 { #category : #private }
-HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [ 
+HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
 	| positionLength boost |
 	positionLength := aGame parsecsPerPosition.

@@ -6,10 +6,12 @@ Class {
 
 { #category : #testing }
 MessirveSpaceGameTurnInProgressStatus >> canApplyMovement [
-	^true
+
+	^ true
 ]
 
 { #category : #testing }
 MessirveSpaceGameTurnInProgressStatus >> isFinished [
-	^false
+
+	^ false
 ]

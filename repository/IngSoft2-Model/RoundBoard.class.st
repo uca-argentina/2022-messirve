@@ -11,21 +11,24 @@ Class {
 }
 
 { #category : #verification }
-RoundBoard class >> assertValidBoardPositions: boardPositions [ 
-		boardPositions size < 2
-		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+RoundBoard class >> assertValidBoardPositions: boardPositions [
+
+	boardPositions size < 2 ifTrue: [ 
+		Error signal: 'A board cannot have less than two positions' ]
 ]
 
 { #category : #verification }
 RoundBoard class >> assertValidNumberOfPositions: numberOfPositions [
-		numberOfPositions < 2
-		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+
+	numberOfPositions < 2 ifTrue: [ 
+		Error signal: 'A board cannot have less than two positions' ]
 ]
 
 { #category : #verification }
-RoundBoard class >> assertValidParsecs: someParsecs [ 
-		someParsecs < 1
-		ifTrue: [ Error signal: 'A board cannot be initialized with 0 or less parsecs' ]
+RoundBoard class >> assertValidParsecs: someParsecs [
+
+	someParsecs < 1 ifTrue: [ 
+		Error signal: 'A board cannot be initialized with 0 or less parsecs' ]
 ]
 
 { #category : #initialization }
@@ -40,7 +43,9 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 		boardPositions
 			at: (effectTileNumbers at: 1)
 			put: (effectPositions at: 1) ].
-	^ self new initializeWithPositions: boardPositions and: aNumberOfParsecs
+	^ self new
+		  initializeWithPositions: boardPositions
+		  and: aNumberOfParsecs
 ]
 
 { #category : #'instance creation' }
@@ -48,8 +53,7 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 
 	| boardPositions |
 	boardPositions := OrderedCollection new.
-	1 to: numberOfTiles do: [ :i | 
-	boardPositions add: NonEffect new ].
+	1 to: numberOfTiles do: [ :i | boardPositions add: NonEffect new ].
 	^ boardPositions
 ]
 
@@ -97,7 +101,8 @@ RoundBoard >> advance: aStatus from: statuses to: aDistance [
 
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
-	^boardEffects at: aPosition.
+
+	^ boardEffects at: aPosition
 ]
 
 { #category : #accessing }
@@ -114,12 +119,11 @@ RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceR
 
 { #category : #initialization }
 RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
-	
-	startingPosition := 1 .
-	boardEffects := boardPositions asOrderedCollection .
+
+	startingPosition := 1.
+	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
-	parsecs := anAmountOfParsecs. 
-	
+	parsecs := anAmountOfParsecs
 ]
 
 { #category : #private }
@@ -145,6 +149,7 @@ RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
 
 { #category : #accessing }
 RoundBoard >> lastPosition [
+
 	^ lastPosition
 ]
 
@@ -166,8 +171,10 @@ RoundBoard >> newFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
 		               newDistanceAfter: rollingStatus
 		               rolled: diceRoll
 		               on: aGame.
-		
-	newStatus := SpaceShipStatus with: rollingStatus spaceShip and: newDistance.
+
+	newStatus := SpaceShipStatus
+		             with: rollingStatus spaceShip
+		             and: newDistance.
 
 	newStatuses := statuses copy.
 	newStatuses replaceAll: rollingStatus with: newStatus.
@@ -184,7 +191,8 @@ RoundBoard >> newFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
 
 { #category : #accessing }
 RoundBoard >> parsecsPerPosition [
-	^parsecs / lastPosition.
+
+	^ parsecs / lastPosition
 ]
 
 { #category : #private }
@@ -204,5 +212,6 @@ RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
 
 { #category : #accessing }
 RoundBoard >> startingPosition [
+
 	^ startingPosition
 ]

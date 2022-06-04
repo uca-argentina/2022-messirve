@@ -15,25 +15,25 @@ Class {
 }
 
 { #category : #verification }
-MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [ 
+MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 
 	| spaceShipsSetSize spaceShipsSize |
-	
-	spaceShipsSize := (spaceShips asOrderedCollection) size.
-	spaceShipsSetSize := (spaceShips asSet) size. 
-	
-	(spaceShipsSetSize == spaceShipsSize)
-	ifFalse: [ Error signal: 'SpaceShip name duplicated' ].
-	
-	
-	
+	spaceShipsSize := spaceShips asOrderedCollection size.
+	spaceShipsSetSize := spaceShips asSet size.
+
+	spaceShipsSetSize == spaceShipsSize ifFalse: [ 
+		Error signal: 'SpaceShip name duplicated' ]
 ]
 
 { #category : #initialization }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
-	^ self new initiallizePlayedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps 
+	^ self new
+		  initiallizePlayedBy: spaceShips
+		  on: aBoard
+		  rolling: aDiceCup
+		  withLapsToWin: anAmountOfLaps
 ]
 
 { #category : #private }
@@ -49,10 +49,10 @@ MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRol
 
 	self assertMovementCanBeApplied.
 	spaceshipStatuses := board
-		newFrom: spaceshipStatuses
-		afterA: diceCupRoll
-		from: self currentSpaceShipStatus
-		on: self.
+		                     newFrom: spaceshipStatuses
+		                     afterA: diceCupRoll
+		                     from: self currentSpaceShipStatus
+		                     on: self.
 	self verifyWinner
 ]
 
@@ -76,8 +76,7 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 	| initialPosition |
 	initialPosition := board startingPosition.
 
-	spaceshipStatuses := spaceShipsNames asOrderedCollection collect: [ 
-		                     :aSpaceShip | 
+	spaceshipStatuses := spaceShipsNames collect: [ :aSpaceShip | 
 		                     SpaceShipStatus
 			                     with: aSpaceShip
 			                     and:
@@ -90,10 +89,11 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 { #category : #private }
 MessirveSpaceRaceGame >> calculateNewRanking [
 
-	ranking := spaceshipStatuses collect: [ :a | a ].
+	ranking := spaceshipStatuses copy.
 
-	ranking sort: [ :a :b | 
-		a distance totalTraveled >= b distance totalTraveled ]
+	ranking sort: [ :aSpaceShip :anotherSpaceShip | 
+		aSpaceShip distance totalTraveled
+		>= anotherSpaceShip distance totalTraveled ]
 ]
 
 { #category : #private }
@@ -115,8 +115,7 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
-	spaceShipSequence := SequenceValidator formedBy:
-		                     spaceShipsNames
+	spaceShipSequence := SequenceValidator formedBy: spaceShipsNames
 ]
 
 { #category : #testing }
@@ -133,6 +132,7 @@ MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> lapsToWin [
+
 	^ lapsToWin
 ]
 
@@ -182,7 +182,8 @@ MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> ranking [
-	^ranking.
+
+	^ ranking
 ]
 
 { #category : #private }
@@ -195,8 +196,8 @@ MessirveSpaceRaceGame >> verifyWinner [
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> winner [
-	^gameStatus winner.
-	
+
+	^ gameStatus winner
 ]
 
 { #category : #private }

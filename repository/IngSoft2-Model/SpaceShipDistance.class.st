@@ -10,28 +10,33 @@ Class {
 }
 
 { #category : #initialization }
-SpaceShipDistance class >> with: aPosition and: aLap on: aBoard [ 
-	^self new initializeWith: aPosition and: aLap on: aBoard. 
+SpaceShipDistance class >> with: aPosition and: aLap on: aBoard [
+
+	^ self new initializeWith: aPosition and: aLap on: aBoard
 ]
 
 { #category : #initialization }
-SpaceShipDistance >> initializeWith: aPosition and: aLap on: aBoard [ 
-	position := aPosition .
-	lap := aLap .
-	distanceTraveled := lap*(aBoard lastPosition) + position .
+SpaceShipDistance >> initializeWith: aPosition and: aLap on: aBoard [
+
+	position := aPosition.
+	lap := aLap.
+	distanceTraveled := lap * aBoard lastPosition + position
 ]
 
 { #category : #accessing }
 SpaceShipDistance >> lap [
+
 	^ lap
 ]
 
 { #category : #accessing }
 SpaceShipDistance >> position [
+
 	^ position
 ]
 
 { #category : #accessing }
 SpaceShipDistance >> totalTraveled [
+
 	^ distanceTraveled
 ]

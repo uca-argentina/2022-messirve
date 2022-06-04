@@ -16,26 +16,31 @@ SpaceShipStatus class >> with: aSpaceShip and: aSpaceShipDistance [
 
 { #category : #accessing }
 SpaceShipStatus >> distance [
+
 	^ distance
 ]
 
 { #category : #initialization }
-SpaceShipStatus >> initializeWith: aSpaceShip and: aSpaceShipDistance [ 
+SpaceShipStatus >> initializeWith: aSpaceShip and: aSpaceShipDistance [
+
 	spaceShip := aSpaceShip.
-	distance := aSpaceShipDistance.
+	distance := aSpaceShipDistance
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> lap [
-	^distance lap.
+
+	^ distance lap
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> position [
-	^ distance position.
+
+	^ distance position
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> spaceShip [
+
 	^ spaceShip
 ]

@@ -10,8 +10,8 @@ Class {
 { #category : #initialization }
 MoonWalkEffect class >> assertValidPositionsGoingBackOf: anAmountOfPositions [
 
-		anAmountOfPositions < 1
-		ifTrue: [ Error signal: 'Amount of back positions must be higher than 0' ]
+	anAmountOfPositions < 1 ifTrue: [ 
+		Error signal: 'Amount of back positions must be higher than 0' ]
 ]
 
 { #category : #initialization }
@@ -24,15 +24,16 @@ MoonWalkEffect class >> takingBack: anAmountOfPositions [
 { #category : #private }
 MoonWalkEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	^effectApplicator
-		applyMoonWalkOf: -1 * backwardPositions
-		on: statuses
-		activatedBy: aStatus
-		playedOn: aBoard
-		and: aGame
+	^ effectApplicator
+		  applyMoonWalkOf: -1 * backwardPositions
+		  on: statuses
+		  activatedBy: aStatus
+		  playedOn: aBoard
+		  and: aGame
 ]
 
 { #category : #initialization }
 MoonWalkEffect >> initializeWithBackPositionsOf: backPositions [
-	backwardPositions := backPositions.
+
+	backwardPositions := backPositions
 ]

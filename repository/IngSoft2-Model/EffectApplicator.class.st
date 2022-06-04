@@ -7,39 +7,38 @@ Class {
 { #category : #applying }
 EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
-	^aBoardEffect
-		applyOn: statuses
-		activatedBy: aStatus
-		playedOn: aBoard
-		and: aGame
-		appliedBy: self
+	^ aBoardEffect
+		  applyOn: statuses
+		  activatedBy: aStatus
+		  playedOn: aBoard
+		  and: aGame
+		  appliedBy: self
 ]
 
 { #category : #applying }
 EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
 
 	| newStatuses |
-	^newStatuses := statuses collect: [ :status | 
-		               SpaceShipStatus
-			               with: status spaceShip
-			               and:
-			               (SpaceShipDistance
-				                with: 1
-				                and: status lap
-				                on: aBoard) ]
+	^ newStatuses := statuses collect: [ :status | 
+		                 SpaceShipStatus
+			                 with: status spaceShip
+			                 and:
+			                 (SpaceShipDistance
+				                  with: 1
+				                  and: status lap
+				                  on: aBoard) ]
 ]
 
 { #category : #applying }
 EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
-	| aDistance  |
-
+	| aDistance |
 	aDistance := aBoard
 		             newDistanceAfter: aStatus
 		             rolled: aBoost
 		             on: aGame.
 
-	^aBoard advance: aStatus from: statuses to: aDistance
+	^ aBoard advance: aStatus from: statuses to: aDistance
 ]
 
 { #category : #applying }
@@ -63,12 +62,18 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 						                 on: aGame)
 					                on: aBoard) ].
 
-	spaceShipPlaying := self statusOf: aStatus spaceShip from: newStatuses.
-	
-	^ aBoard advance: spaceShipPlaying from: newStatuses to: currentDistance
+	spaceShipPlaying := self
+		                    statusOf: aStatus spaceShip
+		                    from: newStatuses.
+
+	^ aBoard
+		  advance: spaceShipPlaying
+		  from: newStatuses
+		  to: currentDistance
 ]
 
 { #category : #applying }
-EffectApplicator >> statusOf: aSpaceShip from: statuses [ 
-	^statuses detect: [ :status | status spaceShip = aSpaceShip ]
+EffectApplicator >> statusOf: aSpaceShip from: statuses [
+
+	^ statuses detect: [ :status | status spaceShip = aSpaceShip ]
 ]

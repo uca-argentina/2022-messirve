@@ -6,15 +6,18 @@ Class {
 
 { #category : #testing }
 MessirveSpaceGameStartOfTurnStatus >> canApplyMovement [
-	^false
+
+	^ false
 ]
 
 { #category : #testing }
 MessirveSpaceGameStartOfTurnStatus >> isFinished [
-	^false
+
+	^ false
 ]
 
 { #category : #testing }
-MessirveSpaceGameStartOfTurnStatus >> winner [ 
+MessirveSpaceGameStartOfTurnStatus >> winner [
+
 	Error signal: 'There is no winner'
 ]

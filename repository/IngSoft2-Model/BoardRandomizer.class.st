@@ -25,10 +25,14 @@ BoardRandomizer >> createRandomBoardOf100Positions [
 	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffect new ].
 	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffect new ].
 	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffect new ].
-	1 to: 10 do: [ :i | defaultBoardPositions add: (MoonWalkEffect takingBack: (1 to: 10) atRandom) ].
-	1 to:  8 do: [ :i | defaultBoardPositions add: (HyperJumpEffect with: { 50 . 40 . 30 . 20 . 10 }) ].
-	1 to:  2 do: [ :i | defaultBoardPositions add: AtomicBombEffect new ].
-	
+	1 to: 10 do: [ :i | 
+		defaultBoardPositions add:
+			(MoonWalkEffect takingBack: (1 to: 10) atRandom) ].
+	1 to: 8 do: [ :i | 
+		defaultBoardPositions add:
+			(HyperJumpEffect with: { 50. 40. 30. 20. 10 }) ].
+	1 to: 2 do: [ :i | defaultBoardPositions add: AtomicBombEffect new ].
+
 	defaultBoardPositions shuffle.
 	^ defaultBoardPositions
 ]

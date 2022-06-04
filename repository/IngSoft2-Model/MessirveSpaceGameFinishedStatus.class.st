@@ -8,21 +8,25 @@ Class {
 }
 
 { #category : #initialization }
-MessirveSpaceGameFinishedStatus class >> withWinner: aWinner [ 
-	^self new initializeWithWinner: aWinner.
+MessirveSpaceGameFinishedStatus class >> withWinner: aWinner [
+
+	^ self new initializeWithWinner: aWinner
 ]
 
 { #category : #initialization }
-MessirveSpaceGameFinishedStatus >> initializeWithWinner: aWinner [ 
-	winner := aWinner.
+MessirveSpaceGameFinishedStatus >> initializeWithWinner: aWinner [
+
+	winner := aWinner
 ]
 
 { #category : #testing }
 MessirveSpaceGameFinishedStatus >> isFinished [
-	^true.
+
+	^ true
 ]
 
 { #category : #accessing }
 MessirveSpaceGameFinishedStatus >> winner [
+
 	^ winner
 ]
