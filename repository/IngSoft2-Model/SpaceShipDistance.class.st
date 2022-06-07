@@ -25,7 +25,6 @@ SpaceShipDistance >> initializeWith: aPosition and: aLap on: aBoard [
 
 { #category : #accessing }
 SpaceShipDistance >> lap [
-
 	^ lap
 ]
 
@@ -37,6 +36,5 @@ SpaceShipDistance >> position [
 
 { #category : #accessing }
 SpaceShipDistance >> totalTraveled [
-
 	^ distanceTraveled
 ]

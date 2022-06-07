@@ -3,7 +3,8 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'roll',
-		'currentIndex'
+		'currentIndex',
+		'rollSequence'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -15,15 +16,16 @@ LoadedDie class >> rolling: aRoll [
 
 { #category : #private }
 LoadedDie >> increaseIndex [
-	currentIndex := currentIndex == roll size
-		                         ifTrue: [ 1 ]
-		                         ifFalse: [ currentIndex + 1 ]
+	currentIndex := rollSequence advanceSequenceNumber.
 ]
 
 { #category : #initialization }
 LoadedDie >> initializeWithRoll: aRoll [ 
-	currentIndex := 1.
+	
+	rollSequence := SequenceValidator formedBy: aRoll.
 	roll := aRoll.
+	currentIndex := 1.
+	
 ]
 
 { #category : #action }
