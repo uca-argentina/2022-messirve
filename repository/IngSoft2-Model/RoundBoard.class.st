@@ -164,21 +164,9 @@ RoundBoard >> newDistanceAfter: aStatus rolled: aDiceResult on: aGame [
 ]
 
 { #category : #private }
-RoundBoard >> newStatusesFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
+RoundBoard >> newStatusesAfter: newStatus applyingTheEffectOf: newPosition over: newStatuses on: aGame [
 
-	| newPosition effectLanded effectApplicator newStatus newStatuses |
-	newPosition := self
-		               newDistanceAfter: rollingStatus
-		               rolled: diceRoll
-		               on: aGame.
-
-	newStatus := SpaceShipStatus
-		             with: rollingStatus spaceShip
-		             and: newPosition.
-
-	newStatuses := statuses copy.
-	newStatuses replaceAll: rollingStatus with: newStatus.
-
+	| effectLanded effectApplicator |
 	effectLanded := self effectAppliedOnPosition: newPosition tile.
 	effectApplicator := EffectApplicator new.
 	^ effectApplicator
@@ -187,6 +175,26 @@ RoundBoard >> newStatusesFrom: statuses afterA: diceRoll from: rollingStatus on:
 		  activatedBy: newStatus
 		  playedOn: self
 		  and: aGame
+]
+
+{ #category : #private }
+RoundBoard >> newStatusesFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
+
+	| newPosition newStatus newStatuses |
+	newPosition := self
+		               newDistanceAfter: rollingStatus
+		               rolled: diceRoll
+		               on: aGame.
+	newStatus := SpaceShipStatus
+		             with: rollingStatus spaceShip
+		             and: newPosition.
+	newStatuses := statuses copy.
+	newStatuses replaceAll: rollingStatus with: newStatus.
+	^ self
+		  newStatusesAfter: newStatus
+		  applyingTheEffectOf: newPosition
+		  over: newStatuses
+		  on: aGame
 ]
 
 { #category : #accessing }
