@@ -37,23 +37,15 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 ]
 
 { #category : #private }
-MessirveSpaceRaceGame >> advanceToNextTurn [
-
-	currentTurn := spaceShipSequence advanceSequenceNumber.
-	self isFinished ifFalse: [ 
-		gameStatus := MessirveSpaceGameStartOfTurnStatus new ]
-]
-
-{ #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
 	self assertMovementCanBeApplied.
 	spaceshipStatuses := board
-		                     newFrom: spaceshipStatuses
+		                     newStatusesFrom: spaceshipStatuses
 		                     afterA: diceCupRoll
 		                     from: self currentSpaceShipStatus
 		                     on: self.
-	self verifyWinner
+	self endTheGameIfAWinnerExists
 ]
 
 { #category : #private }
@@ -80,7 +72,7 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 		                     SpaceShipStatus
 			                     with: aSpaceShip
 			                     and:
-			                     (SpaceShipDistance
+			                     (SpaceShipPosition
 				                      with: initialPosition
 				                      and: 1
 				                      on: board) ]
@@ -91,9 +83,8 @@ MessirveSpaceRaceGame >> calculateNewRanking [
 
 	ranking := spaceshipStatuses copy.
 
-	ranking sort: [ :aSpaceShip :anotherSpaceShip | 
-		aSpaceShip distance totalTraveled
-		>= anotherSpaceShip distance totalTraveled ]
+	ranking sort: [ :aSpaceShip : anotherSpaceShip | 
+		aSpaceShip position >= anotherSpaceShip position ].
 ]
 
 { #category : #private }
@@ -103,6 +94,14 @@ MessirveSpaceRaceGame >> currentSpaceShipStatus [
 	currentSpaceShipStatus := self obtainSpaceShipStatusFrom:
 		                          self nameOfSpaceShipPlaying.
 	^ currentSpaceShipStatus
+]
+
+{ #category : #private }
+MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
+
+	self winnerExists ifFalse: [ ^ self ].
+	gameStatus := MessirveSpaceGameFinishedStatus withWinner:
+		              self nameOfSpaceShipPlaying
 ]
 
 { #category : #initialization }
@@ -115,7 +114,7 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
-	spaceShipSequence := SequenceValidator formedBy: spaceShipsNames
+	spaceShipSequence := Sequence formedBy: spaceShipsNames
 ]
 
 { #category : #testing }
@@ -143,16 +142,18 @@ MessirveSpaceRaceGame >> nameOfSpaceShipPlaying [
 ]
 
 { #category : #private }
+MessirveSpaceRaceGame >> nextTurn [
+
+	currentTurn := spaceShipSequence next.
+	self isFinished ifFalse: [ 
+		gameStatus := MessirveSpaceGameStartOfTurnStatus new ]
+]
+
+{ #category : #private }
 MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 
 	^ spaceshipStatuses detect: [ :status | 
 		  status spaceShip == aSpaceShip ]
-]
-
-{ #category : #accessing }
-MessirveSpaceRaceGame >> parsecsPerPosition [
-
-	^ board parsecsPerPosition
 ]
 
 { #category : #playing }
@@ -170,28 +171,19 @@ MessirveSpaceRaceGame >> playNextTurn [
 	diceCupRoll := diceCup roll.
 	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
 	self applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
-	self calculateNewRanking.
-	self advanceToNextTurn
+	self nextTurn
 ]
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
-	^ (self obtainSpaceShipStatusFrom: aSpaceShip) position
+	^ (self obtainSpaceShipStatusFrom: aSpaceShip) tile
 ]
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> ranking [
 
 	^ ranking
-]
-
-{ #category : #private }
-MessirveSpaceRaceGame >> verifyWinner [
-
-	self winnerExists ifFalse: [ ^ self ].
-	gameStatus := MessirveSpaceGameFinishedStatus withWinner:
-		              self nameOfSpaceShipPlaying
 ]
 
 { #category : #accessing }

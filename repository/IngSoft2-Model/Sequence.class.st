@@ -1,5 +1,5 @@
 Class {
-	#name : #SequenceValidator,
+	#name : #Sequence,
 	#superclass : #Object,
 	#instVars : [
 		'currentSequenceNumber',
@@ -9,20 +9,13 @@ Class {
 }
 
 { #category : #initialization }
-SequenceValidator class >> formedBy: aSequence [
+Sequence class >> formedBy: aSequence [
 
 	^ self new initializeFormedBy: aSequence
 ]
 
-{ #category : #processing }
-SequenceValidator >> advanceSequenceNumber [
-
-	self calculateNextInSequence.
-	^ currentSequenceNumber
-]
-
 { #category : #private }
-SequenceValidator >> calculateNextInSequence [
+Sequence >> calculateNextInSequence [
 
 	currentSequenceNumber := currentSequenceNumber == objectSequence size
 		                         ifTrue: [ 1 ]
@@ -30,8 +23,15 @@ SequenceValidator >> calculateNextInSequence [
 ]
 
 { #category : #initialize }
-SequenceValidator >> initializeFormedBy: aSequence [
+Sequence >> initializeFormedBy: aSequence [
 
 	objectSequence := aSequence.
 	currentSequenceNumber := 1
+]
+
+{ #category : #processing }
+Sequence >> next [
+
+	self calculateNextInSequence.
+	^ currentSequenceNumber
 ]

@@ -162,7 +162,7 @@ LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstP
 		              withLapsToWin: 2.
 
 	aSpaceGame playGame.
-
+	aSpaceGame calculateNewRanking.
 	self assert: aSpaceGame ranking first spaceShip equals: 'De Paul'
 ]
 

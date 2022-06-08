@@ -3,7 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'spaceShip',
-		'distance'
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -14,33 +14,32 @@ SpaceShipStatus class >> with: aSpaceShip and: aSpaceShipDistance [
 	^ self new initializeWith: aSpaceShip and: aSpaceShipDistance
 ]
 
-{ #category : #accessing }
-SpaceShipStatus >> distance [
-
-	^ distance
-]
-
 { #category : #initialization }
-SpaceShipStatus >> initializeWith: aSpaceShip and: aSpaceShipDistance [
+SpaceShipStatus >> initializeWith: aSpaceShip and: aSpaceShipPosition [
 
 	spaceShip := aSpaceShip.
-	distance := aSpaceShipDistance
+	position := aSpaceShipPosition
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> lap [
 
-	^ distance lap
+	^ position lap
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> position [
-
-	^ distance position
+	^ position
 ]
 
 { #category : #accessing }
 SpaceShipStatus >> spaceShip [
 
 	^ spaceShip
+]
+
+{ #category : #accessing }
+SpaceShipStatus >> tile [
+
+	^ position tile
 ]

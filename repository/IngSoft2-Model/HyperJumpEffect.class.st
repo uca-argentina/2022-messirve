@@ -2,9 +2,9 @@ Class {
 	#name : #HyperJumpEffect,
 	#superclass : #Object,
 	#instVars : [
-		'parsecs',
-		'parsecIndex',
-		'parsecSequence'
+		'sequence',
+		'distance',
+		'sequenceStart'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,21 +16,14 @@ HyperJumpEffect class >> with: parsecs [
 ]
 
 { #category : #private }
-HyperJumpEffect >> advanceIndex [
-
-	parsecIndex := parsecSequence advanceSequenceNumber
-]
-
-{ #category : #private }
 HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	| positionLength boost |
-	positionLength := aGame parsecsPerPosition.
-	boost := (parsecs at: parsecIndex) // positionLength.
-	self advanceIndex.
+	| aDistance |
+	aDistance := (distance at: sequenceStart).
+	self next.
 
 	^ effectApplicator
-		  applyBoostOf: boost
+		  applyHyperJumpEffectWith: aDistance
 		  on: statuses
 		  activatedBy: aStatus
 		  playedOn: aBoard
@@ -40,7 +33,13 @@ HyperJumpEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: 
 { #category : #initialization }
 HyperJumpEffect >> initializeWith: someParsecs [
 
-	parsecSequence := SequenceValidator formedBy: someParsecs.
-	parsecs := someParsecs.
-	parsecIndex := 1
+	sequence := Sequence formedBy: someParsecs.
+	distance := someParsecs.
+	sequenceStart := 1
+]
+
+{ #category : #private }
+HyperJumpEffect >> next [
+
+	sequenceStart := sequence next
 ]

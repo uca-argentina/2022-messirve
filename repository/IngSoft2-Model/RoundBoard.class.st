@@ -89,10 +89,10 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 ]
 
 { #category : #private }
-RoundBoard >> advance: aStatus from: statuses to: aDistance [
+RoundBoard >> advance: aStatus from: statuses to: aPosition [
 
 	| newStatus newStatuses |
-	newStatus := SpaceShipStatus with: aStatus spaceShip and: aDistance.
+	newStatus := SpaceShipStatus with: aStatus spaceShip and: aPosition.
 
 	newStatuses := statuses copy.
 	newStatuses replaceAll: aStatus with: newStatus.
@@ -130,8 +130,8 @@ RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
 
 	| newLaps currentLaps lapsToAdd positionOfSpaceship |
-	currentLaps := aStatus distance lap.
-	positionOfSpaceship := aStatus distance position.
+	currentLaps := aStatus position lap.
+	positionOfSpaceship := aStatus position tile.
 	lapsToAdd := positionOfSpaceship = self lastPosition
 		             ifFalse: [ 
 		             positionOfSpaceship + diceResult // self lastPosition ]
@@ -160,26 +160,26 @@ RoundBoard >> newDistanceAfter: aStatus rolled: aDiceResult on: aGame [
 	aPosition := self positionAfter: aStatus rolled: aDiceResult.
 	aLap := self lapAfter: aStatus rolled: aDiceResult on: aGame.
 
-	^ SpaceShipDistance with: aPosition and: aLap on: self
+	^ SpaceShipPosition with: aPosition and: aLap on: self
 ]
 
 { #category : #private }
-RoundBoard >> newFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
+RoundBoard >> newStatusesFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
 
-	| newDistance effectLanded effectApplicator newStatus newStatuses |
-	newDistance := self
+	| newPosition effectLanded effectApplicator newStatus newStatuses |
+	newPosition := self
 		               newDistanceAfter: rollingStatus
 		               rolled: diceRoll
 		               on: aGame.
 
 	newStatus := SpaceShipStatus
 		             with: rollingStatus spaceShip
-		             and: newDistance.
+		             and: newPosition.
 
 	newStatuses := statuses copy.
 	newStatuses replaceAll: rollingStatus with: newStatus.
 
-	effectLanded := self effectAppliedOnPosition: newDistance position.
+	effectLanded := self effectAppliedOnPosition: newPosition tile.
 	effectApplicator := EffectApplicator new.
 	^ effectApplicator
 		  apply: effectLanded
@@ -199,7 +199,7 @@ RoundBoard >> parsecsPerPosition [
 RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
 
 	| newPosition |
-	newPosition := aSpaceShipStatus distance position + diceRoll.
+	newPosition := aSpaceShipStatus position tile + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
 	newPosition < 0 ifTrue: [ 
