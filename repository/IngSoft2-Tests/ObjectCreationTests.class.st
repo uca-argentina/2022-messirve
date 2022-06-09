@@ -1,6 +1,6 @@
 Class {
 	#name : #ObjectCreationTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -15,10 +15,22 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 ]
 
 { #category : #tests }
+ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
+
+	self
+		should: [ 
+			MoonWalkEffect takingBack: 0 ]
+		raise: Error
+		whoseDescriptionIncludes: 'Amount of back positions must be higher than 0'
+		description:
+		'The N belonging to a MoonWalk position cannot be smaller than 1'
+]
+
+{ #category : #tests }
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
-		should: [ RoundBoard withPositions: {  } and: 100 ]
+		should: [ RoundBoard with: 1 and: 100 ]
 		raise: Error
 		whoseDescriptionIncludes:
 		'A board cannot have less than two positions'
@@ -36,7 +48,35 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 		              rolling: ''
 		              withLapsToWin: 1.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
+		self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
+
+	| aSpaceGame aBoard |
+	aBoard := RoundBoard with: 100 and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul' }
+		              on: aBoard
+		              rolling: ''
+		              withLapsToWin: 1.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -54,7 +94,7 @@ ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 				              rolling: aDiceCup
 				              withLapsToWin: 1 ]
 		raise: Error
-		whoseDescriptionIncludes: 'Player name duplicated'
+		whoseDescriptionIncludes: 'SpaceShip name duplicated'
 		description:
-		'Two players with the same name cannot be added to game'
+		'Two SpaceShip with the same name cannot be added to game'
 ]

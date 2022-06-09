@@ -2,7 +2,9 @@ Class {
 	#name : #LoadedDie,
 	#superclass : #Object,
 	#instVars : [
-		'roll'
+		'roll',
+		'currentIndex',
+		'rollSequence'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -14,10 +16,22 @@ LoadedDie class >> rolling: aRoll [
 
 { #category : #initialization }
 LoadedDie >> initializeWithRoll: aRoll [ 
+	
+	rollSequence := Sequence formedBy: aRoll.
 	roll := aRoll.
+	currentIndex := 1.
+	
+]
+
+{ #category : #private }
+LoadedDie >> next [
+	currentIndex := rollSequence next.
 ]
 
 { #category : #action }
 LoadedDie >> roll [
-	^ roll
+	| currentRoll |
+	currentRoll := roll at: currentIndex.
+	self next.
+	^currentRoll.
 ]

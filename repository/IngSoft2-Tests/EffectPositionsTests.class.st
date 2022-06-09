@@ -1,22 +1,40 @@
 Class {
 	#name : #EffectPositionsTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvances4Spaces [
+EffectPositionsTests >> testASpaceShipLandsOnAPositionWithoutEffectAndTheLapAndPositionAreNotModified [
+
+	| aSpaceGame aLoadedDie aBoard |
+	aLoadedDie := LoadedDie rolling: { 5 }.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame.
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipLandsOnASpeedUpAndThusFinishesLapOneAndIsNowOnLapTwo [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          SpeedUpEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 5
 		          and: 100.
-	aDie := LoadedDie rolling: 1.
+	aDie := LoadedDie rolling: { 1. 4 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -26,23 +44,25 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvances4Spaces 
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+
 	self deny: aSpaceGame isFinished
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBack4Spaces [
+EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpaces [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          WormHoleEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 10
 		          and: 100.
-	aDie := LoadedDie rolling: 1.
+	aDie := LoadedDie rolling: { 1. 4 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -52,24 +72,135 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBack4Spaces
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 3.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1.
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame.
+
 	self deny: aSpaceGame isFinished
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipButTheSpaceShipInCurrentTurnBackNPositions [
+EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndCannotGoBackBehindTheStartingPoint [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          (MoonWalkEffectPosition withN: 3).
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly: { WormHoleEffect new }
+		          at: { 2 }
+		          Of: 5
 		          and: 100.
-	aDie := LoadedDie rolling: 1.
+	aDie := LoadedDie rolling: { 1 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+	self deny: aSpaceGame isFinished
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpaces [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { WormHoleEffect new }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aDie := LoadedDie rolling: { 6 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 3.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+	self deny: aSpaceGame isFinished
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombAfterFinishingTheFirstLapTakesEverySpaceShipBackToPositionOneButMaintainsItsAchievedLaps [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { AtomicBombEffect new }
+		          at: { 1 }
+		          Of: 3
+		          and: 100.
+	aDie := LoadedDie rolling: { 1. 1. 1. 2 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'De Paul'. 'Armani'. 'Messi' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'De Paul'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombTakesEverySpaceShipBackToPositionOne [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { AtomicBombEffect new }
+		          at: { 3 }
+		          Of: 4
+		          and: 100.
+	aDie := LoadedDie rolling: { 1 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
@@ -78,66 +209,94 @@ EffectPositionsTests >> testASpaceShipThatLandsOnAMoonWalkTakesEverySpaceShipBut
 		              withLapsToWin: 5.
 
 	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
-	self assert: (aSpaceGame lapsOfSpaceship: 'De Paul') equals: 1.
+	self
+		assert: 'De Paul'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 4.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Armani') equals: 1.
+	self
+		assert: 'Armani'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
-	self assert: (aSpaceGame lapsOfSpaceship: 'Messi') equals: 1
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
-EffectPositionsTests >> testASpaceShipThatLandsOnANukeTakesEverySpaceShipBackToPositionOne [
-
-	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NukeEffectPosition new.
-				          NonEffectPosition new }
-		          and: 100.
-	aDie := LoadedDie rolling: 1.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
-		              on: aBoard
-		              rolling: aDie
-		              withLapsToWin: 5.
-
-	aSpaceGame playNextTurn.
-	aSpaceGame playNextTurn.
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 2.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 2.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2.
-
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Armani') equals: 1.
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 1
-]
-
-{ #category : #tests }
-EffectPositionsTests >> testASpaceshipCannotBeAffectedByAChainedEffect [
+EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpaceshipAndAdvancesTwentyParsecs [
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          SpeedUpEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          SpeedUpEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly:
+		          { (HyperJumpEffect with: { 30. 20. 10 }) }
+		          at: { 2 }
+		          Of: 10
 		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 2.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvancesThirtyParsecs [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          boardWithOnly:
+		          { (HyperJumpEffect with: { 30. 20. 10 }) }
+		          at: { 2 }
+		          Of: 10
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -147,66 +306,12 @@ EffectPositionsTests >> testASpaceshipCannotBeAffectedByAChainedEffect [
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
-]
 
-{ #category : #tests }
-EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpaceshipAndAdvances20Parsecs [
-
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          (HyperJumpEffectPosition with: { 30. 20. 10 }).
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
-		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' . 'De Paul' }
-		              on: aBoard
-		              rolling: aDiceCup
-		              withLapsToWin: 2.
-
-	aSpaceGame playGame.
-	self assert: aSpaceGame isFinished.
-]
-
-{ #category : #tests }
-EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvances30Parsecs [
-
-	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          (HyperJumpEffectPosition with: { 30. 20. 10 }).
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
-		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aDiceCup
-		              withLapsToWin: 2.
-
-	aSpaceGame playNextTurn.
-
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -214,19 +319,11 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          (HyperJumpEffectPosition with: { 3. 20. 10 }).
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly: { (HyperJumpEffect with: { 3 }) }
+		          at: { 2 }
+		          Of: 10
 		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -236,7 +333,38 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 2
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionThatMovesItForwardFivePositionsAndAdvancesOneLap [
+
+	| aSpaceGame aBoard aDiceCup |
+	aBoard := RoundBoard
+		          boardWithOnly: { (HyperJumpEffect with: { 10 }) }
+		          at: { 10 }
+		          Of: 10
+		          and: 100.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 9 }) }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aDiceCup
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -244,16 +372,13 @@ EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUp
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          SpeedUpEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          WormHoleEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly: { 
+				          SpeedUpEffect new.
+				          WormHoleEffect new }
+		          at: { 2. 6 }
+		          Of: 7
 		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
@@ -263,7 +388,108 @@ EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUp
 
 	aSpaceGame playNextTurn.
 
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 6
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsEveryOtherSpaceShipButItself [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { (MoonWalkEffect takingBack: 1) }
+		          at: { 3 }
+		          Of: 5
+		          and: 100.
+	aDie := LoadedDie rolling: { 1 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesEveryOtherSpaceShipOneLapBehind [
+
+	| aSpaceGame aBoard aDie |
+	aBoard := RoundBoard
+		          boardWithOnly: { (MoonWalkEffect takingBack: 3) }
+		          at: { 2 }
+		          Of: 10
+		          and: 100.
+	aDie := LoadedDie rolling: { 10. 10. 10. 1 }.
+
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
+		              on: aBoard
+		              rolling: aDie
+		              withLapsToWin: 5.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'De Paul'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 2
+		in: aSpaceGame.
+	self
+		assert: 'De Paul'
+		isAt: 8
+		with: 1
+		in: aSpaceGame.
+	self
+		assert: 'Armani'
+		isAt: 8
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -271,22 +497,15 @@ EffectPositionsTests >> testSpaceShipsLandOnHyperJumpPositionFourTimesAndTheLast
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
-		          withPositions: { 
-				          NonEffectPosition new.
-				          (HyperJumpEffectPosition with: { 30. 20. 10 }).
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new.
-				          NonEffectPosition new }
+		          boardWithOnly:
+		          { (HyperJumpEffect with: { 30. 20. 10 }) }
+		          at: { 2 }
+		          Of: 10
 		          and: 100.
-	aDiceCup := DiceCup withAll: { (LoadedDie rolling: 1) }.
+	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' . 'De Paul' . 'Paredes' . 'El Dibu' }
+		              playedBy: { 'Messi'. 'De Paul'. 'Paredes'. 'El Dibu' }
 		              on: aBoard
 		              rolling: aDiceCup
 		              withLapsToWin: 2.
@@ -295,9 +514,29 @@ EffectPositionsTests >> testSpaceShipsLandOnHyperJumpPositionFourTimesAndTheLast
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
-	
-	self assert: (aSpaceGame positionOfSpaceship: 'Messi') equals: 5.
-	self assert: (aSpaceGame positionOfSpaceship: 'De Paul') equals: 4.
-	self assert: (aSpaceGame positionOfSpaceship: 'Paredes') equals: 3.
-	self assert: (aSpaceGame positionOfSpaceship: 'El Dibu') equals: 5.
+
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'De Paul'
+		isAt: 4
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Paredes'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame
 ]

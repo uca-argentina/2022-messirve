@@ -1,6 +1,6 @@
 Class {
 	#name : #DiceCupTests,
-	#superclass : #TestCase,
+	#superclass : #MessirveTests,
 	#category : #'IngSoft2-Tests'
 }
 
@@ -32,9 +32,9 @@ DiceCupTests >> testADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides [
 DiceCupTests >> testDiceCupRollsTheSumOfTheRollsOfEachDieInside [
 
 	| aDiceCup aLoadedDie aLoadedDie2 aLoadedDie3 |
-	aLoadedDie := LoadedDie rolling: 4.
-	aLoadedDie2 := LoadedDie rolling: 3.
-	aLoadedDie3 := LoadedDie rolling: 8.
+	aLoadedDie := LoadedDie rolling: { 4 }.
+	aLoadedDie2 := LoadedDie rolling: { 3 }.
+	aLoadedDie3 := LoadedDie rolling: { 8 }.
 	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie.
 			            aLoadedDie2.

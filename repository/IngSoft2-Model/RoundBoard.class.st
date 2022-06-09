@@ -11,59 +11,98 @@ Class {
 }
 
 { #category : #verification }
-RoundBoard class >> assertValidPositions: boardPositions [ 
-		boardPositions size < 2
-		ifTrue: [ Error signal: 'A board cannot have less than two positions' ]
+RoundBoard class >> assertValidBoardPositions: boardPositions [
+
+	boardPositions size < 2 ifTrue: [ 
+		Error signal: 'A board cannot have less than two positions' ]
+]
+
+{ #category : #verification }
+RoundBoard class >> assertValidNumberOfPositions: numberOfPositions [
+
+	numberOfPositions < 2 ifTrue: [ 
+		Error signal: 'A board cannot have less than two positions' ]
+]
+
+{ #category : #verification }
+RoundBoard class >> assertValidParsecs: someParsecs [
+
+	someParsecs < 1 ifTrue: [ 
+		Error signal: 'A board cannot be initialized with 0 or less parsecs' ]
+]
+
+{ #category : #initialization }
+RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs [
+
+	| boardPositions |
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+
+	boardPositions := self noEffectPositionBoardWith: numberOfPositions.
+	1 to: effectTileNumbers size do: [ :i | 
+		boardPositions
+			at: (effectTileNumbers at: 1)
+			put: (effectPositions at: 1) ].
+	^ self new
+		  initializeWithPositions: boardPositions
+		  and: aNumberOfParsecs
 ]
 
 { #category : #'instance creation' }
-RoundBoard class >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
+RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 
-	| numberOfExtraPositions defaultBoardPositions |
-	defaultBoardPositions := self createRandomBoardOf100Positions.
-
-	numberOfExtraPositions := numberOfPositions - 100.
-	1 to: numberOfExtraPositions do: [ :position | 
-		defaultBoardPositions add:
-			(defaultBoardPositions at: position % 100 + 1) ].
-	^ defaultBoardPositions
-]
-
-{ #category : #'instance creation' }
-RoundBoard class >> createRandomBoardOf100Positions [
-
-	| defaultBoardPositions |
-	defaultBoardPositions := OrderedCollection new.
-	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffectPosition new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffectPosition new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffectPosition new ].
-	1 to: 10 do: [ :i | defaultBoardPositions add: (MoonWalkEffectPosition withN: (1 to: 10) atRandom) ].
-	1 to:  8 do: [ :i | defaultBoardPositions add: (HyperJumpEffectPosition with: { 50 . 40 . 30 . 20 . 10 }) ].
-	1 to:  2 do: [ :i | defaultBoardPositions add: NukeEffectPosition new ].
-	
-	defaultBoardPositions shuffle.
-	^ defaultBoardPositions
+	| boardPositions |
+	boardPositions := OrderedCollection new.
+	1 to: numberOfTiles do: [ :i | boardPositions add: NonEffect new ].
+	^ boardPositions
 ]
 
 { #category : #initialization }
 RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
-	| defaultBoardPositions |
-	defaultBoardPositions := self assignDistributedBoardPositionsAdaptedTo:
+	| defaultBoardPositions boardRandomizer |
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+
+	boardRandomizer := BoardRandomizer new.
+
+	defaultBoardPositions := boardRandomizer 
+		                         assignDistributedBoardPositionsAdaptedTo:
 		                         numberOfPositions.
-	self assertValidPositions: defaultBoardPositions.
-	^ self new initializeWithPositions: defaultBoardPositions and: aNumberOfParsecs
+	self assertValidBoardPositions: defaultBoardPositions.
+	^ self new
+		  initializeWithPositions: defaultBoardPositions
+		  and: aNumberOfParsecs
 ]
 
 { #category : #initialization }
-RoundBoard class >> withPositions: boardPositions and: anAmountOfParsecs [ 
-	self assertValidPositions: boardPositions.
-	^self new initializeWithPositions: boardPositions and: anAmountOfParsecs .
+RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
+
+	| boardPositions |
+	self assertValidParsecs: aNumberOfParsecs.
+	self assertValidNumberOfPositions: numberOfPositions.
+
+	boardPositions := self noEffectPositionBoardWith: numberOfPositions.
+	^ self new
+		  initializeWithPositions: boardPositions
+		  and: aNumberOfParsecs
+]
+
+{ #category : #private }
+RoundBoard >> advance: aStatus from: statuses to: aPosition [
+
+	| newStatus newStatuses |
+	newStatus := SpaceShipStatus with: aStatus spaceShip and: aPosition.
+
+	newStatuses := statuses copy.
+	newStatuses replaceAll: aStatus with: newStatus.
+	^ newStatuses
 ]
 
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
-	^boardEffects at: aPosition.
+
+	^ boardEffects at: aPosition
 ]
 
 { #category : #accessing }
@@ -73,32 +112,114 @@ RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceR
 	newPosition := spaceShipPosition + diceRoll.
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
-	newPosition < 0 ifTrue: [ ^ newPosition % lastPosition ].
+	newPosition < 0 ifTrue: [ ^ 1 ].
 
 	^ newPosition
 ]
 
 { #category : #initialization }
 RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
-	
-	startingPosition := 1 .
-	boardEffects := boardPositions asOrderedCollection .
+
+	startingPosition := 1.
+	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
-	parsecs := anAmountOfParsecs. 
-	
+	parsecs := anAmountOfParsecs
+]
+
+{ #category : #private }
+RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
+
+	| newLaps currentLaps lapsToAdd positionOfSpaceship |
+	currentLaps := aStatus position lap.
+	positionOfSpaceship := aStatus position tile.
+	lapsToAdd := positionOfSpaceship = self lastPosition
+		             ifFalse: [ 
+		             positionOfSpaceship + diceResult // self lastPosition ]
+		             ifTrue: [ 0 ].
+
+	newLaps := currentLaps + lapsToAdd.
+
+	newLaps > aGame lapsToWin
+		ifTrue: [ ^ aGame lapsToWin ]
+		ifFalse: [ 
+			newLaps < 1
+				ifTrue: [ ^ 1 ]
+				ifFalse: [ ^ newLaps ] ]
 ]
 
 { #category : #accessing }
 RoundBoard >> lastPosition [
+
 	^ lastPosition
+]
+
+{ #category : #private }
+RoundBoard >> newDistanceAfter: aStatus rolled: aDiceResult on: aGame [
+
+	| aPosition aLap |
+	aPosition := self positionAfter: aStatus rolled: aDiceResult.
+	aLap := self lapAfter: aStatus rolled: aDiceResult on: aGame.
+
+	^ SpaceShipPosition with: aPosition and: aLap on: self
+]
+
+{ #category : #private }
+RoundBoard >> newStatusesAfter: newStatus applyingTheEffectOf: newPosition over: newStatuses on: aGame [
+
+	| effectLanded effectApplicator |
+	effectLanded := self effectAppliedOnPosition: newPosition tile.
+	effectApplicator := EffectApplicator new.
+	^ effectApplicator
+		  apply: effectLanded
+		  on: newStatuses
+		  activatedBy: newStatus
+		  playedOn: self
+		  and: aGame
+]
+
+{ #category : #private }
+RoundBoard >> newStatusesFrom: statuses afterA: diceRoll from: rollingStatus on: aGame [
+
+	| newPosition newStatus newStatuses |
+	newPosition := self
+		               newDistanceAfter: rollingStatus
+		               rolled: diceRoll
+		               on: aGame.
+	newStatus := SpaceShipStatus
+		             with: rollingStatus spaceShip
+		             and: newPosition.
+	newStatuses := statuses copy.
+	newStatuses replaceAll: rollingStatus with: newStatus.
+	^ self
+		  newStatusesAfter: newStatus
+		  applyingTheEffectOf: newPosition
+		  over: newStatuses
+		  on: aGame
 ]
 
 { #category : #accessing }
 RoundBoard >> parsecsPerPosition [
-	^parsecs / lastPosition.
+
+	^ parsecs / lastPosition
+]
+
+{ #category : #private }
+RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
+
+	| newPosition |
+	newPosition := aSpaceShipStatus position tile + diceRoll.
+	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
+
+	newPosition < 0 ifTrue: [ 
+		aSpaceShipStatus lap = 1
+			ifFalse: [ ^ newPosition % lastPosition ]
+			ifTrue: [ ^ 1 ] ].
+
+	^ newPosition
 ]
 
 { #category : #accessing }
 RoundBoard >> startingPosition [
+
 	^ startingPosition
 ]
