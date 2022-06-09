@@ -105,18 +105,6 @@ RoundBoard >> effectAppliedOnPosition: aPosition [
 	^ boardEffects at: aPosition
 ]
 
-{ #category : #accessing }
-RoundBoard >> finalPositionWhenStartingAt: spaceShipPosition afterRolling: diceRoll [
-
-	| newPosition |
-	newPosition := spaceShipPosition + diceRoll.
-	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
-
-	newPosition < 0 ifTrue: [ ^ 1 ].
-
-	^ newPosition
-]
-
 { #category : #initialization }
 RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 
