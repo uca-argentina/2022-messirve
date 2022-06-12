@@ -54,6 +54,73 @@ CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards 
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardTwiceAndNowHasFourCards [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { 
+				          (CardDealerEffect handing: speedCard).
+				          (CardDealerEffect handing: overloadCard) }
+		          at: { 2. 3 }
+		          Of: 5
+		          and: 100
+		          handing: { overloadCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		equals: { 
+				overloadCard.
+				overloadCard.
+				speedCard.
+				overloadCard } asOrderedCollection
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCardButDoesntReceiveTheSpeedCard [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { 
+				          SpeedUpEffect new.
+				          (CardDealerEffect handing: speedCard) }
+		          at: { 2. 6 }
+		          Of: 10
+		          and: 100
+		          handing: { overloadCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 6
+		with: 1
+		in: aSpaceGame.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		equals: { 
+				overloadCard.
+				overloadCard } asOrderedCollection
+]
+
+{ #category : #tests }
 CardTests >> testSixSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 
 	| aSpaceGame aLoadedDie aBoard speedCard overloadCard |

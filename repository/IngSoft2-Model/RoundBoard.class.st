@@ -43,8 +43,8 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 	boardPositions := self noEffectPositionBoardWith: numberOfPositions.
 	1 to: effectTileNumbers size do: [ :i | 
 		boardPositions
-			at: (effectTileNumbers at: 1)
-			put: (effectPositions at: 1) ].
+			at: (effectTileNumbers at: i)
+			put: (effectPositions at: i) ].
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
