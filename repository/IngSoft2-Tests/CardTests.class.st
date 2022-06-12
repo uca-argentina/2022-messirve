@@ -121,6 +121,35 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { 
+				          SpeedUpEffect new.
+				          (CardDealerEffect handing: speedCard) }
+		          at: { 2. 6 }
+		          Of: 10
+		          and: 100
+		          handing: { overloadCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	self
+		should: [ 
+		aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi' ]
+		raise: Error
+		whoseDescriptionIncludes: 'SpaceShip doesnt own that card'
+		description: 'SpaceShip doesnt own that card'
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |

@@ -109,7 +109,7 @@ RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
 
 	| spaceShipInventory cardExists |
 	spaceShipInventory := inventories detect: [ :inventory | 
-		                      inventory spaceShip == spaceShip ].
+		                      inventory spaceShip = spaceShip ].
 	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
 		              card == aCard ].
 	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
@@ -126,7 +126,7 @@ RoundBoard >> assignInventoriesFrom: statuses [
 RoundBoard >> cardsInInventoryOf: aSpaceShipName [
 
 	^ inventories detect: [ :inventory | 
-		  inventory spaceShip == aSpaceShipName ]
+		  inventory spaceShip = aSpaceShipName ]
 ]
 
 { #category : #'as yet unclassified' }
