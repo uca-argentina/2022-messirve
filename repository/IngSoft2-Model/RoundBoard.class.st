@@ -118,6 +118,16 @@ RoundBoard >> cardsInInventoryOf: aSpaceShipName [
 		  inventory spaceShip == aSpaceShipName ]
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard >> distribute: aCard toTheInventoryOf: aSpaceShip [
+
+	| inventory newInventory |
+	inventory := inventories detect: [ :inven | 
+		             inven spaceShip == aSpaceShip ].
+	newInventory := cardDealer hand: aCard to: inventory.
+	inventories replaceAll: inventory with: newInventory
+]
+
 { #category : #private }
 RoundBoard >> distributeInitialCardsFrom: statuses [
 

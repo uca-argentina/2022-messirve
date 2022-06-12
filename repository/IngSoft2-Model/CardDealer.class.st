@@ -14,8 +14,14 @@ CardDealer class >> handing: cards [
 	^ self new initializeHanding: cards
 ]
 
+{ #category : #'as yet unclassified' }
+CardDealer >> hand: aCard to: aSpaceShipInventory [
+
+	^ aSpaceShipInventory draw: aCard
+]
+
 { #category : #'action handling' }
-CardDealer >> handCardTo: aSpaceShipInventory [
+CardDealer >> handCardFromDeckTo: aSpaceShipInventory [
 
 	| cardToHand |
 	cardToHand := deck at: cardHandingSequence currentSequenceNumber.
@@ -35,7 +41,7 @@ CardDealer >> inventoriesAfterDrawingTwoFrom: inventories [
 
 	| inventoriesAfterDrawingOne |
 	inventoriesAfterDrawingOne := inventories collect: [ :inventory | 
-		                              self handCardTo: inventory ].
+		                              self handCardFromDeckTo: inventory ].
 	^ inventoriesAfterDrawingOne collect: [ :inventory | 
-		  self handCardTo: inventory ]
+		  self handCardFromDeckTo: inventory ]
 ]

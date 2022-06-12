@@ -41,6 +41,13 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	^ aBoard advance: aStatus from: statuses to: aDistance
 ]
 
+{ #category : #'as yet unclassified' }
+EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aBoard [
+
+	aBoard distribute: aCard toTheInventoryOf: aStatus spaceShip.
+	^ statuses copy
+]
+
 { #category : #applying }
 EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
