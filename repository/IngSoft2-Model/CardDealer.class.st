@@ -1,0 +1,41 @@
+Class {
+	#name : #CardDealer,
+	#superclass : #Object,
+	#instVars : [
+		'deck',
+		'cardHandingSequence'
+	],
+	#category : #'IngSoft2-Model'
+}
+
+{ #category : #initialization }
+CardDealer class >> handing: cards [
+
+	^ self new initializeHanding: cards
+]
+
+{ #category : #'action handling' }
+CardDealer >> handCardTo: aSpaceShipInventory [
+
+	| cardToHand |
+	cardToHand := deck at: cardHandingSequence currentSequenceNumber.
+	cardHandingSequence next.
+	^ aSpaceShipInventory draw: cardToHand
+]
+
+{ #category : #initialization }
+CardDealer >> initializeHanding: cards [
+
+	deck := cards.
+	cardHandingSequence := Sequence formedBy: cards
+]
+
+{ #category : #'action handling' }
+CardDealer >> inventoriesAfterDrawingTwoFrom: inventories [
+
+	| inventoriesAfterDrawingOne |
+	inventoriesAfterDrawingOne := inventories collect: [ :inventory | 
+		                              self handCardTo: inventory ].
+	^ inventoriesAfterDrawingOne collect: [ :inventory | 
+		  self handCardTo: inventory ]
+]

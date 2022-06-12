@@ -108,13 +108,20 @@ MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	board := aBoard.
+	self assignSpaceshipStatusesFrom: spaceShipsNames.
+	board distributeInitialCardsFrom: spaceshipStatuses.
 	diceCup := aDiceCup.
 	lapsToWin := anAmountOfLaps.
 	currentTurn := 1.
-	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
 	spaceShipSequence := Sequence formedBy: spaceShipsNames
+]
+
+{ #category : #accessing }
+MessirveSpaceRaceGame >> inventoryFrom: aSpaceShipName [
+
+	^ board cardsInInventoryOf: aSpaceShipName
 ]
 
 { #category : #testing }

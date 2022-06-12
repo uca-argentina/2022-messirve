@@ -41,7 +41,7 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	^ aBoard advance: aStatus from: statuses to: aDistance
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #applying }
 EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| aDistance positionLength aPosition |

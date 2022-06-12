@@ -5,7 +5,9 @@ Class {
 		'startingPosition',
 		'boardEffects',
 		'lastPosition',
-		'parsecs'
+		'parsecs',
+		'cardDealer',
+		'inventories'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -32,7 +34,7 @@ RoundBoard class >> assertValidParsecs: someParsecs [
 ]
 
 { #category : #initialization }
-RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs [
+RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs handing: cards [
 
 	| boardPositions |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -46,6 +48,7 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
+		  handing: cards
 ]
 
 { #category : #'instance creation' }
@@ -58,7 +61,7 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 ]
 
 { #category : #initialization }
-RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
+RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs handing: cards [
 
 	| defaultBoardPositions boardRandomizer |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -73,10 +76,11 @@ RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 	^ self new
 		  initializeWithPositions: defaultBoardPositions
 		  and: aNumberOfParsecs
+		  handing: cards
 ]
 
 { #category : #initialization }
-RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
+RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs handing: cards [
 
 	| boardPositions |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -86,6 +90,7 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
+		  handing: cards
 ]
 
 { #category : #private }
@@ -99,6 +104,27 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
+{ #category : #initialization }
+RoundBoard >> assignInventoriesFrom: statuses [
+
+	inventories := statuses collect: [ :status | 
+		               SpaceShipInventory carriedBy: status spaceShip ]
+]
+
+{ #category : #accessing }
+RoundBoard >> cardsInInventoryOf: aSpaceShipName [
+
+	^ inventories detect: [ :inventory | 
+		  inventory spaceShip == aSpaceShipName ]
+]
+
+{ #category : #private }
+RoundBoard >> distributeInitialCardsFrom: statuses [
+
+	self assignInventoriesFrom: statuses.
+	inventories := cardDealer inventoriesAfterDrawingTwoFrom: inventories.
+]
+
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
 
@@ -106,12 +132,14 @@ RoundBoard >> effectAppliedOnPosition: aPosition [
 ]
 
 { #category : #initialization }
-RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
+RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs handing: cards [
 
 	startingPosition := 1.
 	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
-	parsecs := anAmountOfParsecs
+	parsecs := anAmountOfParsecs.
+	cardDealer := CardDealer handing: cards.
+	inventories := OrderedCollection new.
 ]
 
 { #category : #private }
