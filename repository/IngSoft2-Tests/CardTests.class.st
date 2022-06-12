@@ -121,6 +121,37 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 5 }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100 handing: { 
+			          overloadCard.
+			          speedCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') inventory size
+		equals: 1.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		equals: { speedCard } asOrderedCollection.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') activeCards
+		equals: { overloadCard } asOrderedCollection
+]
+
+{ #category : #tests }
 CardTests >> testSixSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 
 	| aSpaceGame aLoadedDie aBoard speedCard overloadCard |

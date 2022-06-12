@@ -104,6 +104,17 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
+{ #category : #asserting }
+RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
+
+	| spaceShipInventory cardExists |
+	spaceShipInventory := inventories detect: [ :inventory | 
+		                      inventory spaceShip == spaceShip ].
+	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
+		              card == aCard ].
+	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
+]
+
 { #category : #initialization }
 RoundBoard >> assignInventoriesFrom: statuses [
 
@@ -242,6 +253,21 @@ RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
 			ifTrue: [ ^ 1 ] ].
 
 	^ newPosition
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+
+	| inventoryOfCardPlayer inventoryOfCardTarget cardRemoved |
+	self assertSpaceShip: cardPlayer owns: aCard.
+
+	inventoryOfCardPlayer := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardPlayer ].
+	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
+
+	inventoryOfCardTarget := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardTarget ].
+	inventoryOfCardTarget addCardToActiveCards: cardRemoved
 ]
 
 { #category : #accessing }
