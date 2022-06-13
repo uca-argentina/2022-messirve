@@ -277,11 +277,7 @@ RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
 	inventoryOfCardTarget := inventories detect: [ :inventory | 
 		                         inventory spaceShip == cardTarget ].
-	inventoryOfCardTarget addCardToActiveCards: cardRemoved.
-
-	engineApplicator
-		applyEnginePowerTo: cardTarget
-		afterPlaying: cardRemoved
+	inventoryOfCardTarget addCardToActiveCards: cardRemoved
 ]
 
 { #category : #'as yet unclassified' }

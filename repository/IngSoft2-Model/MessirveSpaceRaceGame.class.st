@@ -196,7 +196,7 @@ MessirveSpaceRaceGame >> ranking [
 { #category : #'as yet unclassified' }
 MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
-	^board spaceShip: cardPlayer plays: aCard on: cardTarget
+    board spaceShip: cardPlayer plays: aCard on: cardTarget
 ]
 
 { #category : #accessing }

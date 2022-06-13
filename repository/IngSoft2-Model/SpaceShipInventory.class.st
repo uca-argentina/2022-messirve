@@ -38,7 +38,7 @@ SpaceShipInventory >> initializeCarriedBy: aSpaceShip [
 
 	spaceShip := aSpaceShip.
 	inventory := OrderedCollection new.
-	activeCards := OrderedCollection new.
+	activeCards := OrderedCollection new
 ]
 
 { #category : #accessing }

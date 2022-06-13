@@ -140,7 +140,7 @@ CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
 		              on: aBoard
 		              rolling: aLoadedDie
 		              withLapsToWin: 2.
-		
+
 	self
 		should: [ 
 		aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi' ]
@@ -260,13 +260,13 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherOneAndTheCardGoesToActive
 { #category : #tests }
 CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 
-	| aSpaceGame aLoadedDie aBoard overloadCard |
-	aLoadedDie := LoadedDie rolling: { 1 }.
-	overloadCard := SpeedCard new.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 10
-		          and: 100
-		          handing: { overloadCard }.
+	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 5 }.
+	overloadCard := OverloadCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100 handing: { 
+			          overloadCard.
+			          speedCard }.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -277,7 +277,15 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 
 	self
 		assert: (aSpaceGame inventoryFrom: 'Messi') inventory size
-		equals: 1
+		equals: 1.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		equals: { speedCard } asOrderedCollection.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') activeCards
+		equals: { overloadCard } asOrderedCollection
 ]
 
 { #category : #tests }
