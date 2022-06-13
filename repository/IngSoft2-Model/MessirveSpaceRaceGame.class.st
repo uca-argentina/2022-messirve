@@ -62,6 +62,14 @@ MessirveSpaceRaceGame >> assertMovementCanBeApplied [
 		Error signal: 'Movement cannot be applied before the roll' ]
 ]
 
+{ #category : #asserting }
+MessirveSpaceRaceGame >> assertPermanentPlayedOnCorrectlyBy: cardPlayer [
+
+	cardPlayer = self nameOfSpaceShipPlaying ifFalse: [ 
+		Error signal:
+			'Permanent cards can only be played during the turn of a Spaceship' ]
+]
+
 { #category : #initialization }
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
@@ -196,7 +204,11 @@ MessirveSpaceRaceGame >> ranking [
 { #category : #'as yet unclassified' }
 MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
-    board spaceShip: cardPlayer plays: aCard on: cardTarget
+	board
+		spaceShip: cardPlayer
+		plays: aCard
+		on: cardTarget
+		from: self
 ]
 
 { #category : #accessing }

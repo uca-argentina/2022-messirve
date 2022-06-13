@@ -10,6 +10,13 @@ SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
+{ #category : #asserting }
+SpeedCard >> assertValidCardPlayOf: cardPlayer on: aBoard from: aGame [
+
+	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
+	aBoard assertSpaceShip: cardPlayer owns: self
+]
+
 { #category : #'as yet unclassified' }
 SpeedCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
 

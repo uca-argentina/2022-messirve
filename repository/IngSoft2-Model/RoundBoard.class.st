@@ -268,7 +268,7 @@ RoundBoard >> parsecsPerPosition [
 { #category : #'as yet unclassified' }
 RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
-	| inventoryOfCardPlayer inventoryOfCardTarget cardRemoved |
+	| inventoryOfCardPlayer cardRemoved |
 	self assertSpaceShip: cardPlayer owns: aCard.
 
 	inventoryOfCardPlayer := inventories detect: [ :inventory | 
@@ -278,6 +278,25 @@ RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 	inventories := aCard
 		               inventoriesAfterTargeting: cardTarget
 		               from: inventories on: self.
+
+	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
+
+	| inventoryOfCardPlayer cardRemoved |
+	self assertSpaceShip: cardPlayer owns: aCard.
+	aCard assertValidCardPlayOf: cardPlayer on: self from: aGame.
+
+	inventoryOfCardPlayer := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardPlayer ].
+	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
+
+	inventories := aCard
+		               inventoriesAfterTargeting: cardTarget
+		               from: inventories
+		               on: self.
 
 	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard
 ]

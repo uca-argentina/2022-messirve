@@ -458,21 +458,22 @@ CardTests >> testASpaceShipUsesAnAccelerationAndIncreasesEnginePowerOfAllSpaceSh
 ]
 
 { #category : #tests }
-CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnASpaceShipAndItGoesBackOneLap [
+CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnItselfTwiceAndAfterNextTurnGoesBackOneLap [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard |
-	aLoadedDie := LoadedDie rolling: { 3 }.
+	aLoadedDie := LoadedDie rolling: { 1 }.
 	overloadCard := OverloadCard new.
 	aBoard := RoundBoard
 		          withNoEffectsOf: 3
 		          and: 100
 		          handing: { overloadCard }.
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'Armani' }
+		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
 		              withLapsToWin: 3.
 
+	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 
@@ -484,9 +485,7 @@ CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnASpaceShipAndItGoesBackOn
 		
 	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
 	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
-	aSpaceGame spaceShip: 'Armani' plays: overloadCard on: 'Messi'.
-	aSpaceGame spaceShip: 'Armani' plays: overloadCard on: 'Messi'.
-	
+
 	aSpaceGame playNextTurn.
 
 	self
