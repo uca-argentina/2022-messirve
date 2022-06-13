@@ -35,13 +35,6 @@ SpaceShipStatus >> lap [
 	^ position lap
 ]
 
-{ #category : #'action handling' }
-SpaceShipStatus >> pick: aCard [
-
-	inventory add: aCard.
-	^ self
-]
-
 { #category : #accessing }
 SpaceShipStatus >> position [
 	^ position
