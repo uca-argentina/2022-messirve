@@ -7,7 +7,8 @@ Class {
 		'lastPosition',
 		'parsecs',
 		'cardDealer',
-		'inventories'
+		'inventories',
+		'engineApplicator'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -104,18 +105,29 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
-{ #category : #initialization }
-RoundBoard >> assignInventoriesFrom: statuses [
+{ #category : #asserting }
+RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
 
-	inventories := statuses collect: [ :status | 
-		               SpaceShipInventory carriedBy: status spaceShip ]
+	| spaceShipInventory cardExists |
+	spaceShipInventory := inventories detect: [ :inventory | 
+		                      inventory spaceShip = spaceShip ].
+	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
+		              card == aCard ].
+	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
+]
+
+{ #category : #initialization }
+RoundBoard >> assignInventoriesFrom: spaceShipNames [
+
+	inventories := spaceShipNames collect: [ :spaceShip | 
+		               SpaceShipInventory carriedBy: spaceShip ]
 ]
 
 { #category : #accessing }
 RoundBoard >> cardsInInventoryOf: aSpaceShipName [
 
 	^ inventories detect: [ :inventory | 
-		  inventory spaceShip == aSpaceShipName ]
+		  inventory spaceShip = aSpaceShipName ]
 ]
 
 { #category : #'as yet unclassified' }
@@ -123,15 +135,15 @@ RoundBoard >> distribute: aCard toTheInventoryOf: aSpaceShip [
 
 	| inventory newInventory |
 	inventory := inventories detect: [ :inven | 
-		             inven spaceShip == aSpaceShip ].
+		             inven spaceShip = aSpaceShip ].
 	newInventory := cardDealer hand: aCard to: inventory.
 	inventories replaceAll: inventory with: newInventory
 ]
 
 { #category : #private }
-RoundBoard >> distributeInitialCardsFrom: statuses [
+RoundBoard >> distributeInitialCardsFrom: spaceShipNames [
 
-	self assignInventoriesFrom: statuses.
+	self assignInventoriesFrom: spaceShipNames.
 	inventories := cardDealer inventoriesAfterDrawingTwoFrom: inventories.
 ]
 
@@ -139,6 +151,13 @@ RoundBoard >> distributeInitialCardsFrom: statuses [
 RoundBoard >> effectAppliedOnPosition: aPosition [
 
 	^ boardEffects at: aPosition
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> initialSetUpWith: spaceShipNames [ 
+	
+	self distributeInitialCardsFrom: spaceShipNames.
+	self startEnginesOf: spaceShipNames.
 ]
 
 { #category : #initialization }
@@ -233,7 +252,9 @@ RoundBoard >> parsecsPerPosition [
 RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
 
 	| newPosition |
-	newPosition := aSpaceShipStatus position tile + diceRoll.
+	newPosition := aSpaceShipStatus position tile + diceRoll
+	               +
+	               (engineApplicator powerOf: aSpaceShipStatus spaceShip).
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
 	newPosition < 0 ifTrue: [ 
@@ -242,6 +263,31 @@ RoundBoard >> positionAfter: aSpaceShipStatus rolled: diceRoll [
 			ifTrue: [ ^ 1 ] ].
 
 	^ newPosition
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+
+	| inventoryOfCardPlayer inventoryOfCardTarget cardRemoved |
+	self assertSpaceShip: cardPlayer owns: aCard.
+
+	inventoryOfCardPlayer := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardPlayer ].
+	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
+
+	inventoryOfCardTarget := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardTarget ].
+	inventoryOfCardTarget addCardToActiveCards: cardRemoved.
+
+	engineApplicator
+		applyEnginePowerTo: cardTarget
+		afterPlaying: cardRemoved
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> startEnginesOf: spaceShipNames [
+
+	engineApplicator := EnginePowerApplicator with: spaceShipNames
 ]
 
 { #category : #accessing }

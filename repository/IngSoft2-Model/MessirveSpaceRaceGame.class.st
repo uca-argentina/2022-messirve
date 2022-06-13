@@ -109,7 +109,7 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 
 	board := aBoard.
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
-	board distributeInitialCardsFrom: spaceshipStatuses.
+	board initialSetUpWith: spaceShipsNames.
 	diceCup := aDiceCup.
 	lapsToWin := anAmountOfLaps.
 	currentTurn := 1.
@@ -191,6 +191,12 @@ MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 MessirveSpaceRaceGame >> ranking [
 
 	^ ranking
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+
+	^board spaceShip: cardPlayer plays: aCard on: cardTarget
 ]
 
 { #category : #accessing }
