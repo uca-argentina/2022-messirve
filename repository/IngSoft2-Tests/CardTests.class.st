@@ -26,6 +26,44 @@ CardTests >> testASpaceShipBeginsTheGameWithTwoCards [
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipCannotPlayACancellationCardOnAnotherCancellationCard [
+
+	| aSpaceGame aLoadedDie aBoard cancellationCardOne cancellationCardTwo speedCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	cancellationCardOne := CancellationCard new.
+	cancellationCardTwo := CancellationCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          boardWithOnly:
+		          { (CardDealerEffect handing: cancellationCardTwo) }
+		          at: { 3 }
+		          Of: 5
+		          and: 100
+		          handing: { 
+				          cancellationCardOne.
+				          speedCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
+	aSpaceGame playNextTurn.
+
+	self
+		should: [ 
+			aSpaceGame
+				spaceShip: 'Messi'
+				plays: cancellationCardTwo
+				on: cancellationCardOne ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'The targeted card is not currently active'
+		description: 'Invalid target chosen'
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -121,6 +159,81 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveSpeedUpEffectAndTheEngineIsNoLongerPowered [
+
+	| aSpaceGame aLoadedDie aBoard speedCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCard := SpeedCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          speedCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+
+	aSpaceGame spaceShip: 'Messi' plays: cancellationCard on: speedCard.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysACancellationCardOnTheSpeedCardOfAnotherPlayerAndAdvancesOneLessSpaceNextTurn [
+
+	| aSpaceGame aLoadedDie aBoard speedCardOne speedCardTwo cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCardOne := SpeedCard new.
+	speedCardTwo := SpeedCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          speedCardOne.
+			          speedCardTwo.
+			          cancellationCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCardOne on: 'Messi'.
+
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame.
+
+	aSpaceGame spaceShip: 'Armani' plays: cancellationCard on: speedCardOne.
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+	self
+		assert: 'Messi'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -147,6 +260,32 @@ CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
 		raise: Error
 		whoseDescriptionIncludes: 'SpaceShip doesnt own that card'
 		description: 'SpaceShip doesnt own that card'
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysAPermanentCardWhenItsNotTheirTurn [
+
+	| aSpaceGame aLoadedDie aBoard speedCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 10
+		          and: 100
+		          handing: { speedCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	self
+		should: [ 
+		aSpaceGame spaceShip: 'Armani' plays: speedCard on: 'Messi' ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'Permanent cards can only be played during the turn of a Spaceship'
+		description:
+		'A permanent card is being played during a different turn of the playing spaceship'
 ]
 
 { #category : #tests }

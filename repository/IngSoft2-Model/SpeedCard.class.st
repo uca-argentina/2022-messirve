@@ -11,7 +11,7 @@ SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
 ]
 
 { #category : #asserting }
-SpeedCard >> assertValidCardPlayOf: cardPlayer on: aBoard from: aGame [
+SpeedCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
 
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
 	aBoard assertSpaceShip: cardPlayer owns: self

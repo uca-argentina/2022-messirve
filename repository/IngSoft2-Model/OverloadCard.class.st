@@ -11,7 +11,7 @@ OverloadCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
 ]
 
 { #category : #asserting }
-OverloadCard >> assertValidCardPlayOf: cardPlayer on: aBoard from: aGame [
+OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
 
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
 	aBoard assertSpaceShip: cardPlayer owns: self

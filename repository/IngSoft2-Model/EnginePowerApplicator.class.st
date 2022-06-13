@@ -55,3 +55,9 @@ EnginePowerApplicator >> powerOf: aSpaceShip [
 
 	^ (self engineOf: aSpaceShip) enginePower + globalEnginePower
 ]
+
+{ #category : #'as yet unclassified' }
+EnginePowerApplicator >> slowDownAllEngines [
+
+	globalEnginePower := globalEnginePower - 1
+]

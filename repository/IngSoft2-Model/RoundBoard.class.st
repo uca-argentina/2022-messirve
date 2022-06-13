@@ -106,6 +106,17 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 ]
 
 { #category : #asserting }
+RoundBoard >> assertCardIsActive: aCard [ 
+
+	| activeCardsExist |
+	activeCardsExist := inventories anySatisfy: [ :inventory | 
+		                    inventory activeCards anySatisfy: [ :activeCard | activeCard == aCard ] ].
+
+	activeCardsExist ifFalse: [ 
+		Error signal: 'The targeted card is not currently active' ]
+]
+
+{ #category : #asserting }
 RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
 
 	| spaceShipInventory cardExists |
@@ -114,6 +125,17 @@ RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
 	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
 		              card == aCard ].
 	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
+]
+
+{ #category : #asserting }
+RoundBoard >> assertThereAreActiveCardsInPlay [
+
+	| activeCardsExist |
+	activeCardsExist := inventories anySatisfy: [ :inventory | 
+		                    inventory activeCards isNotEmpty ].
+
+	activeCardsExist ifFalse: [ 
+		Error signal: 'No cards available to cancel' ]
 ]
 
 { #category : #initialization }
@@ -266,28 +288,11 @@ RoundBoard >> parsecsPerPosition [
 ]
 
 { #category : #'as yet unclassified' }
-RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget [
-
-	| inventoryOfCardPlayer cardRemoved |
-	self assertSpaceShip: cardPlayer owns: aCard.
-
-	inventoryOfCardPlayer := inventories detect: [ :inventory | 
-		                         inventory spaceShip == cardPlayer ].
-	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
-
-	inventories := aCard
-		               inventoriesAfterTargeting: cardTarget
-		               from: inventories on: self.
-
-	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard
-]
-
-{ #category : #'as yet unclassified' }
 RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 
 	| inventoryOfCardPlayer cardRemoved |
 	self assertSpaceShip: cardPlayer owns: aCard.
-	aCard assertValidCardPlayOf: cardPlayer on: self from: aGame.
+	aCard assertValidCardPlayOf: cardPlayer at: cardTarget on: self from: aGame.
 
 	inventoryOfCardPlayer := inventories detect: [ :inventory | 
 		                         inventory spaceShip == cardPlayer ].
