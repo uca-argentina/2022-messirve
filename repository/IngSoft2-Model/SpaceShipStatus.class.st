@@ -3,8 +3,7 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'spaceShip',
-		'position',
-		'inventory'
+		'position'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -19,14 +18,7 @@ SpaceShipStatus class >> with: aSpaceShip and: aSpaceShipDistance [
 SpaceShipStatus >> initializeWith: aSpaceShip and: aSpaceShipPosition [
 
 	spaceShip := aSpaceShip.
-	position := aSpaceShipPosition.
-	inventory := OrderedCollection new.
-]
-
-{ #category : #accessing }
-SpaceShipStatus >> inventory [
-
-	^ inventory
+	position := aSpaceShipPosition
 ]
 
 { #category : #accessing }
