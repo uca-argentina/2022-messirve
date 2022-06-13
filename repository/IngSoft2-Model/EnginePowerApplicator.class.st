@@ -15,6 +15,12 @@ EnginePowerApplicator class >> with: spaceShipNames [
 ]
 
 { #category : #'as yet unclassified' }
+EnginePowerApplicator >> accelerateAllEngines [
+
+	globalEnginePower := globalEnginePower + 1
+]
+
+{ #category : #'as yet unclassified' }
 EnginePowerApplicator >> applyEnginePowerTo: aSpaceShip afterPlaying: aCard [
 
 	aCard activatedBy: aSpaceShip on: self
@@ -47,5 +53,5 @@ EnginePowerApplicator >> powerEngineOf: aSpaceShip by: anEnginePower [
 { #category : #'as yet unclassified' }
 EnginePowerApplicator >> powerOf: aSpaceShip [
 
-	^ (self engineOf: aSpaceShip) enginePower
+	^ (self engineOf: aSpaceShip) enginePower + globalEnginePower
 ]

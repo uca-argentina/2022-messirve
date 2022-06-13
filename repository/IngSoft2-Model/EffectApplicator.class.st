@@ -34,7 +34,7 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 
 	| aDistance |
 	aDistance := aBoard
-		             newDistanceAfter: aStatus
+		             newPositionAfter: aStatus
 		             rolled: aBoost
 		             on: aGame.
 
@@ -56,7 +56,7 @@ EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: a
 	aDistance := aBoost // positionLength.
 
 	aPosition := aBoard
-		             newDistanceAfter: aStatus
+		             newPositionAfter: aStatus
 		             rolled: aDistance
 		             on: aGame.
 
@@ -75,7 +75,7 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 			               and: (SpaceShipPosition
 					                with:
 					                (aBoard
-						                 positionAfter: status
+						                 tileAfter: status
 						                 rolled: somePositions)
 					                and:
 					                (aBoard

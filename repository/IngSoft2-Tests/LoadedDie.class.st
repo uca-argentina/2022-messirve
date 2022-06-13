@@ -2,9 +2,9 @@ Class {
 	#name : #LoadedDie,
 	#superclass : #Object,
 	#instVars : [
-		'roll',
 		'currentIndex',
-		'rollSequence'
+		'rollSequence',
+		'results'
 	],
 	#category : #'IngSoft2-Tests'
 }
@@ -15,23 +15,17 @@ LoadedDie class >> rolling: aRoll [
 ]
 
 { #category : #initialization }
-LoadedDie >> initializeWithRoll: aRoll [ 
+LoadedDie >> initializeWithRoll: someRolls [ 
 	
-	rollSequence := Sequence formedBy: aRoll.
-	roll := aRoll.
-	currentIndex := 1.
+	rollSequence := Sequence formedBy: someRolls.
+	results := someRolls.
 	
-]
-
-{ #category : #private }
-LoadedDie >> next [
-	currentIndex := rollSequence next.
 ]
 
 { #category : #action }
 LoadedDie >> roll [
 	| currentRoll |
-	currentRoll := roll at: currentIndex.
-	self next.
+	currentRoll := results at: (rollSequence currentSequenceNumber) copy.
+	rollSequence next.
 	^currentRoll.
 ]
