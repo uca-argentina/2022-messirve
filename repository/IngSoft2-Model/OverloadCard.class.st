@@ -10,6 +10,12 @@ OverloadCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]
 
+{ #category : #'as yet unclassified' }
+OverloadCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
+]
+
 { #category : #asserting }
 OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
 

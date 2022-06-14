@@ -27,6 +27,12 @@ EnginePowerApplicator >> applyEnginePowerTo: aSpaceShip afterPlaying: aCard [
 ]
 
 { #category : #'as yet unclassified' }
+EnginePowerApplicator >> applyEnginePowerTo: aSpaceShip afterPlaying: aCard on: aBoard [
+
+	aCard activatedBy: aSpaceShip on: self from: aBoard
+]
+
+{ #category : #'as yet unclassified' }
 EnginePowerApplicator >> engineOf: aSpaceShip [
 
 	^ engines detect: [ :engine | engine spaceShip = aSpaceShip ]

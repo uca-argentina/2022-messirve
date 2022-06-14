@@ -289,6 +289,33 @@ CardTests >> testASpaceShipPlaysAPermanentCardWhenItsNotTheirTurn [
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterASpeedCardWasPlayedAndTheSpeedEffectIsTriggeredTwiceToAdvanceToPositionFour [
+
+	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCard := SpeedCard new.
+	redoCard := RedoCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          speedCard.
+			          redoCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysASpeedCardOnAnotherSpaceShipAndTheOtherSpaceShipAdvancesOneExtraSpacePerTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -331,8 +358,10 @@ CardTests >> testASpaceShipPlaysASpeedCardOnItselfAndAdvancesAnExtraPositionEver
 	| aSpaceGame aLoadedDie aBoard speedCard |
 	aLoadedDie := LoadedDie rolling: { 1 }.
 	speedCard := SpeedCard new.
-	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
-			          speedCard }.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 10
+		          and: 100
+		          handing: { speedCard }.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -341,24 +370,20 @@ CardTests >> testASpaceShipPlaysASpeedCardOnItselfAndAdvancesAnExtraPositionEver
 
 	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
 	aSpaceGame playNextTurn.
-	
+
 	self
 		assert: 'Messi'
 		isAt: 3
 		with: 1
 		in: aSpaceGame.
-		
-		aSpaceGame playNextTurn.
-	
+
+	aSpaceGame playNextTurn.
+
 	self
 		assert: 'Messi'
 		isAt: 5
 		with: 1
-		in: aSpaceGame.
-	
-	
-	
-
+		in: aSpaceGame
 ]
 
 { #category : #tests }

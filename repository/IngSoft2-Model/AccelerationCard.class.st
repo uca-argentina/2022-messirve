@@ -10,6 +10,12 @@ AccelerationCard >> activatedBy: spaceShips on: anEnginePowerApplicator [
 	anEnginePowerApplicator accelerateAllEngines
 ]
 
+{ #category : #'as yet unclassified' }
+AccelerationCard >> activatedBy: spaceShips on: anEnginePowerApplicator from: aRoundBoard [
+
+	anEnginePowerApplicator accelerateAllEngines
+]
+
 { #category : #asserting }
 AccelerationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
 
@@ -18,7 +24,7 @@ AccelerationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard 
 ]
 
 { #category : #'as yet unclassified' }
-AccelerationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
+AccelerationCard >> inventoriesAfterTargeting: target from: inventories on: aBoard [
 
 	^ inventories
 ]

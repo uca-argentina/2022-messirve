@@ -8,7 +8,9 @@ Class {
 		'parsecs',
 		'cardDealer',
 		'inventories',
-		'engineApplicator'
+		'engineApplicator',
+		'lastCardPlayed',
+		'lastEffectApplied'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -232,6 +234,12 @@ RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
 ]
 
 { #category : #accessing }
+RoundBoard >> lastCardPlayed [
+
+	^ lastCardPlayed
+]
+
+{ #category : #accessing }
 RoundBoard >> lastPosition [
 
 	^ lastPosition
@@ -250,11 +258,11 @@ RoundBoard >> newPositionAfter: aStatus rolled: aDiceResult on: aGame [
 { #category : #private }
 RoundBoard >> newStatusesAfter: newStatus applyingTheEffectOf: newPosition over: newStatuses on: aGame [
 
-	| effectLanded effectApplicator |
-	effectLanded := self effectAppliedOnPosition: newPosition tile.
+	| effectApplicator |
+	lastEffectApplied := self effectAppliedOnPosition: newPosition tile.
 	effectApplicator := EffectApplicator new.
 	^ effectApplicator
-		  apply: effectLanded
+		  apply: lastEffectApplied
 		  on: newStatuses
 		  activatedBy: newStatus
 		  playedOn: self
@@ -292,7 +300,11 @@ RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 
 	| inventoryOfCardPlayer cardRemoved |
 	self assertSpaceShip: cardPlayer owns: aCard.
-	aCard assertValidCardPlayOf: cardPlayer at: cardTarget on: self from: aGame.
+	aCard
+		assertValidCardPlayOf: cardPlayer
+		at: cardTarget
+		on: self
+		from: aGame.
 
 	inventoryOfCardPlayer := inventories detect: [ :inventory | 
 		                         inventory spaceShip == cardPlayer ].
@@ -303,7 +315,8 @@ RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 		               from: inventories
 		               on: self.
 
-	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard
+	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard on: self.
+	lastCardPlayed := cardRemoved
 ]
 
 { #category : #'as yet unclassified' }

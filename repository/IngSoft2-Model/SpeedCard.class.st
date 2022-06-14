@@ -10,6 +10,12 @@ SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
+{ #category : #'as yet unclassified' }
+SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
+]
+
 { #category : #asserting }
 SpeedCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
 
