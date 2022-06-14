@@ -159,6 +159,34 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveAccelerationCardAndMovesOneTileAhead [
+
+	| aSpaceGame aLoadedDie aBoard accelerationCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	accelerationCard := AccelerationCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          accelerationCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: accelerationCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: cancellationCard on: accelerationCard.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveSpeedUpEffectAndTheEngineIsNoLongerPowered [
 
 	| aSpaceGame aLoadedDie aBoard speedCard cancellationCard |

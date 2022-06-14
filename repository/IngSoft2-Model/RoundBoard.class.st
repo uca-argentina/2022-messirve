@@ -10,7 +10,8 @@ Class {
 		'inventories',
 		'engineApplicator',
 		'lastCardPlayed',
-		'lastEffectApplied'
+		'lastEffectApplied',
+		'globalInventory'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -116,17 +117,22 @@ RoundBoard >> applyAllNegatedCardsOf: aCard [
 				aCard
 					applyNegatedOn: inventory spaceShip
 					on: engineApplicator
-					from: self ] ] ]
+					from: self ] ] ].
+
+	globalInventory do: [ :card | 
+		card = aCard ifTrue: [ 
+			aCard applyNegatedOn: card on: engineApplicator from: self ] ]
 ]
 
 { #category : #asserting }
 RoundBoard >> assertCardIsActive: aCard [ 
 
-	| activeCardsExist |
+	| activeCardsExist globalCardExists |
 	activeCardsExist := inventories anySatisfy: [ :inventory | 
 		                    inventory activeCards anySatisfy: [ :activeCard | activeCard == aCard ] ].
 
-	activeCardsExist ifFalse: [ 
+	globalCardExists := globalInventory isNotEmpty.
+	(globalCardExists or: activeCardsExist) ifFalse: [ 
 		Error signal: 'The targeted card is not currently active' ]
 ]
 
@@ -144,11 +150,12 @@ RoundBoard >> assertSpaceShip: aSpaceShip owns: aCard [
 { #category : #asserting }
 RoundBoard >> assertThereAreActiveCardsInPlay [
 
-	| activeCardsExist |
+	| activeCardsExist globalActiveCardsExist |
+	globalActiveCardsExist := globalInventory isNotEmpty.
 	activeCardsExist := inventories anySatisfy: [ :inventory | 
 		                    inventory activeCards isNotEmpty ].
 
-	activeCardsExist ifFalse: [ 
+	(activeCardsExist or: globalActiveCardsExist) ifFalse: [ 
 		Error signal: 'No cards available to cancel' ]
 ]
 
@@ -205,6 +212,7 @@ RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs han
 	parsecs := anAmountOfParsecs.
 	cardDealer := CardDealer handing: cards.
 	inventories := OrderedCollection new.
+	globalInventory := OrderedCollection new.
 ]
 
 { #category : #'as yet unclassified' }
@@ -214,6 +222,13 @@ RoundBoard >> inventoriesAfter: cardTarget wasApplied: aCard [
 	inventoryOfCardTarget := inventories detect: [ :inventory | 
 		                         inventory spaceShip == cardTarget ].
 	inventoryOfCardTarget addCardToActiveCards: aCard.
+	^ inventories
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> inventoriesAfterNewGlobalCardOf: anAccelerationCard [
+
+	globalInventory add: anAccelerationCard.
 	^ inventories
 ]
 
