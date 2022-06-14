@@ -5,15 +5,15 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OverloadCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
+OverloadCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]
 
 { #category : #'as yet unclassified' }
-OverloadCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
 { #category : #asserting }

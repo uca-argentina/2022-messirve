@@ -5,15 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CancellationCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
+CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aBoard [
 
-	anEnginePowerApplicator slowDownAllEngines
-]
-
-{ #category : #'as yet unclassified' }
-CancellationCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
-
-	anEnginePowerApplicator slowDownAllEngines
+	anEnginePowerApplicator applyCancellationTargetting: aCard in: aBoard
 ]
 
 { #category : #asserting }
@@ -27,5 +21,5 @@ CancellationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard 
 { #category : #'as yet unclassified' }
 CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
 
-	^ inventories
+	^aBoard inventoriesAfterRemoving: cardTarget from: inventories
 ]

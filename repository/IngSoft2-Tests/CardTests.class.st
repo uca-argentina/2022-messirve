@@ -289,6 +289,111 @@ CardTests >> testASpaceShipPlaysAPermanentCardWhenItsNotTheirTurn [
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveAccelerationCard [
+
+	| aSpaceGame aLoadedDie aBoard accelerationCardM accelerationCardA redoCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	accelerationCardM := AccelerationCard new.
+	accelerationCardA := AccelerationCard new.
+	redoCard := RedoCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          accelerationCardM.
+			          accelerationCardA.
+			          redoCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: accelerationCardM on: aSpaceGame.
+	aSpaceGame playNextTurn.
+
+	aSpaceGame spaceShip: 'Armani' plays: accelerationCardA on: aSpaceGame.
+	aSpaceGame spaceShip: 'Armani' plays: cancellationCard on: accelerationCardM.
+	aSpaceGame playNextTurn.
+	
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: accelerationCardA.
+	
+	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty.
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveOverloadCard [
+
+	| aSpaceGame aLoadedDie aBoard overLoadCardM overLoadCardA redoCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overLoadCardM := OverloadCard new.
+	overLoadCardA := OverloadCard new.
+	redoCard := RedoCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          overLoadCardM.
+			          overLoadCardA.
+			          redoCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: overLoadCardM on: 'Messi'.
+	aSpaceGame playNextTurn.
+
+	aSpaceGame spaceShip: 'Armani' plays: overLoadCardA on: 'Armani'.
+	aSpaceGame spaceShip: 'Armani' plays: cancellationCard on: overLoadCardM.
+	aSpaceGame playNextTurn.
+	
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: overLoadCardA.
+	
+	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty.
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveSpeedCard [
+
+	| aSpaceGame aLoadedDie aBoard speedCardM speedCardA redoCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCardM := SpeedCard new.
+	speedCardA := SpeedCard new.
+	redoCard := RedoCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          speedCardM.
+			          speedCardA.
+			          redoCard.
+			          cancellationCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCardM on: 'Messi'.
+	aSpaceGame playNextTurn.
+
+	aSpaceGame spaceShip: 'Armani' plays: speedCardA on: 'Armani'.
+	aSpaceGame spaceShip: 'Armani' plays: cancellationCard on: speedCardM.
+	aSpaceGame playNextTurn.
+	
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: speedCardA.
+	
+	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty.
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysARedoCardAfterASpeedCardWasPlayedAndTheSpeedEffectIsTriggeredTwiceToAdvanceToPositionFour [
 
 	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
@@ -311,6 +416,33 @@ CardTests >> testASpaceShipPlaysARedoCardAfterASpeedCardWasPlayedAndTheSpeedEffe
 	self
 		assert: 'Messi'
 		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterAnOverloadCardWasPlayedAndTheOverloadEffectIsTriggeredTwiceToGoBackToPositionOne [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard redoCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overloadCard := OverloadCard new.
+	redoCard := RedoCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
+			          overloadCard.
+			          redoCard }.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2.
+	aSpaceGame playNextTurn.
+	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 1
 		with: 1
 		in: aSpaceGame
 ]

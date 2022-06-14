@@ -5,13 +5,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-AccelerationCard >> activatedBy: spaceShips on: anEnginePowerApplicator [
-
-	anEnginePowerApplicator accelerateAllEngines
-]
-
-{ #category : #'as yet unclassified' }
-AccelerationCard >> activatedBy: spaceShips on: anEnginePowerApplicator from: aRoundBoard [
+AccelerationCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
 	anEnginePowerApplicator accelerateAllEngines
 ]

@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-RedoCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aBoard [
+RedoCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aBoard [
 
 	anEnginePowerApplicator
 		applyEnginePowerTo: aSpaceShip

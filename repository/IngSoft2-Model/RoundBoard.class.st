@@ -107,6 +107,18 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard >> applyAllNegatedCardsOf: aCard [
+
+	inventories do: [ :inventory | 
+		inventory activeCards do: [ :card | 
+			card = aCard ifTrue: [ 
+				aCard
+					applyNegatedOn: inventory spaceShip
+					on: engineApplicator
+					from: self ] ] ]
+]
+
 { #category : #asserting }
 RoundBoard >> assertCardIsActive: aCard [ 
 
@@ -119,11 +131,11 @@ RoundBoard >> assertCardIsActive: aCard [
 ]
 
 { #category : #asserting }
-RoundBoard >> assertSpaceShip: spaceShip owns: aCard [
+RoundBoard >> assertSpaceShip: aSpaceShip owns: aCard [
 
 	| spaceShipInventory cardExists |
 	spaceShipInventory := inventories detect: [ :inventory | 
-		                      inventory spaceShip = spaceShip ].
+		                      inventory spaceShip = aSpaceShip ].
 	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
 		              card == aCard ].
 	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
@@ -203,6 +215,14 @@ RoundBoard >> inventoriesAfter: cardTarget wasApplied: aCard [
 		                         inventory spaceShip == cardTarget ].
 	inventoryOfCardTarget addCardToActiveCards: aCard.
 	^ inventories
+]
+
+{ #category : #'as yet unclassified' }
+RoundBoard >> inventoriesAfterRemoving: aCard from: someInventories [
+	| newInventories |
+	newInventories := someInventories do: [ :inventory | 
+		  inventory activeCards removeAllSuchThat: [ :card | card = aCard ] ].
+	^ newInventories.
 ]
 
 { #category : #private }
@@ -310,12 +330,15 @@ RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 		                         inventory spaceShip == cardPlayer ].
 	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
 
+	engineApplicator
+		applyEnginePowerTo: cardTarget
+		afterPlaying: aCard
+		on: self.
 	inventories := aCard
 		               inventoriesAfterTargeting: cardTarget
 		               from: inventories
 		               on: self.
 
-	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard on: self.
 	lastCardPlayed := cardRemoved
 ]
 

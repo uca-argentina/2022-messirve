@@ -21,15 +21,15 @@ EnginePowerApplicator >> accelerateAllEngines [
 ]
 
 { #category : #'as yet unclassified' }
-EnginePowerApplicator >> applyEnginePowerTo: aSpaceShip afterPlaying: aCard [
+EnginePowerApplicator >> applyCancellationTargetting: aCard in: aBoard [
 
-	aCard activatedBy: aSpaceShip on: self
+	aBoard applyAllNegatedCardsOf: aCard
 ]
 
 { #category : #'as yet unclassified' }
-EnginePowerApplicator >> applyEnginePowerTo: aSpaceShip afterPlaying: aCard on: aBoard [
+EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aBoard [
 
-	aCard activatedBy: aSpaceShip on: self from: aBoard
+	aCard activatedTo: target on: self from: aBoard
 ]
 
 { #category : #'as yet unclassified' }

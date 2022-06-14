@@ -5,15 +5,15 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator [
+SpeedCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
 { #category : #'as yet unclassified' }
-SpeedCard >> activatedBy: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+SpeedCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [ 
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]
 
 { #category : #asserting }
