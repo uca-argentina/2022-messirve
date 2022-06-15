@@ -476,29 +476,6 @@ CardTests >> testASpaceShipPlaysARedoCardAfterAnOverloadCardWasPlayedAndTheOverl
 ]
 
 { #category : #tests }
-CardTests >> testASpaceShipPlaysARedoCardButIsNotSavedAsLastCardPlayed [
-
-	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
-	aLoadedDie := LoadedDie rolling: { 1 }.
-	speedCard := SpeedCard new.
-	redoCard := RedoCard new.
-	aBoard := RoundBoard withNoEffectsOf: 10 and: 100 handing: { 
-			          speedCard.
-			          redoCard }.
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 2.
-
-	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
-	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
-	aSpaceGame playNextTurn.
-
-	self assert: aBoard lastCardPlayed equals: speedCard.
-]
-
-{ #category : #tests }
 CardTests >> testASpaceShipPlaysASpeedCardOnAnotherSpaceShipAndTheOtherSpaceShipAdvancesOneExtraSpacePerTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
