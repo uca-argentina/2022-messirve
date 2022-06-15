@@ -25,7 +25,7 @@ LoadedDie >> initializeWithRoll: someRolls [
 { #category : #action }
 LoadedDie >> roll [
 	| currentRoll |
-	currentRoll := results at: (rollSequence currentSequenceNumber) copy.
+	currentRoll := (results at: rollSequence currentSequenceNumber) copy.
 	rollSequence next.
 	^currentRoll.
 ]

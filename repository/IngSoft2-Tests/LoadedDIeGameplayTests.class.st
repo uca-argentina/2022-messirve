@@ -177,8 +177,7 @@ LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstP
 		          withNoEffectsOf: 5
 		          and: 50
 		          handing: { SpeedCard new }.
-	aDiceCup := DiceCup withAll:
-		            { (LoadedDie rolling: { 1. 2. 1. 2. 1. 1 }) }.
+	aDiceCup := LoadedDie rolling: { 1 . 2 . 1 . 2 . 1 . 1 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
