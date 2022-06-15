@@ -25,7 +25,7 @@ SpaceShipPosition >> initializeWith: aPosition and: aLap on: aBoard [
 
 	tile := aPosition.
 	lap := aLap.
-	distanceTraveled := lap * aBoard lastPosition + tile
+	distanceTraveled := (lap - 1) * aBoard lastPosition + tile
 ]
 
 { #category : #accessing }

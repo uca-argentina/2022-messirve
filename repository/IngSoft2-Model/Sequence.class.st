@@ -22,6 +22,12 @@ Sequence >> calculateNextInSequence [
 		                         ifFalse: [ currentSequenceNumber + 1 ]
 ]
 
+{ #category : #accessing }
+Sequence >> currentSequenceNumber [
+
+	^ currentSequenceNumber
+]
+
 { #category : #initialize }
 Sequence >> initializeFormedBy: aSequence [
 

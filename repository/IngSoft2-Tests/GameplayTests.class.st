@@ -8,7 +8,10 @@ Class {
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 4 and: 100.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 4
+		          and: 100
+		          handing: { SpeedCard new }.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -32,7 +35,10 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 
 	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
-	aBoard := RoundBoard withNoEffectsOf: 4 and: 100.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 4
+		          and: 100
+		          handing: { SpeedCard new }.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -54,7 +60,10 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 4 and: 100.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 4
+		          and: 100
+		          handing: { SpeedCard new }.
 	aDie := RandomDie withSides: 3.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -72,7 +81,10 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard withNoEffectsOf: 12 and: 100.
+	aBoard := RoundBoard
+		          withNoEffectsOf: 12
+		          and: 100
+		          handing: { SpeedCard new }.
 	aDiceCup := DiceCup withAll: { 
 			            (RandomDie withSides: 3).
 			            (RandomDie withSides: 5).
@@ -95,17 +107,16 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 GameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard with: 200 and: 100.
-	aDie := RandomDie withSides: 6. 
+	aBoard := RoundBoard with: 200 and: 100 handing: { SpeedCard new }.
+	aDie := RandomDie withSides: 6.
 
 	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' . 'De Paul' } 
+		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aDie
 		              withLapsToWin: 3.
 
-	aSpaceGame playGame .
-	
-	self assert: aSpaceGame isFinished.
+	aSpaceGame playGame.
 
+	self assert: aSpaceGame isFinished
 ]

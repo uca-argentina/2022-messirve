@@ -62,6 +62,14 @@ MessirveSpaceRaceGame >> assertMovementCanBeApplied [
 		Error signal: 'Movement cannot be applied before the roll' ]
 ]
 
+{ #category : #asserting }
+MessirveSpaceRaceGame >> assertPermanentPlayedOnCorrectlyBy: cardPlayer [
+
+	cardPlayer = self nameOfSpaceShipPlaying ifFalse: [ 
+		Error signal:
+			'Permanent cards can only be played during the turn of a Spaceship' ]
+]
+
 { #category : #initialization }
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
@@ -108,13 +116,20 @@ MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
 	board := aBoard.
+	self assignSpaceshipStatusesFrom: spaceShipsNames.
+	board initialSetUpWith: spaceShipsNames.
 	diceCup := aDiceCup.
 	lapsToWin := anAmountOfLaps.
 	currentTurn := 1.
-	self assignSpaceshipStatusesFrom: spaceShipsNames.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
 	spaceShipSequence := Sequence formedBy: spaceShipsNames
+]
+
+{ #category : #accessing }
+MessirveSpaceRaceGame >> inventoryFrom: aSpaceShipName [
+
+	^ board cardsInInventoryOf: aSpaceShipName
 ]
 
 { #category : #testing }
@@ -184,6 +199,16 @@ MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 MessirveSpaceRaceGame >> ranking [
 
 	^ ranking
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+
+	board
+		spaceShip: cardPlayer
+		plays: aCard
+		on: cardTarget
+		from: self
 ]
 
 { #category : #accessing }
