@@ -2,7 +2,8 @@ Class {
 	#name : #DiscreteProbabilityEventSource,
 	#superclass : #Object,
 	#instVars : [
-		'probabilityDistribution'
+		'probabilityDistribution',
+		'eventsAtIntervals'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -16,7 +17,17 @@ DiscreteProbabilityEventSource class >> with: aDiscreteProbabilityDistribution [
 { #category : #initialization }
 DiscreteProbabilityEventSource >> initializeWith: aDiscreteProbabilityDistribution [
 
-	probabilityDistribution := aDiscreteProbabilityDistribution
+	| start end |
+	probabilityDistribution := aDiscreteProbabilityDistribution.
+	eventsAtIntervals := Dictionary new.
+	start := 0.
+	end := 0.
+	aDiscreteProbabilityDistribution eventProbabilities do: [ :event | 
+		start := end.
+		end := end + event probability.
+		eventsAtIntervals
+			at: event
+			put: (NumberInterval goingFrom: start to: end) ]
 ]
 
 { #category : #accessing }
@@ -27,6 +38,11 @@ DiscreteProbabilityEventSource >> next: amountOfItems [
 
 { #category : #'as yet unclassified' }
 DiscreteProbabilityEventSource >> obtainOne [
-	
-	^probabilityDistribution associatedLinealDistribution atRandom.
+
+	| randomNumber searched |
+	randomNumber := Random new next.
+	searched := probabilityDistribution eventProbabilities detect: [ :aEvent | 
+		         (eventsAtIntervals at: aEvent) contains: randomNumber ].
+
+	^ searched event
 ]

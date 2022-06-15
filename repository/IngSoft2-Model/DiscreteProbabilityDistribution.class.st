@@ -27,6 +27,12 @@ DiscreteProbabilityDistribution >> associatedLinealDistribution [
 	^ Array with: eventProbabilities first event
 ]
 
+{ #category : #accessing }
+DiscreteProbabilityDistribution >> eventProbabilities [
+
+	^ eventProbabilities
+]
+
 { #category : #initialization }
 DiscreteProbabilityDistribution >> initializeWithAll: someEventProbabilities [
 
