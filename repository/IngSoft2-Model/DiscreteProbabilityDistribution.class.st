@@ -21,12 +21,6 @@ DiscreteProbabilityDistribution class >> withAll: eventProbabilities [
 	^ self new initializeWithAll: eventProbabilities
 ]
 
-{ #category : #'as yet unclassified' }
-DiscreteProbabilityDistribution >> associatedLinealDistribution [
-
-	^ Array with: eventProbabilities first event
-]
-
 { #category : #accessing }
 DiscreteProbabilityDistribution >> eventProbabilities [
 
