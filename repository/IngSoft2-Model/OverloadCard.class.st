@@ -17,14 +17,14 @@ OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRo
 ]
 
 { #category : #asserting }
-OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aBoard assertSpaceShip: cardPlayer owns: self
+	aCardApplicator assertSpaceShip: cardPlayer owns: self
 ]
 
 { #category : #'as yet unclassified' }
-OverloadCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
+OverloadCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
-	^ aBoard inventoriesAfter: cardTarget wasApplied: self
+	^ aCardApplicator inventoriesAfter: cardTarget wasApplied: self
 ]

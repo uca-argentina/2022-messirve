@@ -11,15 +11,17 @@ CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aBoard 
 ]
 
 { #category : #asserting }
-CancellationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+CancellationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
-	aBoard assertSpaceShip: cardPlayer owns: self.
-	aBoard assertThereAreActiveCardsInPlay.
-	aBoard assertCardIsActive: cardTarget
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
+	aCardApplicator assertThereAreActiveCardsInPlay.
+	aCardApplicator assertCardIsActive: cardTarget
 ]
 
 { #category : #'as yet unclassified' }
-CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
+CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
-	^aBoard inventoriesAfterRemoving: cardTarget from: inventories
+	^ aCardApplicator
+		  inventoriesAfterRemoving: cardTarget
+		  from: inventories
 ]

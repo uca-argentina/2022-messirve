@@ -16,7 +16,7 @@ CardDealerEffect class >> handing: aCard [
 { #category : #private }
 CardDealerEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	^ effectApplicator applyCardDealerEffectTo: aStatus with: card from: statuses playedOn: aBoard
+	^ effectApplicator applyCardDealerEffectTo: aStatus with: card from: statuses playedOn: aGame
 ]
 
 { #category : #initialization }

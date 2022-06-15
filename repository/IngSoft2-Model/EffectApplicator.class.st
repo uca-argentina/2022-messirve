@@ -42,9 +42,9 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 ]
 
 { #category : #'as yet unclassified' }
-EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aBoard [
+EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aGame [
 
-	aBoard distribute: aCard toTheInventoryOf: aStatus spaceShip.
+	aGame cardApplicator distribute: aCard toTheInventoryOf: aStatus spaceShip.
 	^ statuses copy
 ]
 

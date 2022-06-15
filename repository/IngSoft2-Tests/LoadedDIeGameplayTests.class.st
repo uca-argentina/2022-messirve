@@ -9,15 +9,13 @@ LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 	aSpaceGame playNextTurn.
 
 	self
@@ -32,15 +30,13 @@ LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 5 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame winner equals: 'Messi'
@@ -53,14 +49,14 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAn
 	aBoard := RoundBoard
 		          withNoEffectsOf: 10
 		          and: 100
-		          handing: { SpeedCard new }.
+		          .
 	aDie := LoadedDie rolling: { 10 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3.
+		              withLapsToWin: 3 handing: { SpeedCard new }.
 
 
 	aSpaceGame playNextTurn.
@@ -77,17 +73,15 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAn
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTenTimesAndIsInLapTen [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 10
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
 	aDie := LoadedDie rolling: { 104 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 20.
+		              withLapsToWin: 20
+		              handing: { SpeedCard new }.
 
 	aSpaceGame playNextTurn.
 
@@ -102,17 +96,15 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTe
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionThreeTimesAndWins [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 10
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
 	aDie := LoadedDie rolling: { 30 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3.
+		              withLapsToWin: 3
+		              handing: { SpeedCard new }.
 
 	aSpaceGame playGame.
 
@@ -123,17 +115,15 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTh
 LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLapTwoAndGameIsNotFinished [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 10
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
 	aDie := LoadedDie rolling: { 14 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3.
+		              withLapsToWin: 3
+		              handing: { SpeedCard new }.
 
 
 	aSpaceGame playNextTurn.
@@ -151,15 +141,13 @@ LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheB
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 100 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 5.
+		              withLapsToWin: 5
+		              handing: { SpeedCard new }.
 	aSpaceGame playNextTurn.
 
 	self
@@ -173,17 +161,15 @@ LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheB
 LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstPosition [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 50
-		          handing: { SpeedCard new }.
-	aDiceCup := LoadedDie rolling: { 1 . 2 . 1 . 2 . 1 . 1 }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
+	aDiceCup := LoadedDie rolling: { 1. 2. 1. 2. 1. 1 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aDiceCup
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 
 	aSpaceGame playGame.
 	aSpaceGame calculateNewRanking.
@@ -195,15 +181,13 @@ LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 6
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 	aSpaceGame playGame.
 
 	self
@@ -223,15 +207,13 @@ LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 10 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 6
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 1.
+		              withLapsToWin: 1
+		              handing: { SpeedCard new }.
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame isFinished
@@ -241,17 +223,15 @@ LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgress [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
 	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aDiceCup
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 
 	aSpaceGame playNextTurn.
 
@@ -262,17 +242,15 @@ LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgres
 LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndMessiComesFirstDePaulSecondAndElDibuThird [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 5
-		          and: 50
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
 	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 3. 2. 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul'. 'El Dibu' }
 		              on: aBoard
 		              rolling: aDiceCup
-		              withLapsToWin: 2.
+		              withLapsToWin: 2
+		              handing: { SpeedCard new }.
 
 	aSpaceGame playGame.
 
@@ -286,15 +264,13 @@ LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndMessiComesFirst [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 6
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aLoadedDie
-		              withLapsToWin: 1.
+		              withLapsToWin: 1
+		              handing: { SpeedCard new }.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished.
@@ -310,15 +286,13 @@ LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinis
 	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie1.
 			            aLoadedDie2 }.
-	aBoard := RoundBoard
-		          withNoEffectsOf: 6
-		          and: 100
-		          handing: { SpeedCard new }.
+	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aDiceCup
-		              withLapsToWin: 1.
+		              withLapsToWin: 1
+		              handing: { SpeedCard new }.
 	aSpaceGame playGame.
 
 	self assert: aSpaceGame isFinished

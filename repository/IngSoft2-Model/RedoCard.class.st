@@ -14,9 +14,9 @@ RedoCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aBoard [
 ]
 
 { #category : #asserting }
-RedoCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+RedoCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
-	aBoard assertSpaceShip: cardPlayer owns: self
+	aCardApplicator assertSpaceShip: cardPlayer owns: self
 ]
 
 { #category : #'as yet unclassified' }

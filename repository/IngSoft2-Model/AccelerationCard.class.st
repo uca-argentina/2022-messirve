@@ -17,14 +17,14 @@ AccelerationCard >> applyNegatedOn: anAccelerationCard on: anEnginePowerApplicat
 ]
 
 { #category : #asserting }
-AccelerationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+AccelerationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aBoard assertSpaceShip: cardPlayer owns: self
+	aCardApplicator assertSpaceShip: cardPlayer owns: self
 ]
 
 { #category : #'as yet unclassified' }
-AccelerationCard >> inventoriesAfterTargeting: target from: inventories on: aBoard [
+AccelerationCard >> inventoriesAfterTargeting: target from: inventories on: cardApplicator [
 
-	^ aBoard inventoriesAfterNewGlobalCardOf: self
+	^ cardApplicator inventoriesAfterNewGlobalCardOf: self
 ]

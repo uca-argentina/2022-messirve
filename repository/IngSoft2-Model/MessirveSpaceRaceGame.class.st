@@ -9,7 +9,8 @@ Class {
 		'gameStatus',
 		'spaceShipSequence',
 		'lapsToWin',
-		'ranking'
+		'ranking',
+		'cardApplicator'
 	],
 	#category : #'IngSoft2-Model'
 }
@@ -25,8 +26,8 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 		Error signal: 'SpaceShip name duplicated' ]
 ]
 
-{ #category : #initialization }
-MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
 	^ self new
@@ -34,15 +35,20 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 		  on: aBoard
 		  rolling: aDiceCup
 		  withLapsToWin: anAmountOfLaps
+		  handing: cards
 ]
 
 { #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
+	| movement |
+	movement := diceCupRoll
+	            + (self enginePowerOf: self currentSpaceShipStatus).
+
 	self assertMovementCanBeApplied.
 	spaceshipStatuses := board
 		                     newStatusesFrom: spaceshipStatuses
-		                     afterA: diceCupRoll
+		                     afterA: movement
 		                     from: self currentSpaceShipStatus
 		                     on: self.
 	self endTheGameIfAWinnerExists
@@ -95,6 +101,12 @@ MessirveSpaceRaceGame >> calculateNewRanking [
 		aSpaceShip position >= anotherSpaceShip position ].
 ]
 
+{ #category : #accessing }
+MessirveSpaceRaceGame >> cardApplicator [
+
+	^ cardApplicator
+]
+
 { #category : #private }
 MessirveSpaceRaceGame >> currentSpaceShipStatus [
 
@@ -112,24 +124,31 @@ MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 		              self nameOfSpaceShipPlaying
 ]
 
-{ #category : #initialization }
-MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> enginePowerOf: aSpaceShipStatus [
+
+	^cardApplicator enginePowerOf: aSpaceShipStatus spaceShip
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	board := aBoard.
 	self assignSpaceshipStatusesFrom: spaceShipsNames.
-	board initialSetUpWith: spaceShipsNames.
+	cardApplicator := CardApplicator handing: cards to: spaceShipsNames.
 	diceCup := aDiceCup.
 	lapsToWin := anAmountOfLaps.
 	currentTurn := 1.
 	ranking := spaceshipStatuses.
 	gameStatus := MessirveSpaceGameStartOfTurnStatus new.
-	spaceShipSequence := Sequence formedBy: spaceShipsNames
+	spaceShipSequence := Sequence formedBy: spaceShipsNames.
+	
 ]
 
 { #category : #accessing }
 MessirveSpaceRaceGame >> inventoryFrom: aSpaceShipName [
 
-	^ board cardsInInventoryOf: aSpaceShipName
+	^ cardApplicator cardsInInventoryOf: aSpaceShipName
 ]
 
 { #category : #testing }
@@ -204,7 +223,7 @@ MessirveSpaceRaceGame >> ranking [
 { #category : #'as yet unclassified' }
 MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
-	board
+	cardApplicator
 		spaceShip: cardPlayer
 		plays: aCard
 		on: cardTarget

@@ -21,9 +21,9 @@ EnginePowerApplicator >> accelerateAllEngines [
 ]
 
 { #category : #'as yet unclassified' }
-EnginePowerApplicator >> applyCancellationTargetting: aCard in: aBoard [
+EnginePowerApplicator >> applyCancellationTargetting: aCard in: aCardApplicator [
 
-	aBoard applyAllNegatedCardsOf: aCard
+	aCardApplicator applyAllNegatedCardsOf: aCard
 ]
 
 { #category : #'as yet unclassified' }

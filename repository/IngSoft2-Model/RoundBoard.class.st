@@ -38,7 +38,7 @@ RoundBoard class >> assertValidParsecs: someParsecs [
 ]
 
 { #category : #initialization }
-RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs handing: cards [
+RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions and: aNumberOfParsecs [
 
 	| boardPositions |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -49,10 +49,10 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 		boardPositions
 			at: (effectTileNumbers at: i)
 			put: (effectPositions at: i) ].
+
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
-		  handing: cards
 ]
 
 { #category : #'instance creation' }
@@ -65,7 +65,7 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 ]
 
 { #category : #initialization }
-RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs handing: cards [
+RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs [
 
 	| defaultBoardPositions boardRandomizer |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -80,11 +80,10 @@ RoundBoard class >> with: numberOfPositions and: aNumberOfParsecs handing: cards
 	^ self new
 		  initializeWithPositions: defaultBoardPositions
 		  and: aNumberOfParsecs
-		  handing: cards
 ]
 
 { #category : #initialization }
-RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs handing: cards [
+RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs [
 
 	| boardPositions |
 	self assertValidParsecs: aNumberOfParsecs.
@@ -94,7 +93,6 @@ RoundBoard class >> withNoEffectsOf: numberOfPositions and: aNumberOfParsecs han
 	^ self new
 		  initializeWithPositions: boardPositions
 		  and: aNumberOfParsecs
-		  handing: cards
 ]
 
 { #category : #private }
@@ -108,148 +106,29 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
-{ #category : #'as yet unclassified' }
-RoundBoard >> applyAllNegatedCardsOf: aCard [
-
-	inventories do: [ :inventory | 
-		inventory activeCards do: [ :card | 
-			card = aCard ifTrue: [ 
-				aCard
-					applyNegatedOn: inventory spaceShip
-					on: engineApplicator
-					from: self ] ] ].
-
-	globalInventory do: [ :card | 
-		card = aCard ifTrue: [ 
-			aCard applyNegatedOn: card on: engineApplicator from: self ] ]
-]
-
-{ #category : #asserting }
-RoundBoard >> assertCardIsActive: aCard [ 
-
-	| activeCardsExist globalCardExists |
-	activeCardsExist := inventories anySatisfy: [ :inventory | 
-		                    inventory activeCards anySatisfy: [ :activeCard | activeCard == aCard ] ].
-
-	globalCardExists := globalInventory isNotEmpty.
-	(globalCardExists or: activeCardsExist) ifFalse: [ 
-		Error signal: 'The targeted card is not currently active' ]
-]
-
-{ #category : #asserting }
-RoundBoard >> assertSpaceShip: aSpaceShip owns: aCard [
-
-	| spaceShipInventory cardExists |
-	spaceShipInventory := inventories detect: [ :inventory | 
-		                      inventory spaceShip = aSpaceShip ].
-	cardExists := spaceShipInventory inventory anySatisfy: [ :card | 
-		              card == aCard ].
-	cardExists ifFalse: [ Error signal: 'SpaceShip doesnt own that card' ]
-]
-
-{ #category : #asserting }
-RoundBoard >> assertThereAreActiveCardsInPlay [
-
-	| activeCardsExist globalActiveCardsExist |
-	globalActiveCardsExist := globalInventory isNotEmpty.
-	activeCardsExist := inventories anySatisfy: [ :inventory | 
-		                    inventory activeCards isNotEmpty ].
-
-	(activeCardsExist or: globalActiveCardsExist) ifFalse: [ 
-		Error signal: 'No cards available to cancel' ]
-]
-
-{ #category : #initialization }
-RoundBoard >> assignInventoriesFrom: spaceShipNames [
-
-	inventories := spaceShipNames collect: [ :spaceShip | 
-		               SpaceShipInventory carriedBy: spaceShip ]
-]
-
-{ #category : #accessing }
-RoundBoard >> cardsInInventoryOf: aSpaceShipName [
-
-	^ inventories detect: [ :inventory | 
-		  inventory spaceShip = aSpaceShipName ]
-]
-
-{ #category : #'as yet unclassified' }
-RoundBoard >> distribute: aCard toTheInventoryOf: aSpaceShip [
-
-	| inventory newInventory |
-	inventory := inventories detect: [ :inven | 
-		             inven spaceShip = aSpaceShip ].
-	newInventory := cardDealer hand: aCard to: inventory.
-	inventories replaceAll: inventory with: newInventory
-]
-
-{ #category : #private }
-RoundBoard >> distributeInitialCardsFrom: spaceShipNames [
-
-	self assignInventoriesFrom: spaceShipNames.
-	inventories := cardDealer inventoriesAfterDrawingTwoFrom: inventories.
-]
-
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
 
 	^ boardEffects at: aPosition
 ]
 
-{ #category : #'as yet unclassified' }
-RoundBoard >> initialSetUpWith: spaceShipNames [ 
-	
-	self distributeInitialCardsFrom: spaceShipNames.
-	self startEnginesOf: spaceShipNames.
-]
-
 { #category : #initialization }
-RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs handing: cards [
+RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 
 	startingPosition := 1.
 	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
 	parsecs := anAmountOfParsecs.
-	cardDealer := CardDealer handing: cards.
-	inventories := OrderedCollection new.
-	globalInventory := OrderedCollection new.
-]
-
-{ #category : #'as yet unclassified' }
-RoundBoard >> inventoriesAfter: cardTarget wasApplied: aCard [
-
-	| inventoryOfCardTarget |
-	inventoryOfCardTarget := inventories detect: [ :inventory | 
-		                         inventory spaceShip == cardTarget ].
-	inventoryOfCardTarget addCardToActiveCards: aCard.
-	^ inventories
-]
-
-{ #category : #'as yet unclassified' }
-RoundBoard >> inventoriesAfterNewGlobalCardOf: anAccelerationCard [
-
-	globalInventory add: anAccelerationCard.
-	^ inventories
-]
-
-{ #category : #'as yet unclassified' }
-RoundBoard >> inventoriesAfterRemoving: aCard from: someInventories [
-	| newInventories |
-	newInventories := someInventories do: [ :inventory | 
-		  inventory activeCards removeAllSuchThat: [ :card | card = aCard ] ].
-	^ newInventories.
 ]
 
 { #category : #private }
 RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
 
-	| newLaps currentLaps lapsToAdd positionOfSpaceship movement newPosition |
+	| newLaps currentLaps lapsToAdd positionOfSpaceship  newPosition |
 	currentLaps := aStatus position lap.
 	positionOfSpaceship := aStatus position tile.
 
-	movement := diceResult
-	            + (engineApplicator powerOf: aStatus spaceShip).
-	newPosition := aStatus position tile + movement.
+	newPosition := aStatus position tile + diceResult.
 
 	lapsToAdd := newPosition = lastPosition
 		             ifTrue: [ 0 ]
@@ -266,12 +145,6 @@ RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
 			newLaps < 1
 				ifTrue: [ ^ 1 ]
 				ifFalse: [ ^ newLaps ] ]
-]
-
-{ #category : #accessing }
-RoundBoard >> lastCardPlayed [
-
-	^ lastCardPlayed
 ]
 
 { #category : #accessing }
@@ -330,39 +203,6 @@ RoundBoard >> parsecsPerPosition [
 	^ parsecs / lastPosition
 ]
 
-{ #category : #'as yet unclassified' }
-RoundBoard >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
-
-	| inventoryOfCardPlayer cardRemoved |
-	self assertSpaceShip: cardPlayer owns: aCard.
-	aCard
-		assertValidCardPlayOf: cardPlayer
-		at: cardTarget
-		on: self
-		from: aGame.
-
-	inventoryOfCardPlayer := inventories detect: [ :inventory | 
-		                         inventory spaceShip == cardPlayer ].
-	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
-
-	engineApplicator
-		applyEnginePowerTo: cardTarget
-		afterPlaying: aCard
-		on: self.
-	inventories := aCard
-		               inventoriesAfterTargeting: cardTarget
-		               from: inventories
-		               on: self.
-
-	lastCardPlayed := cardRemoved
-]
-
-{ #category : #'as yet unclassified' }
-RoundBoard >> startEnginesOf: spaceShipNames [
-
-	engineApplicator := EnginePowerApplicator with: spaceShipNames
-]
-
 { #category : #accessing }
 RoundBoard >> startingPosition [
 
@@ -372,10 +212,8 @@ RoundBoard >> startingPosition [
 { #category : #private }
 RoundBoard >> tileAfter: aSpaceShipStatus rolled: diceRoll [
 
-	| newPosition movement |
-	movement := diceRoll
-	            + (engineApplicator powerOf: aSpaceShipStatus spaceShip).
-	newPosition := aSpaceShipStatus position tile + movement.
+	| newPosition |
+	newPosition := aSpaceShipStatus position tile + diceRoll.
 
 	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
 
