@@ -6,12 +6,7 @@ Class {
 		'boardEffects',
 		'lastPosition',
 		'parsecs',
-		'cardDealer',
-		'inventories',
-		'engineApplicator',
-		'lastCardPlayed',
-		'lastEffectApplied',
-		'globalInventory'
+		'lastEffectApplied'
 	],
 	#category : #'IngSoft2-Model'
 }

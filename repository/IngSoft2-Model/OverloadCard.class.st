@@ -17,10 +17,11 @@ OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRo
 ]
 
 { #category : #asserting }
-OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
+OverloadCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aCardApplicator assertSpaceShip: cardPlayer owns: self
+	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }

@@ -20,17 +20,22 @@ CardApplicator class >> handing: someCards to: somePlayers [
 { #category : #'as yet unclassified' }
 CardApplicator >> applyAllNegatedCardsOf: aCard [
 
-	inventories do: [ :inventory | 
-		inventory activeCards do: [ :card | 
-			card = aCard ifTrue: [ 
-				aCard
-					applyNegatedOn: inventory spaceShip
-					on: engineApplicator
-					from: self ] ] ].
+	inventories do: [ :inventory | self applyNegatedAndRemove: aCard from: inventory ].
 
 	globalInventory do: [ :card | 
 		card = aCard ifTrue: [ 
 			aCard applyNegatedOn: card on: engineApplicator from: self ] ]
+]
+
+{ #category : #'as yet unclassified' }
+CardApplicator >> applyNegatedAndRemove: aCard from: inventory [
+
+	^ inventory activeCards do: [ :card | 
+		  card = aCard ifTrue: [ 
+			  aCard
+				  applyNegatedOn: inventory spaceShip
+				  on: engineApplicator
+				  from: self ] ]
 ]
 
 { #category : #asserting }
@@ -145,24 +150,20 @@ CardApplicator >> lastCardPlayed [
 ]
 
 { #category : #'as yet unclassified' }
+CardApplicator >> makeLastPlayed: aCard [
+
+	lastCardPlayed := aCard
+]
+
+{ #category : #'as yet unclassified' }
 CardApplicator >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 
-	| inventoryOfCardPlayer cardRemoved |
-	self assertSpaceShip: cardPlayer owns: aCard.
-	aCard assertValidCardPlayOf: cardPlayer at: cardTarget on: self from: aGame.
+	| inventoryOfCardPlayer |
+	aCard handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: self from: aGame.
 
-	inventoryOfCardPlayer := inventories detect: [ :inventory | 
-		                         inventory spaceShip == cardPlayer ].
-	cardRemoved := inventoryOfCardPlayer removeFromInventory: aCard.
+	inventoryOfCardPlayer := inventories detect: [ :inventory | inventory spaceShip == cardPlayer ].
+	inventoryOfCardPlayer removeFromInventory: aCard.
 
-	engineApplicator
-		applyEnginePowerTo: cardTarget
-		afterPlaying: aCard
-		on: self.
-	inventories := aCard
-		               inventoriesAfterTargeting: cardTarget
-		               from: inventories
-		               on: self.
-
-	lastCardPlayed := cardRemoved
+	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard	on: self.
+	inventories := aCard inventoriesAfterTargeting: cardTarget from: inventories on: self.
 ]

@@ -27,9 +27,9 @@ EnginePowerApplicator >> applyCancellationTargetting: aCard in: aCardApplicator 
 ]
 
 { #category : #'as yet unclassified' }
-EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aBoard [
+EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aCardApplicator [
 
-	aCard activatedTo: target on: self from: aBoard
+	aCard activatedTo: target on: self from: aCardApplicator
 ]
 
 { #category : #'as yet unclassified' }

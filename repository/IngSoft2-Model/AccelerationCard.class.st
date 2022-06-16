@@ -17,10 +17,11 @@ AccelerationCard >> applyNegatedOn: anAccelerationCard on: anEnginePowerApplicat
 ]
 
 { #category : #asserting }
-AccelerationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
+AccelerationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aCardApplicator assertSpaceShip: cardPlayer owns: self
+	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }

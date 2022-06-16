@@ -14,7 +14,7 @@ RedoCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aBoard [
 ]
 
 { #category : #asserting }
-RedoCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
+RedoCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self
 ]

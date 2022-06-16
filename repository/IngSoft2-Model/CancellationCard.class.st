@@ -11,11 +11,12 @@ CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aBoard 
 ]
 
 { #category : #asserting }
-CancellationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
+CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.
 	aCardApplicator assertThereAreActiveCardsInPlay.
-	aCardApplicator assertCardIsActive: cardTarget
+	aCardApplicator assertCardIsActive: cardTarget.
+	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }

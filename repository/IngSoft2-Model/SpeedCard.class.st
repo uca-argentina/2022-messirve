@@ -17,10 +17,11 @@ SpeedCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRound
 ]
 
 { #category : #asserting }
-SpeedCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
+SpeedCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aCardApplicator assertSpaceShip: cardPlayer owns: self
+	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }
