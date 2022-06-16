@@ -5,9 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aBoard [
+CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aCardApplicator [
 
-	anEnginePowerApplicator applyCancellationTargetting: aCard in: aBoard
+	anEnginePowerApplicator applyCancellationTargetting: aCard in: aCardApplicator
 ]
 
 { #category : #asserting }

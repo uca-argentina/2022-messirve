@@ -669,6 +669,37 @@ CardTests >> testASpaceShipPlaysARedoCardThreeTimesAfterAnOverloadCardWasPlayedA
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipPlaysARepeatCardAndAdvancesFourTilesBecauseASpeedUpWasThePreviousEffect [
+
+	| aSpaceGame aLoadedDie aBoard repeatCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	repeatCard := RepeatCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { 
+				              repeatCard.
+				              repeatCard }.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame spaceShip: 'Messi' plays: repeatCard on: 'Messi'.
+	
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 2
+		in: aSpaceGame.
+
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipPlaysASpeedCardOnAnotherSpaceShipAndTheOtherSpaceShipAdvancesOneExtraSpacePerTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
