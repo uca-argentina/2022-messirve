@@ -128,6 +128,7 @@ RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
 	parsecs := anAmountOfParsecs.
+	lastEffectApplied := NullEffect new
 ]
 
 { #category : #private }
