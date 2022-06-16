@@ -18,6 +18,13 @@ CardApplicator class >> handing: someCards to: somePlayers [
 ]
 
 { #category : #'as yet unclassified' }
+CardApplicator >> activeCardsOf: aSpaceShip [
+
+	^ (inventories detect: [ :inventory | 
+		   inventory spaceShip = aSpaceShip ]) activeCards
+]
+
+{ #category : #'as yet unclassified' }
 CardApplicator >> applyAllNegatedCardsOf: aCard [
 
 	inventories do: [ :inventory | self applyNegatedAndRemove: aCard from: inventory ].
@@ -76,8 +83,8 @@ CardApplicator >> assertThereAreActiveCardsInPlay [
 { #category : #accessing }
 CardApplicator >> cardsInInventoryOf: aSpaceShip [
 
-	^ inventories detect: [ :inventory | 
-		  inventory spaceShip = aSpaceShip ]
+	^ (inventories detect: [ :inventory | 
+		   inventory spaceShip = aSpaceShip ]) inventory
 ]
 
 { #category : #'as yet unclassified' }

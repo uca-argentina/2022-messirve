@@ -1,6 +1,6 @@
 Class {
 	#name : #OverloadCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#category : #'IngSoft2-Model'
 }
 
@@ -14,14 +14,6 @@ OverloadCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRound
 OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
-]
-
-{ #category : #asserting }
-OverloadCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
-
-	aCardApplicator assertSpaceShip: cardPlayer owns: self.
-	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }

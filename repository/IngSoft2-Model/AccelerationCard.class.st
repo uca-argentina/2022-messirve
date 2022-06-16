@@ -1,6 +1,6 @@
 Class {
 	#name : #AccelerationCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#category : #'IngSoft2-Model'
 }
 
@@ -14,14 +14,6 @@ AccelerationCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aR
 AccelerationCard >> applyNegatedOn: anAccelerationCard on: anEnginePowerApplicator from: aRoundBoard [
 
 	anEnginePowerApplicator slowDownAllEngines
-]
-
-{ #category : #asserting }
-AccelerationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
-
-	aCardApplicator assertSpaceShip: cardPlayer owns: self.
-	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aCardApplicator makeLastPlayed: self
 ]
 
 { #category : #'as yet unclassified' }

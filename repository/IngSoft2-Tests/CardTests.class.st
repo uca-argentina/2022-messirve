@@ -18,7 +18,7 @@ CardTests >> testASpaceShipBeginsTheGameWithTwoCards [
 		              handing: { OverloadCard new }.
 
 	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory size
+		assert: (aSpaceGame inventoryFrom: 'Messi') size
 		equals: 2
 ]
 
@@ -104,12 +104,10 @@ CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards 
 		              handing: { overloadCard }.
 	aSpaceGame playNextTurn.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
-		equals: { 
-				overloadCard.
-				overloadCard.
-				speedCard } asOrderedCollection
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			overloadCard.
+			overloadCard.
+			speedCard } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -135,13 +133,11 @@ CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardTwiceAndNowHasFourCa
 	aSpaceGame playNextTurn.
 	aSpaceGame playNextTurn.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
-		equals: { 
-				overloadCard.
-				overloadCard.
-				speedCard.
-				speedCard } asOrderedCollection
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			overloadCard.
+			overloadCard.
+			speedCard.
+			speedCard } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -172,11 +168,9 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 		with: 1
 		in: aSpaceGame.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
-		equals: { 
-				overloadCard.
-				overloadCard } asOrderedCollection
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			overloadCard.
+			overloadCard } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -355,10 +349,10 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 
 	aSpaceGame spaceShip: 'Messi' plays: redoCard on: accelerationCardA.
 
-	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty
+	self assert: (aSpaceGame inventoryFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Armani')  isEmpty
 ]
 
 { #category : #tests }
@@ -394,10 +388,10 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 
 	aSpaceGame spaceShip: 'Messi' plays: redoCard on: overLoadCardA.
 
-	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty
+	self assert: (aSpaceGame inventoryFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Armani') isEmpty
 ]
 
 { #category : #tests }
@@ -430,10 +424,116 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 
 	aSpaceGame spaceShip: 'Messi' plays: redoCard on: speedCardA.
 
-	self assert: (aSpaceGame inventoryFrom: 'Messi') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') inventory isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
-	self assert: (aSpaceGame inventoryFrom: 'Armani') activeCards isEmpty
+	self assert: (aSpaceGame inventoryFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Armani') isEmpty
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasUsedOnASpeedAndTheRedoCancellsTheLastSpeed [
+
+	| aSpaceGame aLoadedDie aBoard speedCard1 speedCard2 redoCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCard1 := SpeedCard new.
+	speedCard2 := SpeedCard new.
+	redoCard := RedoCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { 
+				          (CardDealerEffect handing: redoCard).
+				          (CardDealerEffect handing: cancellationCard) }
+		          at: { 2. 3 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 3
+		              handing: { 
+				              speedCard1.
+				              speedCard2 }.
+
+	aSpaceGame playNextTurn.
+	aSpaceGame playNextTurn.
+
+
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			speedCard1.
+			speedCard2.
+			redoCard.
+			cancellationCard } asOrderedCollection.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCard1 on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: speedCard2 on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: cancellationCard on: speedCard1.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi')
+		equals: { redoCard } asOrderedCollection.
+	self
+		assert: (aSpaceGame activeCardsFrom: 'Messi')
+		equals: { speedCard2 } asOrderedCollection.
+
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: speedCard2.
+
+	self
+		assert: aSpaceGame cardApplicator lastCardPlayed
+		equals: cancellationCard.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') isEmpty.
+		
+		self
+		assert: (aSpaceGame activeCardsFrom: 'Messi') isEmpty.
+	
+	aSpaceGame playNextTurn.
+	self
+		assert: 'Messi'
+		isAt: 4
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardAfterARedoCardAndStillAppliesTheSpeedCardFirstlyPlayed [
+
+	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	speedCard := SpeedCard new.
+	redoCard := RedoCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { (CardDealerEffect handing: redoCard) }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 3
+		              handing: { 
+				              speedCard.
+				              redoCard }.
+
+	aSpaceGame playNextTurn.
+	
+	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	
+		
+	self assert: (aSpaceGame activeCardsFrom: 'Messi')	equals: { speedCard . speedCard . speedCard } asOrderedCollection.
+	
+	self assert: aSpaceGame cardApplicator lastCardPlayed equals: speedCard.
+	
+	aSpaceGame playNextTurn.
+	    self
+        assert: 'Messi'
+        isAt: 1
+        with: 2
+        in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -514,6 +614,58 @@ CardTests >> testASpaceShipPlaysARedoCardButIsNotSavedAsLastCardPlayed [
 	aSpaceGame playNextTurn.
 
 	self assert: aSpaceGame cardApplicator lastCardPlayed equals: speedCard
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipPlaysARedoCardThreeTimesAfterAnOverloadCardWasPlayedAndNextTurnGoesBackOneLap [
+
+	| aSpaceGame aLoadedDie aBoard overloadCard redoCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	overloadCard := OverloadCard new.
+	redoCard := RedoCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { 
+				          (CardDealerEffect handing: redoCard).
+				          (CardDealerEffect handing: redoCard) }
+		          at: { 2. 3 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 3
+		              handing: { 
+				              overloadCard.
+				              redoCard }.
+
+	1 to: 5 do: [ :i | aSpaceGame playNextTurn ].
+
+	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+	aSpaceGame spaceShip: 'Messi' plays: redoCard on: 'Messi'.
+
+
+	self assert: (aSpaceGame inventoryFrom: 'Messi') isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Messi') equals: { 
+			overloadCard.
+			overloadCard.
+			overloadCard.
+			overloadCard } asOrderedCollection.
+
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 2
+		in: aSpaceGame.
+
+	aSpaceGame playNextTurn.
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame
 ]
 
 { #category : #tests }
@@ -627,19 +779,17 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherOneAndTheCardGoesToActive
 	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Armani'.
 
 	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		assert: (aSpaceGame inventoryFrom: 'Messi')
 		equals: { overloadCard } asOrderedCollection.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Armani') inventory
-		equals: { 
-				speedCard.
-				speedCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Armani') equals: { 
+			speedCard.
+			speedCard } asOrderedCollection.
 
-	self assert: (aSpaceGame inventoryFrom: 'Messi') activeCards isEmpty.
+	self assert: (aSpaceGame activeCardsFrom: 'Messi') isEmpty.
 
 	self
-		assert: (aSpaceGame inventoryFrom: 'Armani') activeCards
+		assert: (aSpaceGame activeCardsFrom: 'Armani')
 		equals: { overloadCard } asOrderedCollection
 ]
 
@@ -696,16 +846,14 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 
 	aSpaceGame spaceShip: 'Messi' plays: overloadCard on: 'Messi'.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory size
-		equals: 1.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') size equals: 1.
 
 	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
+		assert: (aSpaceGame inventoryFrom: 'Messi')
 		equals: { speedCard } asOrderedCollection.
 
 	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') activeCards
+		assert: (aSpaceGame activeCardsFrom: 'Messi')
 		equals: { overloadCard } asOrderedCollection
 ]
 
@@ -863,37 +1011,25 @@ CardTests >> testSixSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 				              overloadCard }.
 	aSpaceGame playNextTurn.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
-		equals: { 
-				overloadCard.
-				overloadCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			overloadCard.
+			overloadCard } asOrderedCollection.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Armani') inventory
-		equals: { 
-				speedCard.
-				speedCard } asOrderedCollection.
-	self
-		assert: (aSpaceGame inventoryFrom: 'De Paul') inventory
-		equals: { 
-				overloadCard.
-				overloadCard } asOrderedCollection.
-	self
-		assert: (aSpaceGame inventoryFrom: 'Di Maria') inventory
-		equals: { 
-				overloadCard.
-				overloadCard } asOrderedCollection.
-	self
-		assert: (aSpaceGame inventoryFrom: 'Lo Celso') inventory
-		equals: { 
-				speedCard.
-				speedCard } asOrderedCollection.
-	self
-		assert: (aSpaceGame inventoryFrom: 'Paredes') inventory
-		equals: { 
-				overloadCard.
-				overloadCard } asOrderedCollection
+	self assert: (aSpaceGame inventoryFrom: 'Armani') equals: { 
+			speedCard.
+			speedCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'De Paul') equals: { 
+			overloadCard.
+			overloadCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Di Maria') equals: { 
+			overloadCard.
+			overloadCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Lo Celso') equals: { 
+			speedCard.
+			speedCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Paredes') equals: { 
+			overloadCard.
+			overloadCard } asOrderedCollection
 ]
 
 { #category : #tests }
@@ -916,15 +1052,11 @@ CardTests >> testTwoSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 				              overloadCard }.
 	aSpaceGame playNextTurn.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') inventory
-		equals: { 
-				overloadCard.
-				speedCard } asOrderedCollection.
+	self assert: (aSpaceGame inventoryFrom: 'Messi') equals: { 
+			overloadCard.
+			speedCard } asOrderedCollection.
 
-	self
-		assert: (aSpaceGame inventoryFrom: 'Armani') inventory
-		equals: { 
-				speedCard.
-				overloadCard } asOrderedCollection
+	self assert: (aSpaceGame inventoryFrom: 'Armani') equals: { 
+			speedCard.
+			overloadCard } asOrderedCollection
 ]

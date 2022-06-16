@@ -38,6 +38,12 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 		  handing: cards
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> activeCardsFrom: aSpaceShipName [ 
+
+	^ cardApplicator activeCardsOf: aSpaceShipName
+]
+
 { #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 
