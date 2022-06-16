@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-OverloadCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+OverloadCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]

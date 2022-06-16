@@ -5,8 +5,9 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-RepeatCard >> activatedTo: aString on: anEnginePowerApplicator from: aCardApplicator [ 
-	self shouldBeImplemented.
+RepeatCard >> activatedTo: aTarget poweredBy: anEnginePowerApplicator on: aCardApplicator from: aGame [ 
+
+	anEnginePowerApplicator applyRepeatTargetting: aTarget in: aCardApplicator from: aGame
 ]
 
 { #category : #asserting }
@@ -14,4 +15,10 @@ RepeatCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApp
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.
 	aCardApplicator makeLastPlayed: self
+]
+
+{ #category : #'as yet unclassified' }
+RepeatCard >> inventoriesAfterTargeting: aTarget from: inventories on: aCardApplicator [
+
+	^ inventories
 ]

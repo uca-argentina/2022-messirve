@@ -101,6 +101,20 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
+{ #category : #'as yet unclassified' }
+RoundBoard >> applyLastEffectTo: aSpaceShipStatus from: statuses on: aGame [
+
+	| effectApplicator |
+	effectApplicator := EffectApplicator new.
+
+	^ effectApplicator
+		  apply: lastEffectApplied
+		  on: statuses
+		  activatedBy: aSpaceShipStatus
+		  playedOn: self
+		  and: aGame
+]
+
 { #category : #accessing }
 RoundBoard >> effectAppliedOnPosition: aPosition [
 

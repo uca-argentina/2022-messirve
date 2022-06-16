@@ -5,12 +5,13 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-RedoCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aBoard [
+RedoCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aGame [
 
 	anEnginePowerApplicator
-		applyEnginePowerTo: aSpaceShip
-		afterPlaying: aBoard lastCardPlayed
-		on: aBoard
+		applyEnginePowerTo: aCard
+		afterPlaying: aCardApplicator lastCardPlayed
+		on: aCardApplicator
+		from: aGame
 ]
 
 { #category : #asserting }

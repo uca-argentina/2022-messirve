@@ -44,6 +44,16 @@ MessirveSpaceRaceGame >> activeCardsFrom: aSpaceShipName [
 	^ cardApplicator activeCardsOf: aSpaceShipName
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame >> applyLastEffectTo: aSpaceShip [
+
+	spaceshipStatuses := board
+		                     applyLastEffectTo:
+		                     (self obtainSpaceShipStatusFrom: aSpaceShip)
+		                     from: spaceshipStatuses
+		                     on: self
+]
+
 { #category : #private }
 MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
 

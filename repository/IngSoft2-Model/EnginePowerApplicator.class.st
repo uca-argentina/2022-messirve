@@ -27,9 +27,15 @@ EnginePowerApplicator >> applyCancellationTargetting: aCard in: aCardApplicator 
 ]
 
 { #category : #'as yet unclassified' }
-EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aCardApplicator [
+EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aCardApplicator from: aGame [ 
 
-	aCard activatedTo: target on: self from: aCardApplicator
+	aCard activatedTo: target poweredBy: self on: aCardApplicator from: aGame
+]
+
+{ #category : #'as yet unclassified' }
+EnginePowerApplicator >> applyRepeatTargetting: aTarget in: aCardApplicator from: aGame [ 
+
+	aCardApplicator applyRepeatTargetting: aTarget from: aGame
 ]
 
 { #category : #'as yet unclassified' }

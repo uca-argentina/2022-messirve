@@ -5,7 +5,7 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-SpeedCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+SpeedCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [ 
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]

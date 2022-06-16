@@ -5,9 +5,11 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aCardApplicator [
+CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
-	anEnginePowerApplicator applyCancellationTargetting: aCard in: aCardApplicator
+	anEnginePowerApplicator
+		applyCancellationTargetting: aCard
+		in: aCardApplicator
 ]
 
 { #category : #asserting }

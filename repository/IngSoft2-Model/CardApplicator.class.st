@@ -45,6 +45,12 @@ CardApplicator >> applyNegatedAndRemove: aCard from: inventory [
 				  from: self ] ]
 ]
 
+{ #category : #'as yet unclassified' }
+CardApplicator >> applyRepeatTargetting: aSpaceShip from: aGame [
+
+	aGame applyLastEffectTo: aSpaceShip
+]
+
 { #category : #asserting }
 CardApplicator >> assertCardIsActive: aCard [ 
 
@@ -171,6 +177,6 @@ CardApplicator >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame 
 	inventoryOfCardPlayer := inventories detect: [ :inventory | inventory spaceShip == cardPlayer ].
 	inventoryOfCardPlayer removeFromInventory: aCard.
 
-	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard	on: self.
+	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard	on: self from: aGame.
 	inventories := aCard inventoriesAfterTargeting: cardTarget from: inventories on: self.
 ]
