@@ -35,5 +35,5 @@ BoardRandomizer >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 	source := DiscreteProbabilityEventSource with:
 		          discreteProbabilityDistribution.
 
-	^ source next: 100
+	^ source next: numberOfPositions
 ]

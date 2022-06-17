@@ -26,6 +26,19 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 		Error signal: 'SpaceShip name duplicated' ]
 ]
 
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
+
+    self assertPlayerNameNotDuplicated: spaceShips.
+
+    ^ self new
+          initiallizePlayedBy: spaceShips
+          on: aBoard
+          rolling: aDiceCup
+          withLapsToWin: anAmountOfLaps
+          handing: self randomlyDistributedDeck
+]
+
 { #category : #initialization }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
@@ -36,6 +49,38 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 		  rolling: aDiceCup
 		  withLapsToWin: anAmountOfLaps
 		  handing: cards
+]
+
+{ #category : #'as yet unclassified' }
+MessirveSpaceRaceGame class >> randomlyDistributedDeck [
+
+    | source cancellationCard accelerationCard overloadCard speedCard redoCard repeatCard probabilityEvents discreteProbabilityDistribution |
+    cancellationCard := CancellationCard new.
+    accelerationCard := AccelerationCard new.
+    overloadCard := OverloadCard new.
+    speedCard := SpeedCard new.
+    redoCard := RedoCard new.
+    repeatCard := RepeatCard new.
+
+
+    probabilityEvents := { 
+                             (ProbabilityEvent
+                                  of: cancellationCard
+                                  with: 1 / 6).
+                             (ProbabilityEvent
+                                  of: accelerationCard
+                                  with: 1 / 6).
+                             (ProbabilityEvent of: overloadCard with: 1 / 6).
+                             (ProbabilityEvent of: speedCard with: 1 / 6).
+                             (ProbabilityEvent of: redoCard with: 1 / 6).
+                             (ProbabilityEvent of: repeatCard with: 1 / 6) }.
+
+    discreteProbabilityDistribution := DiscreteProbabilityDistribution 
+                                           withAll: probabilityEvents.
+    source := DiscreteProbabilityEventSource with:
+                  discreteProbabilityDistribution.
+
+    ^ source next: 100
 ]
 
 { #category : #accessing }
