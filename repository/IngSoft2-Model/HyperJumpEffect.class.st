@@ -20,8 +20,8 @@ HyperJumpEffect class >> assertValid: someParsecs and: someLightyears [
 HyperJumpEffect class >> with: someParsecs and: someLightyears [
 
 	| distanceUnits |
-	distanceUnits := OrderedCollection new.
 	self assertValid: someParsecs and: someLightyears.
+	distanceUnits := OrderedCollection new.
 	1 to: someParsecs size do: [ :i | 
 		distanceUnits add: (SpaceGameDistanceUnit
 				 with: (someParsecs at: i)
@@ -49,10 +49,4 @@ HyperJumpEffect >> initializeWith: someDistanceUnits [
 
 	distanceUnits := someDistanceUnits.
 	sequence := Sequence formedBy: distanceUnits.
-]
-
-{ #category : #private }
-HyperJumpEffect >> next [
-
-	sequence next
 ]
