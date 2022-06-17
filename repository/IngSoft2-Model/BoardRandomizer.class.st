@@ -7,32 +7,33 @@ Class {
 { #category : #creation }
 BoardRandomizer >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 
-	| numberOfExtraPositions defaultBoardPositions |
-	defaultBoardPositions := self createRandomBoardOf100Positions.
+	| source atomicBomb hyperJumpEffect moonwalkEffect speedUpEffect wormholeEffect cardDealerEffect nonEffect probabilityEvents discreteProbabilityDistribution |
+	atomicBomb := AtomicBombEffect new.
+	cardDealerEffect := CardDealerEffect new.
+	hyperJumpEffect := HyperJumpEffect with: { 50. 40. 30. 20. 10 }.
+	moonwalkEffect := MoonWalkEffect randomlyDistributed.
+	nonEffect := NonEffect new.
+	speedUpEffect := SpeedUpEffect new.
+	wormholeEffect := WormHoleEffect new.
 
-	numberOfExtraPositions := numberOfPositions - 100.
-	1 to: numberOfExtraPositions do: [ :position | 
-		defaultBoardPositions add:
-			(defaultBoardPositions at: position % 100 + 1) ].
-	^ defaultBoardPositions
-]
+	nonEffect := NonEffect new.
+	probabilityEvents := { 
+		                     (ProbabilityEvent of: atomicBomb with: 0.02).
+		                     (ProbabilityEvent
+			                      of: cardDealerEffect
+			                      with: 0.1).
+		                     (ProbabilityEvent
+			                      of: hyperJumpEffect
+			                      with: 0.08).
+		                     (ProbabilityEvent of: moonwalkEffect with: 0.1).
+		                     (ProbabilityEvent of: nonEffect with: 0.3).
+		                     (ProbabilityEvent of: speedUpEffect with: 0.2).
+		                     (ProbabilityEvent of: wormholeEffect with: 0.2) }.
 
-{ #category : #creation }
-BoardRandomizer >> createRandomBoardOf100Positions [
+	discreteProbabilityDistribution := DiscreteProbabilityDistribution 
+		                                   withAll: probabilityEvents.
+	source := DiscreteProbabilityEventSource with:
+		          discreteProbabilityDistribution.
 
-	| defaultBoardPositions |
-	defaultBoardPositions := OrderedCollection new.
-	1 to: 40 do: [ :i | defaultBoardPositions add: NonEffect new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: SpeedUpEffect new ].
-	1 to: 20 do: [ :i | defaultBoardPositions add: WormHoleEffect new ].
-	1 to: 10 do: [ :i | 
-		defaultBoardPositions add:
-			(MoonWalkEffect takingBack: (1 to: 10) atRandom) ].
-	1 to: 8 do: [ :i | 
-		defaultBoardPositions add:
-			(HyperJumpEffect with: { 50. 40. 30. 20. 10 }) ].
-	1 to: 2 do: [ :i | defaultBoardPositions add: AtomicBombEffect new ].
-
-	defaultBoardPositions shuffle.
-	^ defaultBoardPositions
+	^ source next: 100
 ]
