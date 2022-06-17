@@ -10,7 +10,7 @@ BoardRandomizer >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 	| source atomicBomb hyperJumpEffect moonwalkEffect speedUpEffect wormholeEffect cardDealerEffect nonEffect probabilityEvents discreteProbabilityDistribution |
 	atomicBomb := AtomicBombEffect new.
 	cardDealerEffect := CardDealerEffect new.
-	hyperJumpEffect := HyperJumpEffect with: { 50. 40. 30. 20. 10 }.
+	hyperJumpEffect := HyperJumpEffect with: { 50. 40. 30. 20. 10 } and: { 10 . 8 . 7 . 6 . 5 }.
 	moonwalkEffect := MoonWalkEffect randomlyDistributed.
 	nonEffect := NonEffect new.
 	speedUpEffect := SpeedUpEffect new.

@@ -53,7 +53,7 @@ EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: a
 
 	| aDistance positionLength aPosition |
 	positionLength := aBoard parsecsPerPosition.
-	aDistance := aBoost // positionLength.
+	aDistance := (aBoost totalParsecs) // positionLength.
 
 	aPosition := aBoard
 		             newPositionAfter: aStatus

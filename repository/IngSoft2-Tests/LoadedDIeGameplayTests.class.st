@@ -9,7 +9,7 @@ LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -30,7 +30,7 @@ LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 5 }.
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -46,17 +46,15 @@ LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAndReturnsToPositionOne [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          withNoEffectsOf: 10
-		          and: 100
-		          .
+	aBoard := RoundBoard withNoEffectsOf: 10 with: 100 and: 0.
 	aDie := LoadedDie rolling: { 10 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3 handing: { SpeedCard new }.
+		              withLapsToWin: 3
+		              handing: { SpeedCard new }.
 
 
 	aSpaceGame playNextTurn.
@@ -73,7 +71,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAn
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTenTimesAndIsInLapTen [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 10 with: 100 and: 0.
 	aDie := LoadedDie rolling: { 104 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -96,7 +94,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTe
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionThreeTimesAndWins [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 10 with: 100 and: 0.
 	aDie := LoadedDie rolling: { 30 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -115,7 +113,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTh
 LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLapTwoAndGameIsNotFinished [
 
 	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard withNoEffectsOf: 10 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 10 with: 100 and: 0.
 	aDie := LoadedDie rolling: { 14 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -141,7 +139,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheB
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 100 }.
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -161,7 +159,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheB
 LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstPosition [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 50 and: 0.
 	aDiceCup := LoadedDie rolling: { 1. 2. 1. 2. 1. 1 }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -181,7 +179,7 @@ LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 6 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
@@ -207,7 +205,7 @@ LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 10 }.
-	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 6 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -223,7 +221,7 @@ LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgress [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 100 and: 0.
 	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -242,7 +240,7 @@ LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgres
 LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndMessiComesFirstDePaulSecondAndElDibuThird [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard withNoEffectsOf: 5 and: 50.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 50 and: 0.
 	aDiceCup := DiceCup withAll: { (LoadedDie rolling: { 3. 2. 1 }) }.
 
 	aSpaceGame := MessirveSpaceRaceGame
@@ -264,7 +262,7 @@ LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndMessiComesFirst [
 
 	| aSpaceGame aLoadedDie aBoard |
 	aLoadedDie := LoadedDie rolling: { 3 }.
-	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 6 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
@@ -286,7 +284,7 @@ LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinis
 	aDiceCup := DiceCup withAll: { 
 			            aLoadedDie1.
 			            aLoadedDie2 }.
-	aBoard := RoundBoard withNoEffectsOf: 6 and: 100.
+	aBoard := RoundBoard withNoEffectsOf: 6 with: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard

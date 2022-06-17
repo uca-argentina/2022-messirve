@@ -30,7 +30,7 @@ ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
-		should: [ RoundBoard with: 1 and: 100 ]
+		should: [ RoundBoard with: 1 on: 100 and: 0 ]
 		raise: Error
 		whoseDescriptionIncludes:
 		'A board cannot have less than two positions'
@@ -41,7 +41,7 @@ ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 
 	| aSpaceGame aBoard |
-	aBoard := RoundBoard with: 100 and: 100.
+	aBoard := RoundBoard with: 100 on: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi' }
 		              on: aBoard
@@ -60,7 +60,7 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
 
 	| aSpaceGame aBoard |
-	aBoard := RoundBoard with: 100 and: 100.
+	aBoard := RoundBoard with: 100 on: 100 and: 0.
 	aSpaceGame := MessirveSpaceRaceGame
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
@@ -85,7 +85,7 @@ ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
 ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
-	aBoard := RoundBoard with: 100 and: 100.
+	aBoard := RoundBoard with: 100 on: 100 and: 0.
 	aDiceCup := DiceCup withAll: { '' }.
 
 	self

@@ -7,5 +7,5 @@ Class {
 { #category : #private }
 NullEffect >> applyOn: aCollection activatedBy: aSpaceShipStatus playedOn: aRoundBoard and: aMessirveSpaceRaceGame appliedBy: anEffectApplicator [
 
-	Error signal: 'There was no effect previously played'
+	Error signal: 'No effect was previously played'
 ]
