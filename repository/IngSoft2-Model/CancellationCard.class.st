@@ -13,6 +13,12 @@ CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aC
 ]
 
 { #category : #asserting }
+CancellationCard >> assertCanBePlayedOnTurnOf: cardPlayer from: aMessirveSpaceRaceGame [ 
+	
+	^ self
+]
+
+{ #category : #asserting }
 CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.

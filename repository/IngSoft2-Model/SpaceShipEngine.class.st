@@ -15,11 +15,6 @@ SpaceShipEngine class >> startedBy: aSpaceShip with: anEnginePower [
 ]
 
 { #category : #accessing }
-SpaceShipEngine >> activeCards [
-	self shouldBeImplemented.
-]
-
-{ #category : #accessing }
 SpaceShipEngine >> enginePower [
 
 	^ enginePower

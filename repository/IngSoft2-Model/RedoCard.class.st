@@ -17,7 +17,8 @@ RedoCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardAppli
 { #category : #asserting }
 RedoCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
-	aCardApplicator assertSpaceShip: cardPlayer owns: self
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
+	aCardApplicator lastCardPlayed assertCanBePlayedOnTurnOf: cardPlayer from: aGame
 ]
 
 { #category : #'as yet unclassified' }

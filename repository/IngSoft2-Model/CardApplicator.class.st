@@ -169,14 +169,21 @@ CardApplicator >> makeLastPlayed: aCard [
 ]
 
 { #category : #'as yet unclassified' }
-CardApplicator >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
+CardApplicator >> remove: aCard from: cardPlayer [
 
 	| inventoryOfCardPlayer |
+	inventoryOfCardPlayer := inventories detect: [ :inventory | 
+		                         inventory spaceShip == cardPlayer ].
+	inventoryOfCardPlayer removeFromInventory: aCard
+]
+
+{ #category : #'as yet unclassified' }
+CardApplicator >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
+
 	aCard handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: self from: aGame.
 
-	inventoryOfCardPlayer := inventories detect: [ :inventory | inventory spaceShip == cardPlayer ].
-	inventoryOfCardPlayer removeFromInventory: aCard.
+	self remove: aCard from: cardPlayer.
 
 	engineApplicator applyEnginePowerTo: cardTarget afterPlaying: aCard	on: self from: aGame.
-	inventories := aCard inventoriesAfterTargeting: cardTarget from: inventories on: self.
+	inventories := aCard inventoriesAfterTargeting: cardTarget from: inventories on: self
 ]

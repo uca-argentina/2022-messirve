@@ -85,6 +85,41 @@ CardTests >> testASpaceShipCannotPlayAPermanentCardWhenItsNotTheirTurn [
 ]
 
 { #category : #tests }
+CardTests >> testASpaceShipCannotPlayARedoCardOnASpeedCardDuringATurnThatIsNotTheirs [
+
+	| aSpaceGame aLoadedDie aBoard redoCard speedCard |
+	aLoadedDie := LoadedDie rolling: { 6 }.
+	redoCard := RedoCard new.
+	speedCard := SpeedCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { 
+				              speedCard.
+				              speedCard.
+				              redoCard.
+				              redoCard }.
+
+	aSpaceGame spaceShip: 'Messi' plays: speedCard on: 'Messi'.
+
+	self
+		should: [ 
+		aSpaceGame spaceShip: 'Armani' plays: redoCard on: 'Messi' ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'Permanent cards can only be played during the turn of a Spaceship'
+		description:
+		'A permanent card is being played during a different turn of the playing spaceship'
+]
+
+{ #category : #tests }
 CardTests >> testASpaceShipCannotPlayARepeatCardWhenThereAreNoLastEffectsApplied [
 
 	| aSpaceGame aLoadedDie aBoard repeatCard |
@@ -952,6 +987,32 @@ CardTests >> testASpaceShipPlaysTwoSpeedCardsOnItSelfPlaysTheTurnReceivesASpeedC
 		isAt: 1
 		with: 2
 		in: aSpaceGame
+]
+
+{ #category : #tests }
+CardTests >> testASpaceShipUsesARepeatCardAfterAnotherSpaceShipLandedOnASpeedEffect [
+
+	| aSpaceGame aLoadedDie aBoard repeatCard |
+	aLoadedDie := LoadedDie rolling: { 6 }.
+	repeatCard := RepeatCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 2 }
+		          Of: 5
+		          and: 100.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Paredes'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { repeatCard }.
+	
+	aSpaceGame playNextTurn.
+	self assert: 'Messi' isAt: 1 with: 3 in: aSpaceGame.
+	aSpaceGame spaceShip: 'Armani' plays: repeatCard on: 'Armani'.
+	self assert: 'Armani' isAt: 5 with: 1 in: aSpaceGame.
+	aSpaceGame spaceShip: 'Paredes' plays: repeatCard on: 'Armani'.
+	self assert: 'Armani' isAt: 4 with: 2 in: aSpaceGame.
 ]
 
 { #category : #tests }
