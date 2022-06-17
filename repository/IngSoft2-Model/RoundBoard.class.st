@@ -26,7 +26,7 @@ RoundBoard class >> assertValidNumberOfPositions: numberOfPositions [
 		Error signal: 'A board cannot have less than two positions' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: numberOfPositions with: aNumberOfParsecs and: aNumberOfLightyears [
 
 	| boardPositions |
@@ -44,7 +44,7 @@ RoundBoard class >> boardWithOnly: effectPositions at: effectTileNumbers Of: num
 		  and: aNumberOfLightyears
 ]
 
-{ #category : #'instance creation' }
+{ #category : #verification }
 RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 
 	| boardPositions |
@@ -53,7 +53,7 @@ RoundBoard class >> noEffectPositionBoardWith: numberOfTiles [
 	^ boardPositions
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RoundBoard class >> with: numberOfPositions on: aNumberOfParsecs and: aNumberOfLightYears [
 
 	| defaultBoardPositions boardRandomizer |
@@ -71,7 +71,7 @@ RoundBoard class >> with: numberOfPositions on: aNumberOfParsecs and: aNumberOfL
 		  and: aNumberOfLightYears
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #'instance creation' }
 RoundBoard class >> withNoEffectsOf: numberOfPositions with: aNumberOfParsecs and: aNumberOfLightYears [
 
 	| boardPositions |
@@ -95,7 +95,7 @@ RoundBoard >> advance: aStatus from: statuses to: aPosition [
 	^ newStatuses
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RoundBoard >> applyLastEffectTo: aSpaceShipStatus from: statuses on: aGame [
 
 	| effectApplicator |

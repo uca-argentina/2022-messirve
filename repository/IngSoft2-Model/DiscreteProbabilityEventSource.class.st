@@ -36,7 +36,7 @@ DiscreteProbabilityEventSource >> next: amountOfItems [
 	^ (1 to: amountOfItems) collect: [ :a | self obtainOne ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 DiscreteProbabilityEventSource >> obtainOne [
 
 	| randomNumber searched |

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RedoCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aGame [
 
 	anEnginePowerApplicator
@@ -21,7 +21,7 @@ RedoCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardAppli
 	aCardApplicator lastCardPlayed assertCanBePlayedOnTurnOf: cardPlayer from: aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RedoCard >> inventoriesAfterTargeting: target from: inventories on: aBoard [
 
 	^ aBoard lastCardPlayed

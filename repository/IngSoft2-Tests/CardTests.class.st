@@ -120,34 +120,6 @@ CardTests >> testASpaceShipCannotPlayARedoCardOnASpeedCardDuringATurnThatIsNotTh
 ]
 
 { #category : #tests }
-CardTests >> testASpaceShipCannotPlayARepeatCardWhenThereAreNoLastEffectsApplied [
-
-	| aSpaceGame aLoadedDie aBoard repeatCard |
-	aLoadedDie := LoadedDie rolling: { 1 }.
-	repeatCard := RepeatCard new.
-	aBoard := RoundBoard
-		          boardWithOnly: { SpeedUpEffect new }
-		          at: { 2 }
-		          Of: 5
-		          with: 100
-		          and: 0.
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 5
-		              handing: { 
-				              repeatCard.
-				              repeatCard }.
-	self
-		should: [ 
-		aSpaceGame spaceShip: 'Messi' plays: repeatCard on: 'Messi' ]
-		raise: Error
-		whoseDescriptionIncludes: 'No effect was previously played'
-		description: 'Game has no effect previously played'
-]
-
-{ #category : #tests }
 CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |

@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RepeatCard >> activatedTo: aTarget poweredBy: anEnginePowerApplicator on: aCardApplicator from: aGame [ 
 
 	anEnginePowerApplicator applyRepeatTargetting: aTarget in: aCardApplicator from: aGame
@@ -17,7 +17,7 @@ RepeatCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApp
 	aCardApplicator makeLastPlayed: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RepeatCard >> inventoriesAfterTargeting: aTarget from: inventories on: aCardApplicator [
 
 	^ inventories

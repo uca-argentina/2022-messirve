@@ -14,31 +14,31 @@ EnginePowerApplicator class >> with: spaceShipNames [
 	^ self new initializeWith: spaceShipNames
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> accelerateAllEngines [
 
 	globalEnginePower := globalEnginePower + 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> applyCancellationTargetting: aCard in: aCardApplicator [
 
 	aCardApplicator applyAllNegatedCardsOf: aCard
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> applyEnginePowerTo: target afterPlaying: aCard on: aCardApplicator from: aGame [ 
 
 	aCard activatedTo: target poweredBy: self on: aCardApplicator from: aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> applyRepeatTargetting: aTarget in: aCardApplicator from: aGame [ 
 
 	aCardApplicator applyRepeatTargetting: aTarget from: aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 EnginePowerApplicator >> engineOf: aSpaceShip [
 
 	^ engines detect: [ :engine | engine spaceShip = aSpaceShip ]
@@ -52,7 +52,7 @@ EnginePowerApplicator >> initializeWith: spaceShips [
 		           SpaceShipEngine startedBy: spaceShip with: 0 ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> powerEngineOf: aSpaceShip by: anEnginePower [
 	
 	| engineToPower newEnginePower newEngine |
@@ -62,13 +62,13 @@ EnginePowerApplicator >> powerEngineOf: aSpaceShip by: anEnginePower [
 	engines replaceAll: engineToPower with: newEngine
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 EnginePowerApplicator >> powerOf: aSpaceShip [
 
 	^ (self engineOf: aSpaceShip) enginePower + globalEnginePower
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 EnginePowerApplicator >> slowDownAllEngines [
 
 	globalEnginePower := globalEnginePower - 1

@@ -26,20 +26,7 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 		Error signal: 'SpaceShip name duplicated' ]
 ]
 
-{ #category : #'as yet unclassified' }
-MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
-
-	self assertPlayerNameNotDuplicated: spaceShips.
-		
-	^ self new
-		  initiallizePlayedBy: spaceShips
-		  on: aBoard
-		  rolling: aDiceCup
-		  withLapsToWin: anAmountOfLaps
-		  handing: self randomlyDistributedDeck
-]
-
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
@@ -51,7 +38,7 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 		  handing: cards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #calculating }
 MessirveSpaceRaceGame class >> randomlyDistributedDeck [
 
 	| source cancellationCard accelerationCard overloadCard speedCard redoCard repeatCard probabilityEvents discreteProbabilityDistribution |
@@ -83,13 +70,13 @@ MessirveSpaceRaceGame class >> randomlyDistributedDeck [
 	^ source next: 100
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MessirveSpaceRaceGame >> activeCardsFrom: aSpaceShipName [ 
 
 	^ cardApplicator activeCardsOf: aSpaceShipName
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 MessirveSpaceRaceGame >> applyLastEffectTo: aSpaceShip [
 
 	spaceshipStatuses := board
@@ -137,7 +124,7 @@ MessirveSpaceRaceGame >> assertPermanentPlayedOnCorrectlyBy: cardPlayer [
 			'Permanent cards can only be played during the turn of a Spaceship' ]
 ]
 
-{ #category : #initialization }
+{ #category : #accessing }
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
 	| initialPosition |
@@ -185,13 +172,13 @@ MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 		              self nameOfSpaceShipPlaying
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 MessirveSpaceRaceGame >> enginePowerOf: aSpaceShipStatus [
 
 	^cardApplicator enginePowerOf: aSpaceShipStatus spaceShip
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	board := aBoard.
@@ -281,7 +268,7 @@ MessirveSpaceRaceGame >> ranking [
 	^ ranking
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #playing }
 MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 
 	cardApplicator

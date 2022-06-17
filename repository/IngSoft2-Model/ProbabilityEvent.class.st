@@ -15,7 +15,7 @@ ProbabilityEvent class >> assertCorrectProbabilityOf: aProbability [
 		Error signal: 'Probability must be between 0 and 1' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 ProbabilityEvent class >> of: anEvent with: aProbability [
 
 	self assertCorrectProbabilityOf: aProbability.

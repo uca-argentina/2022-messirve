@@ -4,19 +4,19 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SpeedCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [ 
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SpeedCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [ 
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SpeedCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
 	^ aCardApplicator inventoriesAfter: cardTarget wasApplied: self

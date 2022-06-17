@@ -11,20 +11,20 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 CardApplicator class >> handing: someCards to: somePlayers [
 
 	^ self new initializeHanding: someCards to: somePlayers
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CardApplicator >> activeCardsOf: aSpaceShip [
 
 	^ (inventories detect: [ :inventory | 
 		   inventory spaceShip = aSpaceShip ]) activeCards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> applyAllNegatedCardsOf: aCard [
 
 	inventories do: [ :inventory | self applyNegatedAndRemove: aCard from: inventory ].
@@ -34,7 +34,7 @@ CardApplicator >> applyAllNegatedCardsOf: aCard [
 			aCard applyNegatedOn: card on: engineApplicator from: self ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> applyNegatedAndRemove: aCard from: inventory [
 
 	^ inventory activeCards do: [ :card | 
@@ -45,7 +45,7 @@ CardApplicator >> applyNegatedAndRemove: aCard from: inventory [
 				  from: self ] ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> applyRepeatTargetting: aSpaceShip from: aGame [
 
 	aGame applyLastEffectTo: aSpaceShip
@@ -93,7 +93,7 @@ CardApplicator >> cardsInInventoryOf: aSpaceShip [
 		   inventory spaceShip = aSpaceShip ]) inventory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> distribute: aCard toTheInventoryOf: aSpaceShip [
 
 	| inventory newInventory |
@@ -103,7 +103,7 @@ CardApplicator >> distribute: aCard toTheInventoryOf: aSpaceShip [
 	inventories replaceAll: inventory with: newInventory
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> distributeInitialCardsTo: spaceShipNames [
 
 	inventories := spaceShipNames collect: [ :spaceShip | 
@@ -112,7 +112,7 @@ CardApplicator >> distributeInitialCardsTo: spaceShipNames [
 	inventories := cardDealer inventoriesAfterDrawingTwoFrom: inventories
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CardApplicator >> enginePowerOf: aSpaceShip [ 
 
 	^engineApplicator powerOf: aSpaceShip 
@@ -129,7 +129,7 @@ CardApplicator >> initializeHanding: someCards to: spaceShips [
 
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CardApplicator >> inventoriesAfter: cardTarget wasApplied: aCard [
 
 	| inventoryOfCardTarget |
@@ -139,14 +139,14 @@ CardApplicator >> inventoriesAfter: cardTarget wasApplied: aCard [
 	^ inventories
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #accessing }
 CardApplicator >> inventoriesAfterNewGlobalCardOf: anAccelerationCard [
 
 	globalInventory add: anAccelerationCard.
 	^ inventories
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> inventoriesAfterRemoving: aCard from: someInventories [
 
 	| newInventories |
@@ -162,13 +162,13 @@ CardApplicator >> lastCardPlayed [
 	^ lastCardPlayed
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> makeLastPlayed: aCard [
 
 	lastCardPlayed := aCard
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> remove: aCard from: cardPlayer [
 
 	| inventoryOfCardPlayer |
@@ -177,7 +177,7 @@ CardApplicator >> remove: aCard from: cardPlayer [
 	inventoryOfCardPlayer removeFromInventory: aCard
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardApplicator >> spaceShip: cardPlayer plays: aCard on: cardTarget from: aGame [
 
 	aCard handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: self from: aGame.

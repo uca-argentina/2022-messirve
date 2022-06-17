@@ -4,7 +4,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
 	anEnginePowerApplicator
@@ -12,13 +12,13 @@ CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aC
 		in: aCardApplicator
 ]
 
-{ #category : #asserting }
+{ #category : #private }
 CancellationCard >> assertCanBePlayedOnTurnOf: cardPlayer from: aMessirveSpaceRaceGame [ 
 	
 	^ self
 ]
 
-{ #category : #asserting }
+{ #category : #private }
 CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.
@@ -27,7 +27,7 @@ CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aC
 	aCardApplicator makeLastPlayed: self
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
 	^ aCardApplicator

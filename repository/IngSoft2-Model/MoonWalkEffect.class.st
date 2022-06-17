@@ -14,7 +14,7 @@ MoonWalkEffect class >> assertValidPositionsGoingBackOf: anAmountOfPositions [
 		Error signal: 'Amount of back positions must be higher than 0' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #calculating }
 MoonWalkEffect class >> obtainRandomTakingBackBetween: start and: end [
 
 	| source probabilityEvents discreteProbabilityDistribution |
@@ -31,7 +31,7 @@ MoonWalkEffect class >> obtainRandomTakingBackBetween: start and: end [
 	^ source next: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 MoonWalkEffect class >> randomlyDistributed [
 
 	| takingBackBetweenOneAndTen |
