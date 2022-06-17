@@ -50,8 +50,7 @@ SpaceShipInventory >> inventory [
 { #category : #removing }
 SpaceShipInventory >> removeFromInventory: aCard [
 
-	inventory remove: aCard.
-	^ aCard
+	inventory remove: aCard
 ]
 
 { #category : #accessing }

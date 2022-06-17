@@ -41,10 +41,10 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	^ aBoard advance: aStatus from: statuses to: aDistance
 ]
 
-{ #category : #'as yet unclassified' }
-EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aBoard [
+{ #category : #applying }
+EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aGame [
 
-	aBoard distribute: aCard toTheInventoryOf: aStatus spaceShip.
+	aGame cardApplicator distribute: aCard toTheInventoryOf: aStatus spaceShip.
 	^ statuses copy
 ]
 
@@ -53,7 +53,7 @@ EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: a
 
 	| aDistance positionLength aPosition |
 	positionLength := aBoard parsecsPerPosition.
-	aDistance := aBoost // positionLength.
+	aDistance := (aBoost totalParsecs) // positionLength.
 
 	aPosition := aBoard
 		             newPositionAfter: aStatus
@@ -72,17 +72,11 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 	newStatuses := statuses collect: [ :status | 
 		               SpaceShipStatus
 			               with: status spaceShip
-			               and: (SpaceShipPosition
-					                with:
-					                (aBoard
-						                 tileAfter: status
-						                 rolled: somePositions)
-					                and:
-					                (aBoard
-						                 lapAfter: status
-						                 rolled: somePositions
-						                 on: aGame)
-					                on: aBoard) ].
+			               and:
+			               (aBoard
+				                newPositionAfter: status
+				                rolled: somePositions
+				                on: aGame) ].
 
 	spaceShipPlaying := self
 		                    statusOf: aStatus spaceShip

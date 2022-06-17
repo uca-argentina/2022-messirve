@@ -5,12 +5,6 @@ Class {
 }
 
 { #category : #testing }
-MessirveSpaceGameStartOfTurnStatus >> canApplyMovement [
-
-	^ false
-]
-
-{ #category : #testing }
 MessirveSpaceGameStartOfTurnStatus >> isFinished [
 
 	^ false

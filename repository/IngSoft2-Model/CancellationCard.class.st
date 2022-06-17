@@ -4,22 +4,33 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-CancellationCard >> activatedTo: aCard on: anEnginePowerApplicator from: aBoard [
+{ #category : #private }
+CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
-	anEnginePowerApplicator applyCancellationTargetting: aCard in: aBoard
+	anEnginePowerApplicator
+		applyCancellationTargetting: aCard
+		in: aCardApplicator
 ]
 
-{ #category : #asserting }
-CancellationCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
-
-	aBoard assertSpaceShip: cardPlayer owns: self.
-	aBoard assertThereAreActiveCardsInPlay.
-	aBoard assertCardIsActive: cardTarget
+{ #category : #private }
+CancellationCard >> assertCanBePlayedOnTurnOf: cardPlayer from: aMessirveSpaceRaceGame [ 
+	
+	^ self
 ]
 
-{ #category : #'as yet unclassified' }
-CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
+{ #category : #private }
+CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
-	^aBoard inventoriesAfterRemoving: cardTarget from: inventories
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
+	aCardApplicator assertThereAreActiveCardsInPlay.
+	aCardApplicator assertCardIsActive: cardTarget.
+	aCardApplicator makeLastPlayed: self
+]
+
+{ #category : #private }
+CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
+
+	^ aCardApplicator
+		  inventoriesAfterRemoving: cardTarget
+		  from: inventories
 ]

@@ -8,15 +8,10 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 SpaceShipEngine class >> startedBy: aSpaceShip with: anEnginePower [
 
 	^ self new initializeStartedBy: aSpaceShip with: anEnginePower
-]
-
-{ #category : #accessing }
-SpaceShipEngine >> activeCards [
-	self shouldBeImplemented.
 ]
 
 { #category : #accessing }

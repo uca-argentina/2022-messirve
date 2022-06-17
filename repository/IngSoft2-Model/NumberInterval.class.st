@@ -12,7 +12,7 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
+{ #category : #initialization }
 NumberInterval class >> goingFrom: start to: end [
 
 	^ self new initializeGoingFrom: start to: end

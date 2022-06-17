@@ -14,7 +14,7 @@ CardDealer class >> handing: cards [
 	^ self new initializeHanding: cards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 CardDealer >> hand: aCard to: aSpaceShipInventory [
 
 	^ aSpaceShipInventory draw: aCard

@@ -20,6 +20,12 @@ SpaceShipPosition >> >= aSpaceShipPosition [
 	^self totalTraveled >= aSpaceShipPosition totalTraveled
 ]
 
+{ #category : #accessing }
+SpaceShipPosition >> distanceTraveled [
+
+	^ distanceTraveled
+]
+
 { #category : #initialization }
 SpaceShipPosition >> initializeWith: aPosition and: aLap on: aBoard [
 

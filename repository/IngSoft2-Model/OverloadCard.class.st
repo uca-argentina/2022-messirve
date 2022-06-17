@@ -1,30 +1,23 @@
 Class {
 	#name : #OverloadCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-OverloadCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+{ #category : #private }
+OverloadCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -2
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 2
 ]
 
-{ #category : #asserting }
-OverloadCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+{ #category : #private }
+OverloadCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
-	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aBoard assertSpaceShip: cardPlayer owns: self
-]
-
-{ #category : #'as yet unclassified' }
-OverloadCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
-
-	^ aBoard inventoriesAfter: cardTarget wasApplied: self
+	^ aCardApplicator inventoriesAfter: cardTarget wasApplied: self
 ]

@@ -1,30 +1,23 @@
 Class {
 	#name : #SpeedCard,
-	#superclass : #Object,
+	#superclass : #PermanentCard,
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-SpeedCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
+{ #category : #private }
+SpeedCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [ 
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 SpeedCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [ 
 
 	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
 ]
 
-{ #category : #asserting }
-SpeedCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+{ #category : #private }
+SpeedCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
-	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer.
-	aBoard assertSpaceShip: cardPlayer owns: self
-]
-
-{ #category : #'as yet unclassified' }
-SpeedCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aBoard [
-
-	^ aBoard inventoriesAfter: cardTarget wasApplied: self
+	^ aCardApplicator inventoriesAfter: cardTarget wasApplied: self
 ]

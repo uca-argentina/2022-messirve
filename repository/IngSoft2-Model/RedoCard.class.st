@@ -4,22 +4,24 @@ Class {
 	#category : #'IngSoft2-Model'
 }
 
-{ #category : #'as yet unclassified' }
-RedoCard >> activatedTo: aSpaceShip on: anEnginePowerApplicator from: aBoard [
+{ #category : #private }
+RedoCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aGame [
 
 	anEnginePowerApplicator
-		applyEnginePowerTo: aSpaceShip
-		afterPlaying: aBoard lastCardPlayed
-		on: aBoard
+		applyEnginePowerTo: aCard
+		afterPlaying: aCardApplicator lastCardPlayed
+		on: aCardApplicator
+		from: aGame
 ]
 
 { #category : #asserting }
-RedoCard >> assertValidCardPlayOf: cardPlayer at: cardTarget on: aBoard from: aGame [
+RedoCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
-	aBoard assertSpaceShip: cardPlayer owns: self
+	aCardApplicator assertSpaceShip: cardPlayer owns: self.
+	aCardApplicator lastCardPlayed assertCanBePlayedOnTurnOf: cardPlayer from: aGame
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : #private }
 RedoCard >> inventoriesAfterTargeting: target from: inventories on: aBoard [
 
 	^ aBoard lastCardPlayed
