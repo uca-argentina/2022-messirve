@@ -3,7 +3,6 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'sequence',
-		'sequenceStart',
 		'distanceUnits'
 	],
 	#category : #'IngSoft2-Model'
@@ -50,11 +49,10 @@ HyperJumpEffect >> initializeWith: someDistanceUnits [
 
 	distanceUnits := someDistanceUnits.
 	sequence := Sequence formedBy: distanceUnits.
-	sequenceStart := 1
 ]
 
 { #category : #private }
 HyperJumpEffect >> next [
 
-	sequenceStart := sequence next
+	sequence next
 ]

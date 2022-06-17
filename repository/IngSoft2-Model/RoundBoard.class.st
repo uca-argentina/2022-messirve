@@ -122,17 +122,7 @@ RoundBoard >> initializeSome: boardPositions with: anAmountOfParsecs and: anAmou
 	boardEffects := boardPositions asOrderedCollection.
 	lastPosition := boardPositions size.
 	distanceUnit := SpaceGameDistanceUnit with: anAmountOfParsecs and: anAmountOfLightYears.
-	lastEffectApplied := NullEffect new
-]
-
-{ #category : #initialization }
-RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
-
-	startingPosition := 1.
-	boardEffects := boardPositions asOrderedCollection.
-	lastPosition := boardPositions size.
-	parsecs := anAmountOfParsecs.
-	lastEffectApplied := NullEffect new
+	lastEffectApplied := {  }
 ]
 
 { #category : #private }
