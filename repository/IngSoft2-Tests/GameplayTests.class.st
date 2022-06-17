@@ -15,8 +15,7 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 1
-		              handing: { SpeedCard new }.
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
 
@@ -40,8 +39,7 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 1
-		              handing: { SpeedCard new }.
+		              withLapsToWin: 1.
 
 	initialPositionOfSpaceship := aSpaceGame positionOfSpaceship: 'Messi'.
 	aSpaceGame playNextTurn.
@@ -63,8 +61,7 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 1
-		              handing: { SpeedCard new }.
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
 
@@ -87,8 +84,7 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 		              'Armani' }
 		              on: aBoard
 		              rolling: aDiceCup
-		              withLapsToWin: 1
-		              handing: { SpeedCard new }.
+		              withLapsToWin: 1.
 
 	aSpaceGame playGame.
 
@@ -106,8 +102,7 @@ GameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFini
 		              playedBy: { 'Messi'. 'De Paul' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3
-		              handing: { SpeedCard new }.
+		              withLapsToWin: 3.
 
 	aSpaceGame playGame.
 
