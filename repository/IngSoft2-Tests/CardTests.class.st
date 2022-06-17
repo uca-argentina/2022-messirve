@@ -725,7 +725,7 @@ CardTests >> testASpaceShipPlaysARedoCardThreeTimesAfterAnOverloadCardWasPlayedA
 	aSpaceGame playNextTurn.
 	self
 		assert: 'Messi'
-		isAt: 3
+		isAt: 1
 		with: 1
 		in: aSpaceGame
 ]
@@ -1104,7 +1104,7 @@ CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnItselfTwiceAndAfterNextTu
 
 	self
 		assert: 'Messi'
-		isAt: 3
+		isAt: 1
 		with: 1
 		in: aSpaceGame
 ]

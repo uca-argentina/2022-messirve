@@ -72,17 +72,11 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 	newStatuses := statuses collect: [ :status | 
 		               SpaceShipStatus
 			               with: status spaceShip
-			               and: (SpaceShipPosition
-					                with:
-					                (aBoard
-						                 tileAfter: status
-						                 rolled: somePositions)
-					                and:
-					                (aBoard
-						                 lapAfter: status
-						                 rolled: somePositions
-						                 on: aGame)
-					                on: aBoard) ].
+			               and:
+			               (aBoard
+				                newPositionAfter: status
+				                rolled: somePositions
+				                on: aGame) ].
 
 	spaceShipPlaying := self
 		                    statusOf: aStatus spaceShip

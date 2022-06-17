@@ -7,13 +7,13 @@ Class {
 { #category : #'as yet unclassified' }
 OverloadCard >> activatedTo: aSpaceShip poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: -2
 ]
 
 { #category : #'as yet unclassified' }
 OverloadCard >> applyNegatedOn: aSpaceShip on: anEnginePowerApplicator from: aRoundBoard [
 
-	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 1
+	anEnginePowerApplicator powerEngineOf: aSpaceShip by: 2
 ]
 
 { #category : #'as yet unclassified' }

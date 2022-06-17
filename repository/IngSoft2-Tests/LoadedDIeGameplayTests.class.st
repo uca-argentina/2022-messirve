@@ -103,7 +103,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTh
 		              playedBy: { 'Messi' }
 		              on: aBoard
 		              rolling: aDie
-		              withLapsToWin: 3
+		              withLapsToWin: 4
 		              handing: { SpeedCard new }.
 
 	aSpaceGame playGame.

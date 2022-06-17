@@ -132,29 +132,11 @@ RoundBoard >> initializeWithPositions: boardPositions and: anAmountOfParsecs [
 ]
 
 { #category : #private }
-RoundBoard >> lapAfter: aStatus rolled: diceResult on: aGame [
+RoundBoard >> lapAfter: newDistanceTravelled [
 
-	| newLaps currentLaps lapsToAdd positionOfSpaceship  newPosition |
-	currentLaps := aStatus position lap.
-	positionOfSpaceship := aStatus position tile.
-
-	newPosition := aStatus position tile + diceResult.
-
-	lapsToAdd := newPosition = lastPosition
-		             ifTrue: [ 0 ]
-		             ifFalse: [ 
-			             newPosition = 0
-				             ifTrue: [ -1 ]
-				             ifFalse: [ newPosition // lastPosition ] ].
-
-	newLaps := currentLaps + lapsToAdd.
-
-	newLaps > aGame lapsToWin
-		ifTrue: [ ^ aGame lapsToWin ]
-		ifFalse: [ 
-			newLaps < 1
-				ifTrue: [ ^ 1 ]
-				ifFalse: [ ^ newLaps ] ]
+	^ newDistanceTravelled % lastPosition = 0
+		  ifTrue: [ newDistanceTravelled // lastPosition ]
+		  ifFalse: [ newDistanceTravelled // lastPosition + 1 ]
 ]
 
 { #category : #accessing }
@@ -166,11 +148,23 @@ RoundBoard >> lastPosition [
 { #category : #private }
 RoundBoard >> newPositionAfter: aStatus rolled: aDiceResult on: aGame [
 
-	| aTile aLap |
-	aTile := self tileAfter: aStatus rolled: aDiceResult.
-	aLap := self lapAfter: aStatus rolled: aDiceResult on: aGame.
+	| newDistanceTravelled lastPossibleDistance newTile newLap |
+	newDistanceTravelled := aStatus position distanceTraveled
+	                        + aDiceResult.
 
-	^ SpaceShipPosition with: aTile and: aLap on: self
+	lastPossibleDistance := lastPosition * aGame lapsToWin.
+
+	newTile := self tileAfter: newDistanceTravelled.
+
+	newLap := self lapAfter: newDistanceTravelled.
+
+	newDistanceTravelled <= 0
+		ifTrue: [ ^ SpaceShipPosition with: 1 and: 1 on: self ]
+		ifFalse: [ 
+			newDistanceTravelled > lastPossibleDistance
+				ifTrue: [ 
+				^ SpaceShipPosition with: 1 and: aGame lapsToWin on: self ]
+				ifFalse: [ ^ SpaceShipPosition with: newTile and: newLap on: self ] ]
 ]
 
 { #category : #private }
@@ -220,20 +214,9 @@ RoundBoard >> startingPosition [
 ]
 
 { #category : #private }
-RoundBoard >> tileAfter: aSpaceShipStatus rolled: diceRoll [
+RoundBoard >> tileAfter: newDistanceTravelled [
 
-	| newPosition |
-	newPosition := aSpaceShipStatus position tile + diceRoll.
-
-	newPosition > lastPosition ifTrue: [ ^ newPosition % lastPosition ].
-
-	newPosition <= 0 ifTrue: [ 
-		aSpaceShipStatus lap = 1
-			ifTrue: [ ^ 1 ]
-			ifFalse: [ 
-				newPosition = 0
-					ifTrue: [ ^ lastPosition ]
-					ifFalse: [ ^ newPosition % lastPosition ] ] ].
-
-	^ newPosition
+	^ newDistanceTravelled % lastPosition = 0
+		  ifTrue: [ lastPosition ]
+		  ifFalse: [ newDistanceTravelled % lastPosition ]
 ]
