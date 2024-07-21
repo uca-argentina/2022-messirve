@@ -1,6 +1,9 @@
+"
+Represents a range of numbers, defining a specific interval with a minimum and maximum value.
+"
 Class {
-	#name : #NumberInterval,
-	#superclass : #Object,
+	#name : 'NumberInterval',
+	#superclass : 'Object',
 	#instVars : [
 		'startingAt',
 		'endingAt'
@@ -9,22 +12,23 @@ Class {
 		'startingAt',
 		'endingAt'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NumberInterval class >> goingFrom: start to: end [
 
 	^ self new initializeGoingFrom: start to: end
 ]
 
-{ #category : #comparing }
+{ #category : 'comparing' }
 NumberInterval >> contains: aNumber [
 
 	^ aNumber between: startingAt and: endingAt
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 NumberInterval >> initializeGoingFrom: start to: end [
 
 	startingAt := start.

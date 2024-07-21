@@ -1,16 +1,20 @@
+"
+Represents a card with lasting effects that persist throughout the game.
+"
 Class {
-	#name : #PermanentCard,
-	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#name : 'PermanentCard',
+	#superclass : 'Object',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PermanentCard >> assertCanBePlayedOnTurnOf: cardPlayer from: aGame [
 
 	aGame assertPermanentPlayedOnCorrectlyBy: cardPlayer
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 PermanentCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.

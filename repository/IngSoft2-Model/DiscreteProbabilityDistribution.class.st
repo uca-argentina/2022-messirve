@@ -1,33 +1,37 @@
+"
+Represents a probability distribution with discrete outcomes, used for random events in the game.
+"
 Class {
-	#name : #DiscreteProbabilityDistribution,
-	#superclass : #Object,
+	#name : 'DiscreteProbabilityDistribution',
+	#superclass : 'Object',
 	#instVars : [
 		'eventProbabilities'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 DiscreteProbabilityDistribution class >> assertCorrectSumOf: eventProbabilities [
 
 	(eventProbabilities sum: [ :event | event probability ]) = 1 
 		ifFalse: [ Error signal: 'The sum of probabilities must be 1' ]
 ]
 
-{ #category : #'instance creation' }
+{ #category : 'instance creation' }
 DiscreteProbabilityDistribution class >> withAll: eventProbabilities [
 
 	self assertCorrectSumOf: eventProbabilities.
 	^ self new initializeWithAll: eventProbabilities
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 DiscreteProbabilityDistribution >> eventProbabilities [
 
 	^ eventProbabilities
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 DiscreteProbabilityDistribution >> initializeWithAll: someEventProbabilities [
 
 	eventProbabilities := someEventProbabilities

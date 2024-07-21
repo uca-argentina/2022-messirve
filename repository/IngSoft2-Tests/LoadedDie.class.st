@@ -1,20 +1,23 @@
+"
+A die that is biased to produce certain numbers more frequently than others.
+"
 Class {
-	#name : #LoadedDie,
-	#superclass : #Object,
+	#name : 'LoadedDie',
+	#superclass : 'Object',
 	#instVars : [
-		'currentIndex',
 		'rollSequence',
 		'results'
 	],
-	#category : #'IngSoft2-Tests'
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LoadedDie class >> rolling: aRoll [ 
 	^self new initializeWithRoll: aRoll.
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 LoadedDie >> initializeWithRoll: someRolls [ 
 	
 	rollSequence := Sequence formedBy: someRolls.
@@ -22,7 +25,7 @@ LoadedDie >> initializeWithRoll: someRolls [
 	
 ]
 
-{ #category : #action }
+{ #category : 'action' }
 LoadedDie >> roll [
 	| currentRoll |
 	currentRoll := (results at: rollSequence currentSequenceNumber) copy.

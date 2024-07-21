@@ -1,10 +1,11 @@
 Class {
-	#name : #LoadedDieGameplayTests,
-	#superclass : #MessirveTests,
-	#category : #'IngSoft2-Tests'
+	#name : 'LoadedDieGameplayTests',
+	#superclass : 'MessirveTests',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -25,7 +26,7 @@ LoadedDieGameplayTests >> testAGameCannotBeAskedForAWinnerWhenItHasNotFinished [
 		description: 'Nonexistent winner, game in progress'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -42,7 +43,7 @@ LoadedDieGameplayTests >> testASpaceShipReachesTheLastPositionAndIsTheWinner [
 	self assert: aSpaceGame winner equals: 'Messi'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAndReturnsToPositionOne [
 
 	| aSpaceGame aBoard aDie |
@@ -67,7 +68,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionAn
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTenTimesAndIsInLapTen [
 
 	| aSpaceGame aBoard aDie |
@@ -90,7 +91,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTe
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionThreeTimesAndWins [
 
 	| aSpaceGame aBoard aDie |
@@ -109,7 +110,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsADieAndGoesThroughTheLastPositionTh
 	self assert: aSpaceGame winner equals: 'Messi'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLapTwoAndGameIsNotFinished [
 
 	| aSpaceGame aBoard aDie |
@@ -134,7 +135,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsFourteenAndEndsUpOnPositionFiveOfLa
 	self deny: aSpaceGame isFinished
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheBoardThanTheFirstPositionOfTheWinningLap [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -155,7 +156,7 @@ LoadedDieGameplayTests >> testASpaceShipRollsOneHundredButCannotGetFurtherOnTheB
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstPosition [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -174,7 +175,7 @@ LoadedDieGameplayTests >> testASpaceShipWinsTheGameAndFinishesInTheRankingFirstP
 	self assert: aSpaceGame ranking first spaceShip equals: 'De Paul'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnded [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -200,7 +201,7 @@ LoadedDieGameplayTests >> testIsPossibleToKnowPositionsOfSpaceshipsAfterGameEnde
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishLine [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -217,7 +218,7 @@ LoadedDieGameplayTests >> testTheGameFinishesWhenASpaceShipGoesThroughTheFinishL
 	self assert: aSpaceGame isFinished
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgress [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -236,7 +237,7 @@ LoadedDieGameplayTests >> testTheRankingCanBeCheckedWhileTheGameIsStillInProgres
 	self assert: aSpaceGame ranking first spaceShip equals: 'Messi'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndMessiComesFirstDePaulSecondAndElDibuThird [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -257,7 +258,7 @@ LoadedDieGameplayTests >> testThreeSpaceShipPlayTheGameAndMessiComesFirstDePaulS
 	self assert: aSpaceGame ranking third spaceShip equals: 'El Dibu'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndMessiComesFirst [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -275,7 +276,7 @@ LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameAndMessiComesFirst [
 	self assert: aSpaceGame winner equals: 'Messi'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 LoadedDieGameplayTests >> testTwoSpaceShipsPlayTheGameWithTwoDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aLoadedDie1 aLoadedDie2 aDiceCup |

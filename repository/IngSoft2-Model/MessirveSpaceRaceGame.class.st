@@ -1,6 +1,9 @@
+"
+A space-themed race game where players compete to reach the finish line first.
+"
 Class {
-	#name : #MessirveSpaceRaceGame,
-	#superclass : #Object,
+	#name : 'MessirveSpaceRaceGame',
+	#superclass : 'Object',
 	#instVars : [
 		'board',
 		'diceCup',
@@ -12,10 +15,11 @@ Class {
 		'ranking',
 		'cardApplicator'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #verification }
+{ #category : 'verification' }
 MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 
 	| spaceShipsSetSize spaceShipsSize |
@@ -26,7 +30,7 @@ MessirveSpaceRaceGame class >> assertPlayerNameNotDuplicated: spaceShips [
 		Error signal: 'SpaceShip name duplicated' ]
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps [
 
     self assertPlayerNameNotDuplicated: spaceShips.
@@ -39,7 +43,7 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
           handing: self randomlyDistributedDeck
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	self assertPlayerNameNotDuplicated: spaceShips.
@@ -51,7 +55,7 @@ MessirveSpaceRaceGame class >> playedBy: spaceShips on: aBoard rolling: aDiceCup
 		  handing: cards
 ]
 
-{ #category : #'as yet unclassified' }
+{ #category : 'as yet unclassified' }
 MessirveSpaceRaceGame class >> randomlyDistributedDeck [
 
     | source cancellationCard accelerationCard overloadCard speedCard redoCard repeatCard probabilityEvents discreteProbabilityDistribution |
@@ -83,13 +87,13 @@ MessirveSpaceRaceGame class >> randomlyDistributedDeck [
     ^ source next: 100
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> activeCardsFrom: aSpaceShipName [ 
 
 	^ cardApplicator activeCardsOf: aSpaceShipName
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> applyLastEffectTo: aSpaceShip [
 
 	spaceshipStatuses := board
@@ -99,37 +103,35 @@ MessirveSpaceRaceGame >> applyLastEffectTo: aSpaceShip [
 		                     on: self
 ]
 
-{ #category : #private }
-MessirveSpaceRaceGame >> applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll [
+{ #category : 'private' }
+MessirveSpaceRaceGame >> applyMovementTo: player afterRolling: diceCupRoll [
 
 	| movement |
 	movement := diceCupRoll
 	            + (self enginePowerOf: self currentSpaceShipStatus).
 
 	self assertMovementCanBeApplied.
-	spaceshipStatuses := board
-		                     newStatusesFrom: spaceshipStatuses
-		                     afterA: movement
-		                     from: self currentSpaceShipStatus
-		                     on: self.
+		
+	self moveSpaceShip: player toPosition: movement.
+	
 	self endTheGameIfAWinnerExists
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> assertGameIsNotFinished [
 
 	self isFinished ifTrue: [ 
 		Error signal: 'A game cannot be played after it has finished' ]
 ]
 
-{ #category : #verification }
+{ #category : 'verification' }
 MessirveSpaceRaceGame >> assertMovementCanBeApplied [
 
 	gameStatus canApplyMovement ifFalse: [ 
 		Error signal: 'Movement cannot be applied before the roll' ]
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 MessirveSpaceRaceGame >> assertPermanentPlayedOnCorrectlyBy: cardPlayer [
 
 	cardPlayer = self nameOfSpaceShipPlaying ifFalse: [ 
@@ -137,7 +139,18 @@ MessirveSpaceRaceGame >> assertPermanentPlayedOnCorrectlyBy: cardPlayer [
 			'Permanent cards can only be played during the turn of a Spaceship' ]
 ]
 
-{ #category : #accessing }
+{ #category : 'asserting' }
+MessirveSpaceRaceGame >> assertTurnBelongsTo: player [
+	
+	|isCurrentPlayerTurn|
+	
+	isCurrentPlayerTurn := self currentSpaceShipStatus == player.
+	isCurrentPlayerTurn ifTrue: [ ^ self ].
+	self setPenalizationOf: -2 to: player.
+
+]
+
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 
 	| initialPosition |
@@ -153,7 +166,7 @@ MessirveSpaceRaceGame >> assignSpaceshipStatusesFrom: spaceShipsNames [
 				                      on: board) ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> calculateNewRanking [
 
 	ranking := spaceshipStatuses copy.
@@ -162,13 +175,25 @@ MessirveSpaceRaceGame >> calculateNewRanking [
 		aSpaceShip position >= anotherSpaceShip position ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> cardApplicator [
 
 	^ cardApplicator
 ]
 
-{ #category : #private }
+{ #category : 'private' }
+MessirveSpaceRaceGame >> conductTheTurn [
+
+	| diceCupRoll |
+	diceCupRoll := diceCup roll.
+	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
+	self
+		applyMovementTo: self currentSpaceShipStatus
+		afterRolling: diceCupRoll.
+	self nextTurn
+]
+
+{ #category : 'private' }
 MessirveSpaceRaceGame >> currentSpaceShipStatus [
 
 	| currentSpaceShipStatus |
@@ -177,7 +202,7 @@ MessirveSpaceRaceGame >> currentSpaceShipStatus [
 	^ currentSpaceShipStatus
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 
 	self winnerExists ifFalse: [ ^ self ].
@@ -185,13 +210,20 @@ MessirveSpaceRaceGame >> endTheGameIfAWinnerExists [
 		              self nameOfSpaceShipPlaying
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> enginePowerOf: aSpaceShipStatus [
 
 	^cardApplicator enginePowerOf: aSpaceShipStatus spaceShip
 ]
 
-{ #category : #initialization }
+{ #category : 'action handling' }
+MessirveSpaceRaceGame >> handlePenalizedPlayer [
+
+	self setPenalizationOf: 0 to: self currentSpaceShipStatus.
+	^ self nextTurn
+]
+
+{ #category : 'initialization' }
 MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling: aDiceCup withLapsToWin: anAmountOfLaps handing: cards [
 
 	board := aBoard.
@@ -206,37 +238,49 @@ MessirveSpaceRaceGame >> initiallizePlayedBy: spaceShipsNames on: aBoard rolling
 	
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> inventoryFrom: aSpaceShipName [
 
 	^ cardApplicator cardsInInventoryOf: aSpaceShipName
 ]
 
-{ #category : #testing }
+{ #category : 'testing' }
 MessirveSpaceRaceGame >> isFinished [
 
 	^ gameStatus isFinished
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> lapsOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) lap
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> lapsToWin [
 
 	^ lapsToWin
 ]
 
-{ #category : #private }
+{ #category : 'private' }
+MessirveSpaceRaceGame >> moveSpaceShip: player toPosition: movement [
+
+	self assertTurnBelongsTo: player.
+
+	spaceshipStatuses := board
+		                     newStatusesFrom: spaceshipStatuses
+		                     afterA: movement
+		                     from: player
+		                     on: self
+]
+
+{ #category : 'private' }
 MessirveSpaceRaceGame >> nameOfSpaceShipPlaying [
 
 	^ (spaceshipStatuses at: currentTurn) spaceShip
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> nextTurn [
 
 	currentTurn := spaceShipSequence next.
@@ -244,46 +288,56 @@ MessirveSpaceRaceGame >> nextTurn [
 		gameStatus := MessirveSpaceGameStartOfTurnStatus new ]
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> obtainSpaceShipStatusFrom: aSpaceShip [
 
-	^ spaceshipStatuses detect: [ :status | 
-		  status spaceShip == aSpaceShip ]
+	|aStatus|
+	
+	aStatus := spaceshipStatuses detect: [ :status | 
+		  status spaceShip == aSpaceShip ].
+	
+	^aStatus
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 MessirveSpaceRaceGame >> playGame [
 
 	self playNextTurn.
 	self isFinished ifFalse: [ self playGame ]
 ]
 
-{ #category : #playing }
+{ #category : 'playing' }
 MessirveSpaceRaceGame >> playNextTurn [
 
-	| diceCupRoll |
 	self assertGameIsNotFinished.
-	diceCupRoll := diceCup roll.
-	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
-	self applyMovementToCurrentSpaceShipAfterRolling: diceCupRoll.
-	self nextTurn
+	self currentSpaceShipStatus conductTheTurnOn: self.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> positionOfSpaceship: aSpaceShip [
 
 	^ (self obtainSpaceShipStatusFrom: aSpaceShip) tile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> ranking [
 
 	^ ranking
 ]
 
-{ #category : #playing }
-MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+{ #category : 'removing' }
+MessirveSpaceRaceGame >> setPenalizationOf: positions to: player [
+	
+	spaceshipStatuses := board
+		                     newStatusesFrom: spaceshipStatuses
+		                     afterA: positions
+		                     fromPenalized: player
+		                     on: self.
+]
 
+{ #category : 'accessing' }
+MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
+	
 	cardApplicator
 		spaceShip: cardPlayer
 		plays: aCard
@@ -291,13 +345,29 @@ MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aCard on: cardTarget [
 		from: self
 ]
 
-{ #category : #accessing }
+{ #category : 'playing' }
+MessirveSpaceRaceGame >> spaceShip: cardPlayer plays: aReversalCard onTile: aTile fromBoard: aBoard [ 
+	
+	cardApplicator
+		spaceShip: cardPlayer
+		plays: aReversalCard
+		onTile: aTile
+		fromBoard: aBoard
+]
+
+{ #category : 'accessing' }
+MessirveSpaceRaceGame >> spaceShip: cardPlayer playsCancellationCardOn: cardTarget on: aBoard [
+	
+	cardApplicator applyCancellationTargetting: cardTarget on: aBoard.
+]
+
+{ #category : 'accessing' }
 MessirveSpaceRaceGame >> winner [
 
 	^ gameStatus winner
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MessirveSpaceRaceGame >> winnerExists [
 
 	^ spaceshipStatuses anySatisfy: [ :status | status lap = lapsToWin ]

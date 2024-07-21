@@ -1,13 +1,14 @@
 Class {
-	#name : #DiscreteProbabilityEventSourceTest,
-	#superclass : #TestCase,
+	#name : 'DiscreteProbabilityEventSourceTest',
+	#superclass : 'TestCase',
 	#instVars : [
 		'soruce'
 	],
-	#category : #'IngSoft2-Tests'
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 DiscreteProbabilityEventSourceTest >> assert: anEvent in: eventsDrawn between: start and: end [
 
 	|amountOfAnEvent|
@@ -15,19 +16,19 @@ DiscreteProbabilityEventSourceTest >> assert: anEvent in: eventsDrawn between: s
 	self assert: (amountOfAnEvent between: start and: end).
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 DiscreteProbabilityEventSourceTest >> assertAllIn: events are: anEvent [
 
 	self assert: (events allSatisfy: [:event | event = anEvent])
 ]
 
-{ #category : #asserting }
+{ #category : 'asserting' }
 DiscreteProbabilityEventSourceTest >> assertNoneIn: events are: anEvent [
 
 	self assert: (events noneSatisfy: [ :event | event = anEvent ])
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testAProbabilisticEventCannotBeCreatedWithAProbabilityHigherThanOne [
 
 	self
@@ -39,7 +40,7 @@ DiscreteProbabilityEventSourceTest >> testAProbabilisticEventCannotBeCreatedWith
 		'Probability of an event must be between 0 and 1'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testAProbabilisticEventCannotBeCreatedWithAProbabilityLowerThanOne [
 
 	self
@@ -51,8 +52,8 @@ DiscreteProbabilityEventSourceTest >> testAProbabilisticEventCannotBeCreatedWith
 		'Probability of an event must be between 0 and 1'
 ]
 
-{ #category : #tests }
-DiscreteProbabilityEventSourceTest >> testDrawingFiftyThousandOfBoardEffectsWithoutAtomicBombDoesNotDrawAnyAtmoicBomb [
+{ #category : 'tests' }
+DiscreteProbabilityEventSourceTest >> testDrawingFiftyThousandOfBoardEffectsWithoutAtomicBombDoesNotDrawAnyAtomicBomb [
 
 	| source events speedUpEffect wormholeEffect cardDealerEffect atomicBombEffect probabilityEvents discreteProbabilityDistribution |
 	speedUpEffect := SpeedUpEffect new.
@@ -73,7 +74,7 @@ DiscreteProbabilityEventSourceTest >> testDrawingFiftyThousandOfBoardEffectsWith
 	self assertNoneIn: events are: atomicBombEffect
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testDrawingOneHundredThousandsOfBoardEffectsGivesTwentyPercentOfSpeedUpTenOfWormholeAndSeventyPercentOfCardDealerEvents [
 
 	| source events speedUpEffect wormholeEffect cardDealerEffect probabilityEvents discreteProbabilityDistribution |
@@ -95,7 +96,7 @@ DiscreteProbabilityEventSourceTest >> testDrawingOneHundredThousandsOfBoardEffec
 	self assert: cardDealerEffect in: events between: 69000 and: 71000.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testDrawingOneHundredThousandsOfBoardEffectsGivesTwentyPercentOfSpeedUpTenOfWormholeSeventyPercentOfCardDealerEventsAndZeroOfNonEffect [
 
 	| source events speedUpEffect wormholeEffect cardDealerEffect nonEffect probabilityEvents discreteProbabilityDistribution |
@@ -120,7 +121,7 @@ DiscreteProbabilityEventSourceTest >> testDrawingOneHundredThousandsOfBoardEffec
 	self assertNoneIn: events are: nonEffect
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testSourceProvidesSpeedUpTenTimesWhenEventDistributionHasNoProbabilityForWormhole [
 
 	| events speedUpEffect wormholeEffect discreteProbabilityDistribution source speedUpProbabilityEvent wormholeProbabilityEvent |
@@ -139,7 +140,7 @@ DiscreteProbabilityEventSourceTest >> testSourceProvidesSpeedUpTenTimesWhenEvent
 	self assertNoneIn: events are: wormholeEffect
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testSourceProvidesTenTimesTheSameEventForASingleEventDistribution [
 
 	| effects speedUpEffect discreteProbabilityDistribution source speedUpProbabilityEvent |
@@ -156,7 +157,7 @@ DiscreteProbabilityEventSourceTest >> testSourceProvidesTenTimesTheSameEventForA
 	self assertAllIn: effects are: speedUpEffect
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testTwoProbabilityEventsWithTheirSumHigherThanOneCannotFormADiscreteProbabilityDistribution [
 
 	| speedUpEffect wormholeEffect speedUpProbabilityEvent wormholeProbabilityEvent |
@@ -175,7 +176,7 @@ DiscreteProbabilityEventSourceTest >> testTwoProbabilityEventsWithTheirSumHigher
 		description: 'Sum of probabilities must be one'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 DiscreteProbabilityEventSourceTest >> testTwoProbabilityEventsWithTheirSumLowerThanOneCannotFormADiscreteProbabilityDistribution [
 
 	| speedUpEffect wormholeEffect speedUpProbabilityEvent wormholeProbabilityEvent |

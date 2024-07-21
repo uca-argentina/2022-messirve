@@ -1,10 +1,14 @@
+"
+Allows players to cancel or negate specific actions or effects within the game.
+"
 Class {
-	#name : #CancellationCard,
-	#superclass : #Object,
-	#category : #'IngSoft2-Model'
+	#name : 'CancellationCard',
+	#superclass : 'Object',
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #private }
+{ #category : 'private' }
 CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aCardApplicator from: aMessirveSpaceRaceGame [
 
 	anEnginePowerApplicator
@@ -12,13 +16,13 @@ CancellationCard >> activatedTo: aCard poweredBy: anEnginePowerApplicator on: aC
 		in: aCardApplicator
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 CancellationCard >> assertCanBePlayedOnTurnOf: cardPlayer from: aMessirveSpaceRaceGame [ 
 	
 	^ self
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aCardApplicator from: aGame [
 
 	aCardApplicator assertSpaceShip: cardPlayer owns: self.
@@ -27,7 +31,7 @@ CancellationCard >> handleLastPlayedWithPlayOf: cardPlayer at: cardTarget on: aC
 	aCardApplicator makeLastPlayed: self
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 CancellationCard >> inventoriesAfterTargeting: cardTarget from: inventories on: aCardApplicator [
 
 	^ aCardApplicator
