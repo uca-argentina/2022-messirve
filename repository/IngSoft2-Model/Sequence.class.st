@@ -1,3 +1,6 @@
+"
+Represents an ordered list of actions or events within the game.
+"
 Class {
 	#name : 'Sequence',
 	#superclass : 'Object',

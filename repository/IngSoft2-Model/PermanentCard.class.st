@@ -1,3 +1,6 @@
+"
+Represents a card with lasting effects that persist throughout the game.
+"
 Class {
 	#name : 'PermanentCard',
 	#superclass : 'Object',

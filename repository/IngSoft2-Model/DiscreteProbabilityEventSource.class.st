@@ -1,3 +1,6 @@
+"
+Generates events based on a discrete probability distribution, influencing game randomness.
+"
 Class {
 	#name : 'DiscreteProbabilityEventSource',
 	#superclass : 'Object',

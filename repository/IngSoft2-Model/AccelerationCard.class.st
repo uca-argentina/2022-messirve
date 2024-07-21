@@ -1,3 +1,6 @@
+"
+A permanent card that increases the speed or movement capabilities of game entities.
+"
 Class {
 	#name : 'AccelerationCard',
 	#superclass : 'PermanentCard',

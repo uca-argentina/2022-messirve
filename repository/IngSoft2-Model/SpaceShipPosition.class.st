@@ -1,3 +1,6 @@
+"
+Represents a spaceship's position, composed of its board position and lap number.
+"
 Class {
 	#name : 'SpaceShipPosition',
 	#superclass : 'Object',

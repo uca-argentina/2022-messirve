@@ -1,3 +1,6 @@
+"
+Holds and rolls dice to generate random outcomes for the game.
+"
 Class {
 	#name : 'DiceCup',
 	#superclass : 'Object',

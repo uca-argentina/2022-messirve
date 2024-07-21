@@ -1,3 +1,6 @@
+"
+Allows players to cancel or negate specific actions or effects within the game.
+"
 Class {
 	#name : 'CancellationCard',
 	#superclass : 'Object',

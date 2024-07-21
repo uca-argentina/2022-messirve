@@ -1,3 +1,6 @@
+"
+Represents the engine of a spaceship, determining its speed and movement capabilities.
+"
 Class {
 	#name : 'SpaceShipEngine',
 	#superclass : 'Object',

@@ -1,3 +1,6 @@
+"
+Adjusts the engine power of game entities, impacting their performance or abilities.
+"
 Class {
 	#name : 'EnginePowerApplicator',
 	#superclass : 'Object',

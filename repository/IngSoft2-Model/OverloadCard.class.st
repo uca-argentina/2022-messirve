@@ -1,3 +1,6 @@
+"
+A permanent card that overloads and boosts the power or abilities of game entities.
+"
 Class {
 	#name : 'OverloadCard',
 	#superclass : 'PermanentCard',

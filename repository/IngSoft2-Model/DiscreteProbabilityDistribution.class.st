@@ -1,3 +1,6 @@
+"
+Represents a probability distribution with discrete outcomes, used for random events in the game.
+"
 Class {
 	#name : 'DiscreteProbabilityDistribution',
 	#superclass : 'Object',

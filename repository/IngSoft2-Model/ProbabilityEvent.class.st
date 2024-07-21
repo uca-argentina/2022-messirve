@@ -1,3 +1,6 @@
+"
+Represents an event that occurs based on a probability distribution, influencing the game's randomness.
+"
 Class {
 	#name : 'ProbabilityEvent',
 	#superclass : 'Object',

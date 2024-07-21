@@ -1,3 +1,6 @@
+"
+Represents a range of numbers, defining a specific interval with a minimum and maximum value.
+"
 Class {
 	#name : 'NumberInterval',
 	#superclass : 'Object',

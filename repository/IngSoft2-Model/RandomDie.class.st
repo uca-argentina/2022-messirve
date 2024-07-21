@@ -1,3 +1,6 @@
+"
+A die that generates random numbers, used to introduce chance into the game.
+"
 Class {
 	#name : 'RandomDie',
 	#superclass : 'Object',

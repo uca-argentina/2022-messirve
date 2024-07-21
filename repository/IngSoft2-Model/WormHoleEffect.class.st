@@ -23,6 +23,12 @@ WormHoleEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: a
 		  appliedBy: effectApplicator
 ]
 
+{ #category : 'initialization' }
+WormHoleEffect >> initialize [
+	
+	effectOrientation := WormHoleNormalEffect new.
+]
+
 { #category : 'private' }
 WormHoleEffect >> reverseEffect [
 

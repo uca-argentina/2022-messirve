@@ -1,3 +1,6 @@
+"
+Allows a player to repeat the use of the last card played.
+"
 Class {
 	#name : 'RedoCard',
 	#superclass : 'Object',

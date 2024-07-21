@@ -104,6 +104,20 @@ MessirveSpaceRaceGame >> applyLastEffectTo: aSpaceShip [
 ]
 
 { #category : 'private' }
+MessirveSpaceRaceGame >> applyMovementTo: player afterRolling: diceCupRoll [
+
+	| movement |
+	movement := diceCupRoll
+	            + (self enginePowerOf: self currentSpaceShipStatus).
+
+	self assertMovementCanBeApplied.
+		
+	self moveSpaceShip: player toPosition: movement.
+	
+	self endTheGameIfAWinnerExists
+]
+
+{ #category : 'private' }
 MessirveSpaceRaceGame >> assertGameIsNotFinished [
 
 	self isFinished ifTrue: [ 
@@ -165,6 +179,18 @@ MessirveSpaceRaceGame >> calculateNewRanking [
 MessirveSpaceRaceGame >> cardApplicator [
 
 	^ cardApplicator
+]
+
+{ #category : 'private' }
+MessirveSpaceRaceGame >> conductTheTurn [
+
+	| diceCupRoll |
+	diceCupRoll := diceCup roll.
+	gameStatus := MessirveSpaceGameTurnInProgressStatus new.
+	self
+		applyMovementTo: self currentSpaceShipStatus
+		afterRolling: diceCupRoll.
+	self nextTurn
 ]
 
 { #category : 'private' }

@@ -1,3 +1,6 @@
+"
+Repeats the effect of a board space when activated by a player.
+"
 Class {
 	#name : 'RepeatCard',
 	#superclass : 'Object',

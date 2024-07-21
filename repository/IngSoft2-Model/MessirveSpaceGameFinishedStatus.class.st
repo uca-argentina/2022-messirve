@@ -1,3 +1,6 @@
+"
+Indicates the game's end state, determining the winner or final outcome.
+"
 Class {
 	#name : 'MessirveSpaceGameFinishedStatus',
 	#superclass : 'Object',

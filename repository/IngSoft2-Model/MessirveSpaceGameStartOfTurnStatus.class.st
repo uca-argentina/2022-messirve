@@ -1,3 +1,6 @@
+"
+Represents the game's state at the start of a player's turn, initiating turn-specific actions.
+"
 Class {
 	#name : 'MessirveSpaceGameStartOfTurnStatus',
 	#superclass : 'Object',
