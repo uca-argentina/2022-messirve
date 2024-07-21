@@ -1,8 +1,10 @@
+"
+A die that is biased to produce certain numbers more frequently than others.
+"
 Class {
 	#name : 'LoadedDie',
 	#superclass : 'Object',
 	#instVars : [
-		'currentIndex',
 		'rollSequence',
 		'results'
 	],
