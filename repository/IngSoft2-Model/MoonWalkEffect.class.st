@@ -1,20 +1,25 @@
+"
+Moves players backward on the game board, simulating a moonwalk effect.
+"
 Class {
-	#name : #MoonWalkEffect,
-	#superclass : #Object,
+	#name : 'MoonWalkEffect',
+	#superclass : 'Object',
 	#instVars : [
-		'backwardPositions'
+		'backwardPositions',
+		'effectOrientation'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MoonWalkEffect class >> assertValidPositionsGoingBackOf: anAmountOfPositions [
 
 	anAmountOfPositions < 1 ifTrue: [ 
 		Error signal: 'Amount of back positions must be higher than 0' ]
 ]
 
-{ #category : #calculating }
+{ #category : 'calculating' }
 MoonWalkEffect class >> obtainRandomTakingBackBetween: start and: end [
 
 	| source probabilityEvents discreteProbabilityDistribution |
@@ -31,7 +36,7 @@ MoonWalkEffect class >> obtainRandomTakingBackBetween: start and: end [
 	^ source next: 1
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MoonWalkEffect class >> randomlyDistributed [
 
 	| takingBackBetweenOneAndTen |
@@ -42,26 +47,33 @@ MoonWalkEffect class >> randomlyDistributed [
 	^ self new initializeTakingBack: (takingBackBetweenOneAndTen at: 1)
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MoonWalkEffect class >> takingBack: anAmountOfPositions [
 
 	self assertValidPositionsGoingBackOf: anAmountOfPositions.
 	^ self new initializeTakingBack: anAmountOfPositions
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 MoonWalkEffect >> applyOn: statuses activatedBy: aStatus playedOn: aBoard and: aGame appliedBy: effectApplicator [
 
-	^ effectApplicator
-		  applyMoonWalkOf: -1 * backwardPositions
+	^ effectOrientation
+		  applyEffectOf: backwardPositions
 		  on: statuses
 		  activatedBy: aStatus
 		  playedOn: aBoard
 		  and: aGame
+		  appliedBy: effectApplicator
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 MoonWalkEffect >> initializeTakingBack: backPositions [
-
+	
+	effectOrientation := MoonWalkNormalEffect new.
 	backwardPositions := backPositions
+]
+
+{ #category : 'private' }
+MoonWalkEffect >> reverseEffect [
+	effectOrientation := effectOrientation reverse.
 ]

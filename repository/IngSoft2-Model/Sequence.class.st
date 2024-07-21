@@ -1,20 +1,21 @@
 Class {
-	#name : #Sequence,
-	#superclass : #Object,
+	#name : 'Sequence',
+	#superclass : 'Object',
 	#instVars : [
 		'currentSequenceNumber',
 		'objectSequence'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 Sequence class >> formedBy: aSequence [
 
 	^ self new initializeFormedBy: aSequence
 ]
 
-{ #category : #private }
+{ #category : 'private' }
 Sequence >> calculateNextInSequence [
 
 	currentSequenceNumber := currentSequenceNumber == objectSequence size
@@ -22,20 +23,20 @@ Sequence >> calculateNextInSequence [
 		                         ifFalse: [ currentSequenceNumber + 1 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 Sequence >> currentSequenceNumber [
 
 	^ currentSequenceNumber
 ]
 
-{ #category : #initialize }
+{ #category : 'initialize' }
 Sequence >> initializeFormedBy: aSequence [
 
 	objectSequence := aSequence.
 	currentSequenceNumber := 1
 ]
 
-{ #category : #processing }
+{ #category : 'processing' }
 Sequence >> next [
 
 	self calculateNextInSequence.

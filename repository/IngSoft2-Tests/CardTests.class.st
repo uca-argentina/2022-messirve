@@ -1,10 +1,11 @@
 Class {
-	#name : #CardTests,
-	#superclass : #MessirveTests,
-	#category : #'IngSoft2-Tests'
+	#name : 'CardTests',
+	#superclass : 'MessirveTests',
+	#category : 'IngSoft2-Tests',
+	#package : 'IngSoft2-Tests'
 }
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipBeginsTheGameWithTwoCards [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -22,7 +23,27 @@ CardTests >> testASpaceShipBeginsTheGameWithTwoCards [
 		equals: 2
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+CardTests >> testASpaceShipBeginsTheGameWithTwoReversalCards [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 5 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard withNoEffectsOf: 5 with: 100 and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi'. 'Armani' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2
+		              handing: { reversalCard }.
+	aSpaceGame playNextTurn.
+
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi')
+		equals: { reversalCard . reversalCard} asOrderedCollection
+]
+
+{ #category : 'tests' }
 CardTests >> testASpaceShipCannotPlayACancellationCardOnAnotherCancellationCard [
 
 	| aSpaceGame aLoadedDie aBoard cancellationCardOne cancellationCardTwo speedCard |
@@ -60,7 +81,7 @@ CardTests >> testASpaceShipCannotPlayACancellationCardOnAnotherCancellationCard 
 		description: 'Invalid target chosen'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipCannotPlayAPermanentCardWhenItsNotTheirTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -84,7 +105,7 @@ CardTests >> testASpaceShipCannotPlayAPermanentCardWhenItsNotTheirTurn [
 		'A permanent card is being played during a different turn of the playing spaceship'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipCannotPlayARedoCardOnASpeedCardDuringATurnThatIsNotTheirs [
 
 	| aSpaceGame aLoadedDie aBoard redoCard speedCard |
@@ -119,7 +140,68 @@ CardTests >> testASpaceShipCannotPlayARedoCardOnASpeedCardDuringATurnThatIsNotTh
 		'A permanent card is being played during a different turn of the playing spaceship'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+CardTests >> testASpaceShipCannotPlayAReversalCardOnANonEffectPosition [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard withNoEffectsOf: 10 with: 100 and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+
+	self
+		should: [
+			aSpaceGame
+				spaceShip: 'Messi'
+				plays: reversalCard
+				onTile: 3
+				fromBoard: aBoard ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'Reversal cards can only be played on a valid effect position'
+		description:
+		'Only board positions with valid effect can be targeted with reversal cards, Non Effect positions are excluded'
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipCannotPlayAReversalCardOnAnAtomicBombEffectPosition [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { AtomicBombEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+
+	self
+		should: [
+			aSpaceGame
+				spaceShip: 'Messi'
+				plays: reversalCard
+				onTile: 3
+				fromBoard: aBoard ]
+		raise: Error
+		whoseDescriptionIncludes:
+		'Reversal cards can only be played on a valid effect position'
+		description:
+		'Only board positions with valid effect can be targeted with reversal cards, Atomic Bomb Effect positions are excluded'
+]
+
+{ #category : 'tests' }
 CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -145,7 +227,7 @@ CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardAndNowHasThreeCards 
 			speedCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardTwiceAndNowHasFourCards [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -175,7 +257,7 @@ CardTests >> testASpaceShipLandsOnAPositionHandingASpeedCardTwiceAndNowHasFourCa
 			speedCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCardButDoesntReceiveTheSpeedCard [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -208,7 +290,7 @@ CardTests >> testASpaceShipLandsOnASpeedUpAndAdvancesToAPositionHandingSpeedCard
 			overloadCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveAccelerationCardAndMovesOneTileAhead [
 
 	| aSpaceGame aLoadedDie aBoard accelerationCard cancellationCard |
@@ -239,7 +321,41 @@ CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveAccelerationCardAndM
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveReversalEffectAndApositionIsNoLongerReversed [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard cancellationCard |
+	aLoadedDie := LoadedDie rolling: { 1 }.
+	reversalCard := ReversalCard new.
+	cancellationCard := CancellationCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 2
+		              handing: { 
+				              reversalCard.
+				              cancellationCard }.
+
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard .
+	aSpaceGame playNextTurn.
+	aSpaceGame spaceShip: 'Messi' playsCancellationCardOn: reversalCard on: aBoard .
+	aSpaceGame playNextTurn.
+
+	self
+		assert: 'Messi'
+		isAt: 7
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveSpeedUpEffectAndTheEngineIsNoLongerPowered [
 
 	| aSpaceGame aLoadedDie aBoard speedCard cancellationCard |
@@ -276,7 +392,7 @@ CardTests >> testASpaceShipPlaysACancellationCardOnTheActiveSpeedUpEffectAndTheE
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysACancellationCardOnTheSpeedCardOfAnotherPlayerAndAdvancesOneLessSpaceNextTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCardOne speedCardTwo cancellationCard |
@@ -319,7 +435,7 @@ CardTests >> testASpaceShipPlaysACancellationCardOnTheSpeedCardOfAnotherPlayerAn
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -348,7 +464,7 @@ CardTests >> testASpaceShipPlaysACardThatDoesntOwnAndAnErrorExceptionIsRaised [
 		description: 'SpaceShip doesnt own that card'
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveAccelerationCard [
 
 	| aSpaceGame aLoadedDie aBoard accelerationCardM accelerationCardA redoCard cancellationCard |
@@ -390,7 +506,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 	self assert: (aSpaceGame activeCardsFrom: 'Armani')  isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveOverloadCard [
 
 	| aSpaceGame aLoadedDie aBoard overLoadCardM overLoadCardA redoCard cancellationCard |
@@ -429,7 +545,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 	self assert: (aSpaceGame activeCardsFrom: 'Armani') isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCardCancelsAnActiveSpeedCard [
 
 	| aSpaceGame aLoadedDie aBoard speedCardM speedCardA redoCard cancellationCard |
@@ -465,7 +581,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasPlayedAndTheRedoCa
 	self assert: (aSpaceGame activeCardsFrom: 'Armani') isEmpty
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasUsedOnASpeedAndTheRedoCancellsTheLastSpeed [
 
 	| aSpaceGame aLoadedDie aBoard speedCard1 speedCard2 redoCard cancellationCard |
@@ -531,7 +647,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterACancellationWasUsedOnASpeedAndThe
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterARedoCardAndStillAppliesTheSpeedCardFirstlyPlayed [
 
 	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
@@ -571,7 +687,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterARedoCardAndStillAppliesTheSpeedCa
         in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterASpeedCardWasPlayedAndTheSpeedEffectIsTriggeredTwiceToAdvanceToPositionFour [
 
 	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
@@ -599,7 +715,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterASpeedCardWasPlayedAndTheSpeedEffe
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardAfterAnOverloadCardWasPlayedAndTheOverloadEffectIsTriggeredTwiceToGoBackToPositionOne [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard redoCard |
@@ -627,7 +743,7 @@ CardTests >> testASpaceShipPlaysARedoCardAfterAnOverloadCardWasPlayedAndTheOverl
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardButIsNotSavedAsLastCardPlayed [
 
 	| aSpaceGame aLoadedDie aBoard speedCard redoCard |
@@ -651,7 +767,7 @@ CardTests >> testASpaceShipPlaysARedoCardButIsNotSavedAsLastCardPlayed [
 	self assert: aSpaceGame cardApplicator lastCardPlayed equals: speedCard
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARedoCardThreeTimesAfterAnOverloadCardWasPlayedAndNextTurnGoesBackOneLap [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard redoCard |
@@ -703,7 +819,7 @@ CardTests >> testASpaceShipPlaysARedoCardThreeTimesAfterAnOverloadCardWasPlayedA
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysARepeatCardAndAdvancesFourTilesBecauseASpeedUpWasThePreviousEffect [
 
 	| aSpaceGame aLoadedDie aBoard repeatCard |
@@ -734,7 +850,155 @@ CardTests >> testASpaceShipPlaysARepeatCardAndAdvancesFourTilesBecauseASpeedUpWa
 
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysAReversalCardOnACardDealerEffectPositonAndLosesOneCardAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { CardDealerEffect handingRandomCards }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: (aSpaceGame inventoryFrom: 'Messi') size
+		equals: 0
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysAReversalCardOnAHyperJumpEffectPositionAndMoves2PositionsBackwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { (HyperJumpEffect with: { 15 } and: { 15 }) }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysAReversalCardOnAMoonWalkEffectPositionAndMovesOtheSpaceShip2PositionsForwardAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { MoonWalkEffect takingBack: 2 }
+		          at: { 3 }
+		          Of: 5
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' . 'Dibu'}
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 3
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysAReversalCardOnASpeedUpEffectPositionAndMoves4PositionsBackwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysAReversalCardOnAWormHoleEffectPositionAndMoves4PositionsForwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { WormHoleEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 7
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysASpeedCardOnAnotherSpaceShipAndTheOtherSpaceShipAdvancesOneExtraSpacePerTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -767,7 +1031,7 @@ CardTests >> testASpaceShipPlaysASpeedCardOnAnotherSpaceShipAndTheOtherSpaceShip
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysASpeedCardOnItselfAndAdvancesAnExtraPositionEveryTurn [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -799,7 +1063,7 @@ CardTests >> testASpaceShipPlaysASpeedCardOnItselfAndAdvancesAnExtraPositionEver
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysASpeedCardOnItselfTwiceAndAdvancesThreePositions [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -825,7 +1089,7 @@ CardTests >> testASpaceShipPlaysASpeedCardOnItselfTwiceAndAdvancesThreePositions
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherOneAndTheCardGoesToActiveCardsOfTheOtherSpaceShip [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -859,7 +1123,7 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherOneAndTheCardGoesToActive
 		equals: { overloadCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherSpaceShipAndItDoesntMoveAfterRollingOne [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -893,7 +1157,7 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnAnotherSpaceShipAndItDoesntMoveA
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard speedCard |
@@ -923,7 +1187,131 @@ CardTests >> testASpaceShipPlaysAnOverloadCardOnItselfAndHasOnlyOneCardLeft [
 		equals: { overloadCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysTwoReversalCardsOnAHyperJumpEffectPositionAndMoves2PositionsForwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { (HyperJumpEffect with: { 15 } and: { 15 }) }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 5
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysTwoReversalCardsOnAMoonWalkEffectPositionAndMoves4PositionsForwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 . 1 . 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { MoonWalkEffect takingBack: 1 }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' . 'Dibu' . 'Fideo'}
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	aSpaceGame spaceShip: 'Dibu' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.
+	
+	self
+		assert: 'Messi'
+		isAt: 2
+		with: 1
+		in: aSpaceGame.
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysTwoReversalCardsOnASpeedUpEffectPositionAndMoves4PositionsForwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { SpeedUpEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 7
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
+CardTests >> testASpaceShipPlaysTwoReversalCardsOnAWormHoleEffectPositionAndMoves4PositionsBackwardsAfterLandingOnIt [
+
+	| aSpaceGame aLoadedDie aBoard reversalCard |
+	aLoadedDie := LoadedDie rolling: { 2 }.
+	reversalCard := ReversalCard new.
+	aBoard := RoundBoard
+		          boardWithOnly: { WormHoleEffect new }
+		          at: { 3 }
+		          Of: 10
+		          with: 100
+		          and: 0.
+	aSpaceGame := MessirveSpaceRaceGame
+		              playedBy: { 'Messi' }
+		              on: aBoard
+		              rolling: aLoadedDie
+		              withLapsToWin: 5
+		              handing: { reversalCard }.
+		
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame spaceShip: 'Messi' plays: reversalCard onTile: 3 fromBoard: aBoard.
+	aSpaceGame playNextTurn.	
+	
+	
+	self
+		assert: 'Messi'
+		isAt: 1
+		with: 1
+		in: aSpaceGame
+]
+
+{ #category : 'tests' }
 CardTests >> testASpaceShipPlaysTwoSpeedCardsOnItSelfPlaysTheTurnReceivesASpeedCardPlaysTheNewlyReceivedSpeedCardPlaysTheNextTurnAndAdvancesOneLap [
 
 	| aSpaceGame aLoadedDie aBoard speedCard |
@@ -962,7 +1350,7 @@ CardTests >> testASpaceShipPlaysTwoSpeedCardsOnItSelfPlaysTheTurnReceivesASpeedC
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipUsesARepeatCardAfterAnotherSpaceShipLandedOnASpeedEffect [
 
 	| aSpaceGame aLoadedDie aBoard repeatCard |
@@ -988,7 +1376,7 @@ CardTests >> testASpaceShipUsesARepeatCardAfterAnotherSpaceShipLandedOnASpeedEff
 	self assert: 'Armani' isAt: 4 with: 2 in: aSpaceGame.
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipUsesAnAccelerationAndAfterPlayingNextTurnAdvancesToNextLap [
 
 	| aSpaceGame aLoadedDie aBoard accelerationCard |
@@ -1013,7 +1401,7 @@ CardTests >> testASpaceShipUsesAnAccelerationAndAfterPlayingNextTurnAdvancesToNe
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testASpaceShipUsesAnAccelerationAndIncreasesEnginePowerOfAllSpaceShipsInOne [
 
 	| aSpaceGame aLoadedDie aBoard accelerationCard |
@@ -1046,7 +1434,7 @@ CardTests >> testASpaceShipUsesAnAccelerationAndIncreasesEnginePowerOfAllSpaceSh
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnItselfTwiceAndAfterNextTurnGoesBackOneLap [
 
 	| aSpaceGame aLoadedDie aBoard overloadCard |
@@ -1082,7 +1470,7 @@ CardTests >> testAllPlayingSpaceShipsPlayOverloadCardOnItselfTwiceAndAfterNextTu
 		in: aSpaceGame
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testSixSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 
 	| aSpaceGame aLoadedDie aBoard speedCard overloadCard |
@@ -1124,7 +1512,7 @@ CardTests >> testSixSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 			overloadCard } asOrderedCollection
 ]
 
-{ #category : #tests }
+{ #category : 'tests' }
 CardTests >> testTwoSpaceShipsBeginTheGameWithOverloadAndSpeedCards [
 
 	| aSpaceGame aLoadedDie aBoard speedCard overloadCard |

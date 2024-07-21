@@ -1,39 +1,52 @@
+"
+Manages the inventory of a spaceship, tracking items and resources.
+"
 Class {
-	#name : #SpaceShipInventory,
-	#superclass : #Object,
+	#name : 'SpaceShipInventory',
+	#superclass : 'Object',
 	#instVars : [
 		'spaceShip',
 		'inventory',
 		'activeCards'
 	],
-	#category : #'IngSoft2-Model'
+	#category : 'IngSoft2-Model',
+	#package : 'IngSoft2-Model'
 }
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SpaceShipInventory class >> carriedBy: aSpaceShip [
 
 	^ self new initializeCarriedBy: aSpaceShip
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SpaceShipInventory >> activeCards [
 
 	^ activeCards
 ]
 
-{ #category : #adding }
+{ #category : 'adding' }
 SpaceShipInventory >> addCardToActiveCards: aCard [
 
 	activeCards add: aCard
 ]
 
-{ #category : #drawing }
+{ #category : 'removing' }
+SpaceShipInventory >> discardRandomCard [
+
+	|randomPosition|
+	
+	randomPosition := (1 to: inventory size) atRandom .
+	inventory removeAt: randomPosition.
+]
+
+{ #category : 'drawing' }
 SpaceShipInventory >> draw: aCard [ 
 
 	inventory add: aCard
 ]
 
-{ #category : #initialization }
+{ #category : 'initialization' }
 SpaceShipInventory >> initializeCarriedBy: aSpaceShip [
 
 	spaceShip := aSpaceShip.
@@ -41,19 +54,19 @@ SpaceShipInventory >> initializeCarriedBy: aSpaceShip [
 	activeCards := OrderedCollection new
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SpaceShipInventory >> inventory [
 
 	^ inventory
 ]
 
-{ #category : #removing }
+{ #category : 'removing' }
 SpaceShipInventory >> removeFromInventory: aCard [
 
 	inventory remove: aCard
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 SpaceShipInventory >> spaceShip [
 	^ spaceShip
 ]
