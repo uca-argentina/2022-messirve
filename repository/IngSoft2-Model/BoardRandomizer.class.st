@@ -1,29 +1,23 @@
-"
-Generates random configurations and setups for the game board to ensure varied gameplay.
-"
 Class {
-	#name : 'BoardRandomizer',
-	#superclass : 'Object',
-	#category : 'IngSoft2-Model',
-	#package : 'IngSoft2-Model'
+	#name : #BoardRandomizer,
+	#superclass : #Object,
+	#category : #'IngSoft2-Model'
 }
 
-{ #category : 'creation' }
+{ #category : #creation }
 BoardRandomizer >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 
 	| source atomicBomb hyperJumpEffect moonwalkEffect speedUpEffect wormholeEffect cardDealerEffect nonEffect probabilityEvents discreteProbabilityDistribution |
 	atomicBomb := AtomicBombEffect new.
 	cardDealerEffect := CardDealerEffect handingRandomCards.
-	hyperJumpEffect := HyperJumpEffect
-		                   with: { 50. 40. 30. 20. 10 }
-		                   and: { 10. 8. 7. 6. 5 }.
+	hyperJumpEffect := HyperJumpEffect with: { 50. 40. 30. 20. 10 } and: { 10 . 8 . 7 . 6 . 5 }.
 	moonwalkEffect := MoonWalkEffect randomlyDistributed.
 	nonEffect := NonEffect new.
 	speedUpEffect := SpeedUpEffect new.
 	wormholeEffect := WormHoleEffect new.
-	nonEffect := NonEffect new.
 
-	probabilityEvents := {
+	nonEffect := NonEffect new.
+	probabilityEvents := { 
 		                     (ProbabilityEvent of: atomicBomb with: 0.02).
 		                     (ProbabilityEvent
 			                      of: cardDealerEffect
@@ -36,7 +30,7 @@ BoardRandomizer >> assignDistributedBoardPositionsAdaptedTo: numberOfPositions [
 		                     (ProbabilityEvent of: speedUpEffect with: 0.2).
 		                     (ProbabilityEvent of: wormholeEffect with: 0.2) }.
 
-	discreteProbabilityDistribution := DiscreteProbabilityDistribution
+	discreteProbabilityDistribution := DiscreteProbabilityDistribution 
 		                                   withAll: probabilityEvents.
 	source := DiscreteProbabilityEventSource with:
 		          discreteProbabilityDistribution.

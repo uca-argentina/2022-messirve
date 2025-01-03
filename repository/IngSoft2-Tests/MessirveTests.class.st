@@ -1,11 +1,10 @@
 Class {
-	#name : 'MessirveTests',
-	#superclass : 'TestCase',
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#name : #MessirveTests,
+	#superclass : #TestCase,
+	#category : #'IngSoft2-Tests'
 }
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 MessirveTests >> assert: spaceshipName isAt: aPosition with: aLap in: aMessirveSpaceRaceGame [
 
 	self

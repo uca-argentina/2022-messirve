@@ -1,36 +1,32 @@
-"
-Represents a spaceship's position, composed of its board position and lap number.
-"
 Class {
-	#name : 'SpaceShipPosition',
-	#superclass : 'Object',
+	#name : #SpaceShipPosition,
+	#superclass : #Object,
 	#instVars : [
 		'lap',
 		'distanceTraveled',
 		'tile'
 	],
-	#category : 'IngSoft2-Model',
-	#package : 'IngSoft2-Model'
+	#category : #'IngSoft2-Model'
 }
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 SpaceShipPosition class >> with: aPosition and: aLap on: aBoard [
 
 	^ self new initializeWith: aPosition and: aLap on: aBoard
 ]
 
-{ #category : 'comparing' }
+{ #category : #comparing }
 SpaceShipPosition >> >= aSpaceShipPosition [ 
 	^self totalTraveled >= aSpaceShipPosition totalTraveled
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SpaceShipPosition >> distanceTraveled [
 
 	^ distanceTraveled
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 SpaceShipPosition >> initializeWith: aPosition and: aLap on: aBoard [
 
 	tile := aPosition.
@@ -38,18 +34,18 @@ SpaceShipPosition >> initializeWith: aPosition and: aLap on: aBoard [
 	distanceTraveled := (lap - 1) * aBoard lastPosition + tile
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SpaceShipPosition >> lap [
 	^ lap
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SpaceShipPosition >> tile [
 
 	^ tile
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 SpaceShipPosition >> totalTraveled [
 	^ distanceTraveled
 ]

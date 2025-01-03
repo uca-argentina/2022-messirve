@@ -1,11 +1,10 @@
 Class {
-	#name : 'EffectPositionsTests',
-	#superclass : 'MessirveTests',
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#name : #EffectPositionsTests,
+	#superclass : #MessirveTests,
+	#category : #'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceShipLandsOnAPositionWithoutEffectAndTheLapAndPositionAreNotModified [
 
 	| aSpaceGame aLoadedDie aBoard |
@@ -27,7 +26,7 @@ EffectPositionsTests >> testASpaceShipLandsOnAPositionWithoutEffectAndTheLapAndP
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceShipLandsOnASpeedUpAndThusFinishesLapOneAndIsNowOnLapTwo [
 
 	| aSpaceGame aBoard aDie |
@@ -56,7 +55,7 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpAndThusFinishesLapOneAndIsN
 	self deny: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpaces [
 
 	| aSpaceGame aBoard aDie |
@@ -85,7 +84,7 @@ EffectPositionsTests >> testASpaceShipLandsOnASpeedUpPositionAndAdvancesFourSpac
 	self deny: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndCannotGoBackBehindTheStartingPoint [
 
 	| aSpaceGame aBoard aDie |
@@ -113,7 +112,7 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndCannotGoBackBeh
 	self deny: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpaces [
 
 	| aSpaceGame aBoard aDie |
@@ -141,8 +140,8 @@ EffectPositionsTests >> testASpaceShipLandsOnAWormHolePositionAndGoesBackFourSpa
 	self deny: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
-EffectPositionsTests >> testASpaceShipThatLandsOnAnAtomicBombAfterFinishingTheFirstLapTakesEverySpaceShipBackToPositionOneButMaintainsItsAchievedLaps [
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombAfterFinishingTheFirstLapTakesEverySpaceShipBackToPositionOneButMaintainsItsAchievedLaps [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -198,8 +197,8 @@ EffectPositionsTests >> testASpaceShipThatLandsOnAnAtomicBombAfterFinishingTheFi
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
-EffectPositionsTests >> testASpaceShipThatLandsOnAnAtomicBombTakesEverySpaceShipBackToPositionOne [
+{ #category : #tests }
+EffectPositionsTests >> testASpaceShipThatLandsOnAAtomicBombTakesEverySpaceShipBackToPositionOne [
 
 	| aSpaceGame aBoard aDie |
 	aBoard := RoundBoard
@@ -259,7 +258,7 @@ EffectPositionsTests >> testASpaceShipThatLandsOnAnAtomicBombTakesEverySpaceShip
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpaceshipAndAdvancesTwentyParsecs [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -296,7 +295,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpace
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpaceshipAndAdvancesTwentyParsecsButLightyearsAreNotZero [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -333,7 +332,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAfterAnotherSpace
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvancesThirtyParsecs [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -363,13 +362,13 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionAndAdvancesThirty
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwardedAreNotEnoughToMove [
 
 	| aSpaceGame aBoard aDiceCup |
 	aBoard := RoundBoard
 		          boardWithOnly:
-		          { (HyperJumpEffect with: { 7 } and: { 0 }) }
+		          { (HyperJumpEffect with: { 3 } and: { 0 }) }
 		          at: { 2 }
 		          Of: 10
 		          with: 100
@@ -393,7 +392,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionButTheParsecsAwar
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionThatMovesItForwardFivePositionsAndAdvancesOneLap [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -422,7 +421,7 @@ EffectPositionsTests >> testASpaceshipLandsOnAHyperJumpPositionThatMovesItForwar
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUpDoesNotGoBackFourAfterLandingOnAWormHoleOnTheSameTurn [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -452,32 +451,7 @@ EffectPositionsTests >> testASpaceshipThatMovesForwardFourAfterLandingOnASpeedUp
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
-EffectPositionsTests >> testSpaceShipLandsOnACardDealerEffectPositionAndReceivesOneCard [
-
-	| aSpaceGame aBoard aDie |
-	aBoard := RoundBoard
-		          boardWithOnly: { (CardDealerEffect handingRandomCards) }
-		          at: { 2 }
-		          Of: 10
-		          with: 100 and: 0.
-	aDie := LoadedDie rolling: { 1 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'De Paul'. 'Armani' }
-		              on: aBoard
-		              rolling: aDie
-		              withLapsToWin: 5
-		              handing: { SpeedCard new }.
-
-	aSpaceGame playNextTurn.
-
-	self
-		assert: (aSpaceGame inventoryFrom: 'Messi') size
-		equals: 3
-]
-
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsEveryOtherSpaceShipButItself [
 
 	| aSpaceGame aBoard aDie |
@@ -518,7 +492,7 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesBackThreePositionsE
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesEveryOtherSpaceShipOneLapBehind [
 
 	| aSpaceGame aBoard aDie |
@@ -575,7 +549,7 @@ EffectPositionsTests >> testSpaceShipLandsOnAMoonWalkAndMovesEveryOtherSpaceShip
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 EffectPositionsTests >> testSpaceShipsLandOnHyperJumpPositionFourTimesAndTheLastOneIsAtTheSamePositionAsTheFirstOne [
 
 	| aSpaceGame aBoard aDiceCup |

@@ -1,11 +1,10 @@
 Class {
-	#name : 'GameplayTests',
-	#superclass : 'MessirveTests',
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#name : #GameplayTests,
+	#superclass : #MessirveTests,
+	#category : #'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 
 	| aSpaceGame aBoard aDie |
@@ -29,54 +28,7 @@ GameplayTests >> testASpaceGameCannotBePlayedMoreThanOnce [
 		'The Space Game has finished and cannot be played again'
 ]
 
-{ #category : 'tests' }
-GameplayTests >> testASpaceShipCanPlayItsTurnAfterTheOneTurnPenalizationExpires [
-
-	| aSpaceGame aBoard aLoadedDie |
-	aBoard := RoundBoard withNoEffectsOf: 12 with: 100 and: 0.
-	aLoadedDie := LoadedDie rolling: { 3 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 3.
-
-	aSpaceGame setPenalizationOf: -2 to: (aSpaceGame obtainSpaceShipStatusFrom: 'Messi').
-	aSpaceGame playNextTurn.
-	aSpaceGame playNextTurn.
-	
-	self
-		assert: 'Messi'
-		isAt: 4
-		with: 1
-		in: aSpaceGame.
-]
-
-{ #category : 'tests' }
-GameplayTests >> testASpaceShipCannotPlayItsTurnAfterBeingPenalized [
-
-	| aSpaceGame aBoard aLoadedDie |
-	aBoard := RoundBoard withNoEffectsOf: 12 with: 100 and: 0.
-	aLoadedDie := LoadedDie rolling: { 3 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 3.
-
-	aSpaceGame setPenalizationOf: -2 to: (aSpaceGame obtainSpaceShipStatusFrom: 'Messi').
-	aSpaceGame playNextTurn.
-
-	self
-		assert: 'Messi'
-		isAt: 1
-		with: 1
-		in: aSpaceGame.
-]
-
-{ #category : 'tests' }
+{ #category : #tests }
 GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 
 	| aSpaceGame aBoard aDie initialPositionOfSpaceship finalPositionOfSpaceship |
@@ -98,36 +50,7 @@ GameplayTests >> testASpaceShipIsNotLongerInTheSamePositionAfterRollingADie [
 		equals: finalPositionOfSpaceship
 ]
 
-{ #category : 'tests' }
-GameplayTests >> testASpaceShipMovesBackTwoPositionsAfterBeingPenalizedButItDoesNotReceiveTheBoostOfThePositionItLandsOn [
-
-	| aSpaceGame aBoard aLoadedDie |
-	aBoard := RoundBoard
-		          boardWithOnly: { SpeedUpEffect new }
-		          at: { 2 }
-		          Of: 4
-		          with: 100 and: 0.
-	aLoadedDie := LoadedDie rolling: { 3 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'De Paul' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 3.
-
-	aSpaceGame playNextTurn.
-	aSpaceGame
-		moveSpaceShip: (aSpaceGame obtainSpaceShipStatusFrom: 'Messi')
-		toPosition: 7.
-
-	self
-		assert: 'Messi'
-		isAt: 2
-		with: 1
-		in: aSpaceGame.
-]
-
-{ #category : 'tests' }
+{ #category : #tests }
 GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
@@ -145,32 +68,7 @@ GameplayTests >> testASpaceShipPlaysAGameWithOneDieAndTheGameFinishes [
 	self assert: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
-GameplayTests >> testASpaceShipTriesToMoveOutsideItsTurnAndGoesBackTwoPositions [
-
-	| aSpaceGame aBoard aLoadedDie |
-	aBoard := RoundBoard withNoEffectsOf: 12 with: 100 and: 0.
-	aLoadedDie := LoadedDie rolling: { 3 }.
-
-	aSpaceGame := MessirveSpaceRaceGame
-		              playedBy: { 'Messi'. 'De Paul' }
-		              on: aBoard
-		              rolling: aLoadedDie
-		              withLapsToWin: 3.
-
-	aSpaceGame playNextTurn.
-	aSpaceGame
-		moveSpaceShip: (aSpaceGame obtainSpaceShipStatusFrom: 'Messi')
-		toPosition: 7.
-
-	self
-		assert: 'Messi'
-		isAt: 2
-		with: 1
-		in: aSpaceGame.
-]
-
-{ #category : 'tests' }
+{ #category : #tests }
 GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDiceCup |
@@ -193,7 +91,7 @@ GameplayTests >> testSixSpaceShipsPlayAGameWithThreeDiceAndTheGameFinishes [
 	self assert: aSpaceGame isFinished
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 GameplayTests >> testTwoSpaceShipsPlayTheGameWithARandomRoundBoardAndTheGameFinishes [
 
 	| aSpaceGame aBoard aDie |
