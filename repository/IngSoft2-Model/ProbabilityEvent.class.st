@@ -1,45 +1,41 @@
-"
-Represents an event that occurs based on a probability distribution, influencing the game's randomness.
-"
 Class {
-	#name : 'ProbabilityEvent',
-	#superclass : 'Object',
+	#name : #ProbabilityEvent,
+	#superclass : #Object,
 	#instVars : [
 		'event',
 		'probability'
 	],
-	#category : 'IngSoft2-Model',
-	#package : 'IngSoft2-Model'
+	#category : #'IngSoft2-Model'
 }
 
-{ #category : 'asserting' }
+{ #category : #asserting }
 ProbabilityEvent class >> assertCorrectProbabilityOf: aProbability [
 
 	(aProbability between: 0 and: 1) ifFalse: [ 
 		Error signal: 'Probability must be between 0 and 1' ]
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ProbabilityEvent class >> of: anEvent with: aProbability [
 
 	self assertCorrectProbabilityOf: aProbability.
 	^ self new initializeOf: anEvent with: aProbability
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 ProbabilityEvent >> event [
 
 	^ event
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ProbabilityEvent >> initializeOf: anEvent with: aProbability [
 
 	event := anEvent.
 	probability := aProbability
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 ProbabilityEvent >> probability [
 
 	^ probability

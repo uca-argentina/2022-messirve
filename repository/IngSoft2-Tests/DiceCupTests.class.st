@@ -1,11 +1,10 @@
 Class {
-	#name : 'DiceCupTests',
-	#superclass : 'MessirveTests',
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#name : #DiceCupTests,
+	#superclass : #MessirveTests,
+	#category : #'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 DiceCupTests >> testADiceCupCannotBeEmpty [
 	| aDiceCup |
 	
@@ -18,7 +17,7 @@ DiceCupTests >> testADiceCupCannotBeEmpty [
 		'A dice cup must contain at least one die'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DiceCupTests >> testADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides [
 
 	| aDiceCup aDie numberOfSides |
@@ -29,7 +28,7 @@ DiceCupTests >> testADiceCupWithADieRollsANumberBetweenOneAndTheNumberOfSides [
 	self assert: (aDiceCup roll between: 1 and: numberOfSides)
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 DiceCupTests >> testDiceCupRollsTheSumOfTheRollsOfEachDieInside [
 
 	| aDiceCup aLoadedDie aLoadedDie2 aLoadedDie3 |

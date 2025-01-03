@@ -1,14 +1,10 @@
-"
-Applies various effects to the game or players, altering the game state or outcomes.
-"
 Class {
-	#name : 'EffectApplicator',
-	#superclass : 'Object',
-	#category : 'IngSoft2-Model',
-	#package : 'IngSoft2-Model'
+	#name : #EffectApplicator,
+	#superclass : #Object,
+	#category : #'IngSoft2-Model'
 }
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	^ aBoardEffect
@@ -19,7 +15,7 @@ EffectApplicator >> apply: aBoardEffect on: statuses activatedBy: aStatus played
 		  appliedBy: self
 ]
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
 
 	| newStatuses |
@@ -33,7 +29,7 @@ EffectApplicator >> applyAtomicBombOn: statuses playedOn: aBoard [
 				                  on: aBoard) ]
 ]
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| aDistance |
@@ -45,14 +41,14 @@ EffectApplicator >> applyBoostOf: aBoost on: statuses activatedBy: aStatus playe
 	^ aBoard advance: aStatus from: statuses to: aDistance
 ]
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> applyCardDealerEffectTo: aStatus with: aCard from: statuses playedOn: aGame [
 
 	aGame cardApplicator distribute: aCard toTheInventoryOf: aStatus spaceShip.
 	^ statuses copy
 ]
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| aDistance positionLength aPosition |
@@ -67,7 +63,7 @@ EffectApplicator >> applyHyperJumpEffectWith: aBoost on: statuses activatedBy: a
 	^ aBoard advance: aStatus from: statuses to: aPosition
 ]
 
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aStatus playedOn: aBoard and: aGame [
 
 	| currentDistance newStatuses spaceShipPlaying |
@@ -92,15 +88,7 @@ EffectApplicator >> applyMoonWalkOf: somePositions on: statuses activatedBy: aSt
 		  to: currentDistance
 ]
 
-{ #category : 'applying' }
-EffectApplicator >> applyReverseCardDealerEffectTo: aStatus from: statuses playedOn: aGame [ 
-	
-
-	aGame cardApplicator removeRandomCardFromTheInventoryOf: aStatus spaceShip.
-	^ statuses copy
-]
-
-{ #category : 'applying' }
+{ #category : #applying }
 EffectApplicator >> statusOf: aSpaceShip from: statuses [
 
 	^ statuses detect: [ :status | status spaceShip = aSpaceShip ]

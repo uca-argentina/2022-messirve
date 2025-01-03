@@ -1,24 +1,20 @@
-"
-Generates events based on a discrete probability distribution, influencing game randomness.
-"
 Class {
-	#name : 'DiscreteProbabilityEventSource',
-	#superclass : 'Object',
+	#name : #DiscreteProbabilityEventSource,
+	#superclass : #Object,
 	#instVars : [
 		'probabilityDistribution',
 		'eventsAtIntervals'
 	],
-	#category : 'IngSoft2-Model',
-	#package : 'IngSoft2-Model'
+	#category : #'IngSoft2-Model'
 }
 
-{ #category : 'instance creation' }
+{ #category : #'instance creation' }
 DiscreteProbabilityEventSource class >> with: aDiscreteProbabilityDistribution [
 
 	^ self new initializeWith: aDiscreteProbabilityDistribution
 ]
 
-{ #category : 'initialization' }
+{ #category : #initialization }
 DiscreteProbabilityEventSource >> initializeWith: aDiscreteProbabilityDistribution [
 
 	| start end |
@@ -34,13 +30,13 @@ DiscreteProbabilityEventSource >> initializeWith: aDiscreteProbabilityDistributi
 			put: (NumberInterval goingFrom: start to: end) ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DiscreteProbabilityEventSource >> next: amountOfItems [
 
 	^ (1 to: amountOfItems) collect: [ :a | self obtainOne ]
 ]
 
-{ #category : 'accessing' }
+{ #category : #accessing }
 DiscreteProbabilityEventSource >> obtainOne [
 
 	| randomNumber searched |

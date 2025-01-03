@@ -1,11 +1,10 @@
 Class {
-	#name : 'ObjectCreationTests',
-	#superclass : 'MessirveTests',
-	#category : 'IngSoft2-Tests',
-	#package : 'IngSoft2-Tests'
+	#name : #ObjectCreationTests,
+	#superclass : #MessirveTests,
+	#category : #'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 
 	self
@@ -15,7 +14,7 @@ ObjectCreationTests >> testADieCannotHaveLessThanThreeSides [
 		description: 'Die sides must be >= 3'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
 
 	self
@@ -27,7 +26,7 @@ ObjectCreationTests >> testAMoonWalkBoardPositionCannotHaveAnNLowerThanOne [
 		'The N belonging to a MoonWalk position cannot be smaller than 1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 
 	self
@@ -38,7 +37,7 @@ ObjectCreationTests >> testARoundBoardCannotBeCreatedWithLessThanTwoPositions [
 		description: 'Board positions must be >1'
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 
 	| aSpaceGame aBoard |
@@ -57,7 +56,7 @@ ObjectCreationTests >> testASpaceShipBeginsInPositionOne [
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
 
 	| aSpaceGame aBoard |
@@ -82,7 +81,7 @@ ObjectCreationTests >> testSpaceShipsPlayingBeginAtLapOne [
 		in: aSpaceGame
 ]
 
-{ #category : 'tests' }
+{ #category : #tests }
 ObjectCreationTests >> testTwoSpaceshipsWithTheSameNameCannotBeAddedToGame [
 
 	| aSpaceGame aBoard aDiceCup |
